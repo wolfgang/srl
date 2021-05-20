@@ -1,11 +1,23 @@
 use crate::object_type::ObjectType;
 use crate::renderer::Renderer;
 
-pub struct RenderingSpy {}
+pub struct RenderingSpy {
+    frame: Vec<Vec<char>>,
+    width: usize,
+    height: usize,
+}
 
 impl RenderingSpy {
-    pub fn new(_width: usize, _height: usize) -> Self {
-        Self {}
+    pub fn new(width: usize, height: usize) -> Self {
+        Self {
+            width,
+            height,
+            frame: vec![vec!['.'; width]; height],
+        }
+    }
+
+    pub fn frame(&self) -> &Vec<Vec<char>> {
+        &self.frame
     }
 
     pub fn assert_frame(&self, _expected: Vec<&str>) {

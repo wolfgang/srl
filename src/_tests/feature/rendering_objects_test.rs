@@ -2,6 +2,7 @@ use crate::_tests::helpers::rendering_spy::RenderingSpy;
 use crate::game::Game;
 use crate::game_config::GameConfig;
 
+#[ignore]
 #[test]
 fn renders_walls_enemies_and_player() {
     let config = GameConfig {
