@@ -35,7 +35,7 @@ impl RenderingSpy {
 impl Renderer for RenderingSpy {
     fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
         let ch = match object_type {
-            Wall => { 'W' }
+            Wall => { '#' }
             Player => { '@' }
             Enemy => { 'E' }
         };

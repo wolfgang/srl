@@ -20,7 +20,7 @@ fn renders_objects_as_specific_characters() {
     renderer.render_at(1, 2, Enemy);
 
     assert_eq!(renderer.frame(), &vec![
-        vec!['@', 'W'],
+        vec!['@', '#'],
         vec!['.', '.'],
         vec!['.', 'E']
     ])
@@ -33,7 +33,7 @@ fn frame_as_string_converts_frame_to_string() {
     renderer.render_at(1, 0, Wall);
     renderer.render_at(1, 2, Enemy);
 
-    assert_eq!(renderer.frame_as_string(), "@W\n..\n.E");
+    assert_eq!(renderer.frame_as_string(), "@#\n..\n.E");
 }
 
 // #[test]
