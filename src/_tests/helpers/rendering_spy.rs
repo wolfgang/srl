@@ -13,12 +13,22 @@ impl RenderingSpy {
         }
     }
 
+    pub fn frame_as_string(&self) -> String {
+        let strings: Vec<String> = self.frame
+            .iter()
+            .map(|row| { row.iter().collect() })
+            .collect();
+
+        return strings.join("\n");
+    }
+
+
     pub fn frame(&self) -> &Vec<Vec<char>> {
         &self.frame
     }
 
-    pub fn assert_frame(&self, _expected: Vec<&str>) {
-        todo!()
+    pub fn assert_frame(&self, expected: Vec<&str>) {
+        assert_eq!(self.frame_as_string(), expected.join("\n").replace(" ", ""));
     }
 }
 
