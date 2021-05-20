@@ -1,17 +1,14 @@
+use crate::object_type::ObjectType::*;
 use crate::object_type::ObjectType;
 use crate::renderer::Renderer;
 
 pub struct RenderingSpy {
     frame: Vec<Vec<char>>,
-    width: usize,
-    height: usize,
 }
 
 impl RenderingSpy {
     pub fn new(width: usize, height: usize) -> Self {
         Self {
-            width,
-            height,
             frame: vec![vec!['.'; width]; height],
         }
     }
@@ -26,5 +23,13 @@ impl RenderingSpy {
 }
 
 impl Renderer for RenderingSpy {
-    fn render_at(&mut self, _x: u32, _y: u32, _object_type: ObjectType) {}
+    fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
+        let ch = match object_type {
+            Wall => { 'W' }
+            Player => { '@' }
+            Enemy => { 'E' }
+        };
+
+        self.frame[y as usize][x as usize] = ch;
+    }
 }
