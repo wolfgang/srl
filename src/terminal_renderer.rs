@@ -1,7 +1,7 @@
 use std::io::Write;
 
-use crate::object_type::ObjectType::*;
-use crate::object_type::ObjectType;
+use crate::game::object_type::ObjectType::*;
+use crate::game::object_type::ObjectType;
 use crate::renderer::Renderer;
 
 pub struct TerminalRenderer {

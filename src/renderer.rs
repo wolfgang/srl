@@ -1,4 +1,4 @@
-use crate::object_type::ObjectType;
+use crate::game::object_type::ObjectType;
 
 pub trait Renderer {
     fn clear(&mut self);
