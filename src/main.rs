@@ -8,7 +8,7 @@ use srl::input::{Input, TerminalInput};
 const GAME_WIDTH: usize = 40;
 const GAME_HEIGHT: usize = 20;
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let config = GameConfig {
         dungeon_size: (GAME_WIDTH, GAME_HEIGHT)
     };
@@ -23,14 +23,14 @@ fn main() {
     let mut input = TerminalInput::new();
 
     let mut term = Term::stdout();
-    term.hide_cursor().unwrap();
+    term.hide_cursor()?;
     while !input.quit_game() {
         game.render(&mut renderer);
         renderer.flush(&mut term);
-        input.on_key(term.read_key().unwrap());
+        input.on_key(term.read_key()?);
         game.tick(&input);
-        term.clear_last_lines(GAME_HEIGHT - 1).unwrap();
+        term.clear_last_lines(GAME_HEIGHT - 1)?;
     }
-    term.clear_to_end_of_screen().unwrap();
-    term.show_cursor().unwrap();
+    term.clear_to_end_of_screen()?;
+    term.show_cursor()
 }
