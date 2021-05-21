@@ -1,4 +1,5 @@
 use crate::game_config::GameConfig;
+use crate::input::Input;
 use crate::object_type::ObjectType::{Enemy, Player, Wall};
 use crate::renderer::Renderer;
 
@@ -31,7 +32,20 @@ impl Game {
         self.player = (x, y);
     }
 
+    pub fn tick<T: Input>(&mut self, input: &T) {
+        let (mut player_x, mut player_y) = self.player;
+        if input.move_left() { player_x -= 1 }
+        if input.move_right() { player_x += 1 }
+
+        if input.move_up() { player_y -= 1 }
+        if input.move_down() { player_y += 1 }
+
+        self.set_player_position(player_x, player_y);
+    }
+
+
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
+        renderer.clear();
         for (x, y) in &self.enemies {
             renderer.render_at(*x, *y, Enemy);
         }
