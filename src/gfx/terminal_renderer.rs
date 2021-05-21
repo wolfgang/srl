@@ -17,12 +17,16 @@ impl TerminalRenderer {
             height,
             frame: Vec::new(),
         };
-        renderer.clear();
+        renderer.init_frame();
         renderer
     }
 
     pub fn flush<T: Write>(&mut self, write: &mut T) {
         write.write(self.frame_as_string().as_bytes()).unwrap();
+    }
+
+    fn init_frame(&mut self) {
+        self.frame = vec![vec!['.'; self.width]; self.height];
     }
 
     fn frame_as_string(&self) -> String {
@@ -37,7 +41,7 @@ impl TerminalRenderer {
 
 impl Renderer for TerminalRenderer {
     fn clear(&mut self) {
-        self.frame = vec![vec!['.'; self.width]; self.height]
+        self.init_frame()
     }
 
     fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
