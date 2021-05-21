@@ -5,3 +5,4 @@ mod game_config;
 mod _tests;
 mod renderer;
 mod object_type;
+mod input;
