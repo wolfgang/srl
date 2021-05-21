@@ -32,4 +32,8 @@ impl Input for TerminalInput {
     fn move_down(&self) -> bool {
         self.pressed_key == Key::ArrowDown
     }
+
+    fn quit_game(&self) -> bool {
+        self.pressed_key == Key::Escape
+    }
 }

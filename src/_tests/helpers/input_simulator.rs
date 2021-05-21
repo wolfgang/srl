@@ -58,4 +58,8 @@ impl Input for InputSimulator {
     fn move_down(&self) -> bool {
         self.simulating_move_down
     }
+
+    fn quit_game(&self) -> bool {
+        false
+    }
 }

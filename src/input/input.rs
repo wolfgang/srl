@@ -3,4 +3,5 @@ pub trait Input {
     fn move_right(&self) -> bool;
     fn move_up(&self) -> bool;
     fn move_down(&self) -> bool;
+    fn quit_game(&self) -> bool;
 }

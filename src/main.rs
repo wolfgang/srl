@@ -3,7 +3,7 @@ use console::Term;
 use srl::game::Game;
 use srl::game::GameConfig;
 use srl::gfx::terminal_renderer::TerminalRenderer;
-use srl::input::TerminalInput;
+use srl::input::{Input, TerminalInput};
 
 const GAME_WIDTH: usize = 5;
 const GAME_HEIGHT: usize = 4;
@@ -23,13 +23,12 @@ fn main() {
 
     let mut term = Term::stdout();
     term.hide_cursor().unwrap();
-    while true {
+    while !input.quit_game() {
         game.render(&mut renderer);
         renderer.flush(&mut term);
         input.on_key(term.read_key().unwrap());
         game.tick(&input);
         term.clear_last_lines(GAME_HEIGHT-1).unwrap();
-
     }
 
 }
