@@ -4,13 +4,19 @@ use crate::renderer::Renderer;
 
 pub struct RenderingSpy {
     frame: Vec<Vec<char>>,
+    width: usize,
+    height: usize,
 }
 
 impl RenderingSpy {
     pub fn new(width: usize, height: usize) -> Self {
-        Self {
-            frame: vec![vec!['.'; width]; height],
-        }
+        let mut renderer = Self {
+            width,
+            height,
+            frame: Vec::new(),
+        };
+        renderer.clear();
+        renderer
     }
 
     pub fn frame_as_string(&self) -> String {
@@ -33,6 +39,10 @@ impl RenderingSpy {
 }
 
 impl Renderer for RenderingSpy {
+    fn clear(&mut self) {
+        self.frame = vec![vec!['.'; self.width]; self.height]
+    }
+
     fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
         let ch = match object_type {
             Wall => { '#' }
