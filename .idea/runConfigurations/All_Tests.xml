@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All Micro Tests" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+  <configuration default="false" name="All Tests" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
     <option name="command" value="test --lib -- tests::unit _tests::feature" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <option name="channel" value="DEFAULT" />
