@@ -1,6 +1,6 @@
 use crate::_tests::helpers::rendering_spy::RenderingSpy;
 use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
-use crate::renderer::Renderer;
+use crate::gfx::renderer::Renderer;
 
 #[test]
 fn frame_is_initially_empty() {

@@ -1,7 +1,7 @@
 use crate::game::game_config::GameConfig;
 use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
+use crate::gfx::renderer::Renderer;
 use crate::input::Input;
-use crate::renderer::Renderer;
 
 type CellCoords = (u32, u32);
 

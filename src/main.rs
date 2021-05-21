@@ -2,7 +2,7 @@ use console::Term;
 
 use srl::game::Game;
 use srl::game::GameConfig;
-use srl::terminal_renderer::TerminalRenderer;
+use srl::gfx::terminal_renderer::TerminalRenderer;
 
 fn main() {
     let mut term = Term::stdout();

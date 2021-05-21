@@ -1,6 +1,6 @@
 use crate::game::object_type::ObjectType::*;
 use crate::game::object_type::ObjectType;
-use crate::renderer::Renderer;
+use crate::gfx::renderer::Renderer;
 
 pub struct RenderingSpy {
     frame: Vec<Vec<char>>,
