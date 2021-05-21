@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod _tests;
 
-mod game;
-mod game_config;
-mod renderer;
-mod object_type;
-mod input;
-mod terminal_renderer;
+pub mod game;
+pub mod game_config;
+pub mod renderer;
+pub mod object_type;
+pub mod input;
+pub mod terminal_renderer;
