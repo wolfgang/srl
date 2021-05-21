@@ -1,7 +1,7 @@
 use console::Term;
 
 use srl::game::Game;
-use srl::game_config::GameConfig;
+use srl::game::GameConfig;
 use srl::terminal_renderer::TerminalRenderer;
 
 fn main() {

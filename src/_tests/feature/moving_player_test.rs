@@ -1,5 +1,5 @@
 use crate::_tests::helpers::testable_game::TestableGame;
-use crate::game_config::GameConfig;
+use crate::game::GameConfig;
 
 #[test]
 fn player_moves_according_to_input() {

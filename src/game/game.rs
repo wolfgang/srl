@@ -1,4 +1,4 @@
-use crate::game_config::GameConfig;
+use crate::game::game_config::GameConfig;
 use crate::input::Input;
 use crate::object_type::ObjectType::{Enemy, Player, Wall};
 use crate::renderer::Renderer;
