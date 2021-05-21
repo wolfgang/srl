@@ -15,19 +15,30 @@ impl InputSimulator {
     }
 
     pub fn simulate_move_left(&mut self) {
+        self.reset();
         self.simulating_move_left = true
     }
 
     pub fn simulate_move_right(&mut self) {
+        self.reset();
         self.simulating_move_right = true
     }
 
     pub fn simulate_move_up(&mut self) {
+        self.reset();
         self.simulating_move_up = true
     }
 
     pub fn simulate_move_down(&mut self) {
+        self.reset();
         self.simulating_move_down = true
+    }
+
+    fn reset(&mut self) {
+        self.simulating_move_left = false;
+        self.simulating_move_right = false;
+        self.simulating_move_up = false;
+        self.simulating_move_down = false;
     }
 }
 
