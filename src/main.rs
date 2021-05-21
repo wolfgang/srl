@@ -22,6 +22,7 @@ fn main() {
     let mut input = TerminalInput::new();
 
     let mut term = Term::stdout();
+    term.hide_cursor().unwrap();
     while true {
         game.render(&mut renderer);
         renderer.flush(&mut term);
