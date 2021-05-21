@@ -1,2 +1,3 @@
 pub mod rendering_spy;
-pub(crate) mod input_simulator;
+pub mod input_simulator;
+pub mod testable_game;
