@@ -23,7 +23,7 @@ fn main() -> std::io::Result<()> {
     let mut renderer = TerminalRenderer::new(GAME_WIDTH, GAME_HEIGHT);
     let mut input = TerminalInput::new();
 
-    let mut term = Term::stdout();
+    let mut term = Term::buffered_stdout();
     term.hide_cursor()?;
     while !input.quit_game() {
         game.render(&mut renderer);

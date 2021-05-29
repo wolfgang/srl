@@ -23,6 +23,7 @@ impl TerminalRenderer {
 
     pub fn flush<T: Write>(&mut self, write: &mut T) {
         write.write(self.frame_as_string().as_bytes()).unwrap();
+        write.flush().unwrap();
     }
 
     fn init_frame(&mut self) {
