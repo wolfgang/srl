@@ -17,7 +17,8 @@ fn main() -> std::io::Result<()> {
     game.add_enemies(&vec![(1, 1), (4, 2), (2, 3)]);
     game.add_walls(&vec![
         (1, 0), (2, 0), (3, 1), (1, 2),
-        (0, GAME_HEIGHT as u32 - 1), (GAME_WIDTH as u32 - 1, GAME_HEIGHT as u32 - 1)]);
+        (0, GAME_HEIGHT as u32 - 1),
+        (GAME_WIDTH as u32 - 1, GAME_HEIGHT as u32 - 1)]);
     game.set_player_position(3, 2);
     let mut renderer = TerminalRenderer::new(GAME_WIDTH, GAME_HEIGHT);
     let mut input = TerminalInput::new();
