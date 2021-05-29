@@ -24,7 +24,6 @@ fn main() -> std::io::Result<()> {
     let mut input = TerminalInput::new();
 
     let mut term = Term::buffered_stdout();
-    term.hide_cursor()?;
     while !input.quit_game() {
         game.render(&mut renderer);
         renderer.flush(&mut term);
@@ -32,6 +31,5 @@ fn main() -> std::io::Result<()> {
         game.tick(&input);
         term.clear_last_lines(GAME_HEIGHT - 1)?;
     }
-    term.clear_to_end_of_screen()?;
-    term.show_cursor()
+    term.clear_to_end_of_screen()
 }
