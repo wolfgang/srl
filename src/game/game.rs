@@ -35,25 +35,26 @@ impl Game {
     pub fn tick<T: Input>(&mut self, input: &T) {
         let (mut player_x, mut player_y) = self.player;
         if input.move_left() {
-            if !self.walls.contains(&(player_x - 1, player_y)) {
+            if !self.walls.contains(&(player_x - 1, player_y)) && !self.enemies.contains(&(player_x - 1, player_y)) {
                 player_x -= 1
             }
         }
         if input.move_right() {
-            if !self.walls.contains(&(player_x + 1, player_y)) {
+            if !self.walls.contains(&(player_x + 1, player_y)) && !self.enemies.contains(&(player_x + 1, player_y)) {
                 player_x += 1
             }
         }
 
+
         if input.move_up() {
-            if !self.walls.contains(&(player_x, player_y - 1)) {
+            if !self.walls.contains(&(player_x, player_y - 1)) && !self.enemies.contains(&(player_x, player_y - 1)) {
                 player_y -= 1
             }
         }
 
 
         if input.move_down() {
-            if !self.walls.contains(&(player_x, player_y + 1)) {
+            if !self.walls.contains(&(player_x, player_y + 1)) && !self.enemies.contains(&(player_x, player_y + 1)) {
                 player_y += 1
             }
         }
