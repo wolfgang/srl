@@ -5,24 +5,13 @@ use srl::game::GameConfig;
 use srl::gfx::terminal_renderer::TerminalRenderer;
 use srl::input::{Input, TerminalInput};
 
-const GAME_WIDTH: usize = 40;
-const GAME_HEIGHT: usize = 20;
+const GAME_WIDTH: usize = 20;
+const GAME_HEIGHT: usize = 10;
 
 fn main() -> std::io::Result<()> {
-    let config = GameConfig {
-        dungeon_size: (GAME_WIDTH, GAME_HEIGHT)
-    };
-
-    let mut game = Game::new(config);
-    game.add_enemies(&vec![(1, 1), (4, 2), (2, 3)]);
-    game.add_walls(&vec![
-        (1, 0), (2, 0), (3, 1), (1, 2),
-        (0, GAME_HEIGHT as u32 - 1),
-        (GAME_WIDTH as u32 - 1, GAME_HEIGHT as u32 - 1)]);
-    game.set_player_position(3, 2);
+    let mut game = make_example_game();
     let mut renderer = TerminalRenderer::new(GAME_WIDTH, GAME_HEIGHT);
     let mut input = TerminalInput::new();
-
     let mut term = Term::buffered_stdout();
     while !input.quit_game() {
         game.render(&mut renderer);
@@ -32,4 +21,26 @@ fn main() -> std::io::Result<()> {
         term.clear_last_lines(GAME_HEIGHT - 1)?;
     }
     term.clear_to_end_of_screen()
+}
+
+fn make_example_game() -> Game {
+    let config = GameConfig {
+        dungeon_size: (GAME_WIDTH, GAME_HEIGHT)
+    };
+
+    let mut game = Game::new(config);
+    game.add_enemies(&vec![(5, 5), (3, 4), (2, 8)]);
+    let mut walls: Vec<(u32, u32)> = Vec::new();
+    for y in 0..GAME_HEIGHT {
+        walls.push((0, y as u32));
+        walls.push((GAME_WIDTH as u32 - 1, y as u32));
+        for x in 0..GAME_WIDTH {
+            walls.push((x as u32, 0));
+            walls.push((x as u32, GAME_HEIGHT as u32 - 1));
+        }
+    }
+
+    game.add_walls(&walls);
+    game.set_player_position(3, 2);
+    game
 }
