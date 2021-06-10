@@ -33,33 +33,21 @@ impl Game {
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
-        let (mut player_x, mut player_y) = self.player;
-        if input.move_left() {
-            if !self.walls.contains(&(player_x - 1, player_y)) && !self.enemies.contains(&(player_x - 1, player_y)) {
-                player_x -= 1
-            }
-        }
-        if input.move_right() {
-            if !self.walls.contains(&(player_x + 1, player_y)) && !self.enemies.contains(&(player_x + 1, player_y)) {
-                player_x += 1
-            }
+        if input.move_left() && self.can_move_to(-1, 0) {
+            self.player.0 -= 1;
         }
 
-
-        if input.move_up() {
-            if !self.walls.contains(&(player_x, player_y - 1)) && !self.enemies.contains(&(player_x, player_y - 1)) {
-                player_y -= 1
-            }
+        if input.move_right() && self.can_move_to(1, 0) {
+            self.player.0 += 1
         }
 
-
-        if input.move_down() {
-            if !self.walls.contains(&(player_x, player_y + 1)) && !self.enemies.contains(&(player_x, player_y + 1)) {
-                player_y += 1
-            }
+        if input.move_up() && self.can_move_to(0, -1) {
+            self.player.1 -= 1
         }
 
-        self.set_player_position(player_x, player_y);
+        if input.move_down() && self.can_move_to(0, 1) {
+            self.player.1 += 1
+        }
     }
 
 
@@ -74,5 +62,11 @@ impl Game {
         }
 
         renderer.render_at(self.player.0, self.player.1, Player);
+    }
+
+    fn can_move_to(&self, x_offset: i32, y_offset: i32) -> bool {
+        let new_pos = ((self.player.0 as i32 + x_offset) as u32, (self.player.1 as i32 + y_offset) as u32);
+
+        !self.walls.contains(&new_pos) && !self.enemies.contains(&new_pos)
     }
 }
