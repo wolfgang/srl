@@ -31,6 +31,8 @@ impl DungeonGenerator for RandomDungeonGenerator {
         let mut dungeon = Dungeon::new();
         dungeon.add_walls(&available_coords[0..self.num_walls].to_vec());
         dungeon.add_enemies(&available_coords[self.num_walls .. self.num_walls  + self.num_enemies].to_vec());
+        let player_position = available_coords[self.num_walls + self.num_enemies];
+        dungeon.set_player_position(player_position.0, player_position.1);
         dungeon
     }
 }

@@ -7,7 +7,7 @@ use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gen::random_dungeon_generator::RandomDungeonGenerator;
 
 #[test]
-fn generates_n_distinct_walls_and_enemies() {
+fn generates_distinct_walls_and_enemies() {
     let generator = RandomDungeonGenerator::new(10, 20, 3, 2);
     let dungeon = generator.generate();
     let walls = get_distinct_objects_of_type(Wall, &dungeon);
@@ -25,7 +25,16 @@ fn generates_different_dungeons() {
     let dungeon2 = generator.generate();
     assert_ne!(get_distinct_objects_of_type(Wall, &dungeon1), get_distinct_objects_of_type(Wall, &dungeon2));
     assert_ne!(get_distinct_objects_of_type(Enemy, &dungeon1), get_distinct_objects_of_type(Enemy, &dungeon2));
+    assert_ne!(dungeon1.get_player_position(), dungeon2.get_player_position());
+}
 
+#[test]
+fn generates_player_position_distinct_from_objects() {
+    let generator = RandomDungeonGenerator::new(10, 20, 3, 2);
+    let dungeon = generator.generate();
+    let all_coords = get_distinct_coords(&dungeon);
+    let player_position = dungeon.get_player_position();
+    assert!(!all_coords.contains(&player_position))
 
 }
 
