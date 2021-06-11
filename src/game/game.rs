@@ -1,3 +1,4 @@
+use crate::game::dungeon::Dungeon;
 use crate::game::game_config::GameConfig;
 use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
 use crate::gfx::renderer::Renderer;
@@ -6,26 +7,24 @@ use crate::input::Input;
 type CellCoords = (u32, u32);
 
 pub struct Game {
-    enemies: Vec<CellCoords>,
-    walls: Vec<CellCoords>,
     player: CellCoords,
+    dungeon: Dungeon
 }
 
 impl Game {
     pub fn new(_config: GameConfig) -> Self {
         Self {
-            enemies: Vec::with_capacity(64),
-            walls: Vec::with_capacity(64),
+            dungeon: Dungeon::new(),
             player: (0, 0),
         }
     }
 
     pub fn add_enemies(&mut self, positions: &Vec<(u32, u32)>) {
-        self.enemies = positions.clone();
+        self.dungeon.add_enemies(positions);
     }
 
     pub fn add_walls(&mut self, positions: &Vec<(u32, u32)>) {
-        self.walls = positions.clone();
+        self.dungeon.add_walls(positions);
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {
@@ -53,11 +52,11 @@ impl Game {
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
         renderer.clear();
-        for (x, y) in &self.enemies {
+        for (x, y) in self.dungeon.get_enemies() {
             renderer.render_at(*x, *y, Enemy);
         }
 
-        for (x, y) in &self.walls {
+        for (x, y) in self.dungeon.get_walls() {
             renderer.render_at(*x, *y, Wall);
         }
 
@@ -67,6 +66,6 @@ impl Game {
     fn can_move_to(&self, x_offset: i32, y_offset: i32) -> bool {
         let new_pos = ((self.player.0 as i32 + x_offset) as u32, (self.player.1 as i32 + y_offset) as u32);
 
-        !self.walls.contains(&new_pos) && !self.enemies.contains(&new_pos)
+        !self.dungeon.get_walls().contains(&new_pos) && !self.dungeon.get_enemies().contains(&new_pos)
     }
 }
