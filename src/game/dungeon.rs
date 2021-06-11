@@ -38,25 +38,31 @@ impl Dungeon {
     }
 
     pub fn move_player_left(&mut self) {
-        if self.can_player_move_to(-1, 0) { self.player_position.0 -= 1 };
+        self.try_move_by(-1, 0);
     }
 
     pub fn move_player_right(&mut self) {
-        if self.can_player_move_to(1, 0) { self.player_position.0 += 1 }
+        self.try_move_by(1, 0);
     }
 
     pub fn move_player_up(&mut self) {
-        if self.can_player_move_to(0, -1) { self.player_position.1 -= 1 };
+        self.try_move_by(0, -1);
+
     }
 
     pub fn move_player_down(&mut self) {
-        if self.can_player_move_to(0, 1) { self.player_position.1 += 1 };
+        self.try_move_by(0, 1);
     }
 
-    fn can_player_move_to(&self, x_offset: i32, y_offset: i32) -> bool {
+    fn try_move_by(&mut self, x_offset: i32, y_offset: i32 ) {
         let (player_x, player_y) = self.player_position;
-        let new_pos = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
+        let new_player_position = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
+        if !self.is_occupied(new_player_position) {
+            self.player_position = new_player_position
+        };
+    }
 
-        !self.objects.iter().any(|(pos, _)| {*pos == new_pos})
+    fn is_occupied(&self, coords: CellCoords) -> bool {
+        self.objects.iter().any(|(obj_coords, _)| {*obj_coords == coords})
     }
 }
