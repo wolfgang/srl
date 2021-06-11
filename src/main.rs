@@ -25,6 +25,5 @@ fn main() -> std::io::Result<()> {
 
 fn make_example_game() -> Game {
     let generator = RandomDungeonGenerator::new(GAME_WIDTH, GAME_HEIGHT, 30, 10);
-    let mut game = Game::generate_with(&generator);
-    game
+    Game::generate_with(&generator)
 }

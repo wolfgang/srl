@@ -1,5 +1,7 @@
 use std::io::Write;
 
+use console::style;
+
 use crate::game::object_type::ObjectType::*;
 use crate::game::object_type::ObjectType;
 use crate::gfx::renderer::Renderer;
@@ -22,7 +24,8 @@ impl TerminalRenderer {
     }
 
     pub fn flush<T: Write>(&mut self, write: &mut T) {
-        write.write(self.frame_as_string().as_bytes()).unwrap();
+        let frame_as_string = self.frame_as_string();
+        write.write(format!("{}", frame_as_string).as_bytes()).unwrap();
         write.flush().unwrap();
     }
 
@@ -36,7 +39,12 @@ impl TerminalRenderer {
             .map(|row| { row.iter().collect() })
             .collect();
 
-        return strings.join("\n");
+
+        let mut output = strings.join("\n");
+        let offset = output.find('@').unwrap();
+        output.replace_range(offset..offset+1, style("@").red().to_string().as_str());
+
+        return output;
     }
 }
 
