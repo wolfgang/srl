@@ -1,0 +1,5 @@
+Extract Dungeon/GameState struct
+- Just move the vectors and any functions over
+- Move the player over
+- Implement move_player_by
+- Use move_player_by
