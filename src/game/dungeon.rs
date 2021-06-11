@@ -1,13 +1,13 @@
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
 
-pub type CellCoords = (u32, u32);
-pub type DungeonObject = (CellCoords, ObjectType);
+pub type DungeonCoords = (u32, u32);
+pub type DungeonObject = (DungeonCoords, ObjectType);
 
 #[derive(Default)]
 pub struct Dungeon {
     objects: Vec<DungeonObject>,
-    player_position: CellCoords,
+    player_position: DungeonCoords,
 }
 
 impl Dungeon {
@@ -22,15 +22,15 @@ impl Dungeon {
         &self.objects
     }
 
-    pub fn get_player_position(&self) -> CellCoords {
+    pub fn get_player_position(&self) -> DungeonCoords {
         self.player_position
     }
 
-    pub fn add_walls(&mut self, walls: &Vec<CellCoords>) {
+    pub fn add_walls(&mut self, walls: &Vec<DungeonCoords>) {
         for pos in walls { self.objects.push((*pos, Wall))}
     }
 
-    pub fn add_enemies(&mut self, enemies: &Vec<CellCoords>) {
+    pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
         for pos in enemies { self.objects.push((*pos, Enemy))}
     }
 
@@ -63,7 +63,7 @@ impl Dungeon {
         };
     }
 
-    fn is_occupied(&self, coords: CellCoords) -> bool {
+    fn is_occupied(&self, coords: DungeonCoords) -> bool {
         self.objects.iter().any(|(obj_coords, _)| {*obj_coords == coords})
     }
 }

@@ -1,11 +1,11 @@
-use crate::game::dungeon::{CellCoords, Dungeon};
+use crate::game::dungeon::{Dungeon, DungeonCoords};
 use crate::gen::dungeon_generator::DungeonGenerator;
 
 #[derive(Default)]
 pub struct FixedDungeonGenerator {
-    walls: Vec<CellCoords>,
-    enemies: Vec<CellCoords>,
-    player: CellCoords
+    walls: Vec<DungeonCoords>,
+    enemies: Vec<DungeonCoords>,
+    player: DungeonCoords
 }
 
 impl FixedDungeonGenerator {
@@ -13,11 +13,11 @@ impl FixedDungeonGenerator {
         Self::default()
     }
 
-    pub fn generate_walls(&mut self, walls: Vec<CellCoords>) {
+    pub fn generate_walls(&mut self, walls: Vec<DungeonCoords>) {
         self.walls = walls;
     }
 
-    pub fn generate_enemies(&mut self, enemies: Vec<CellCoords>) {
+    pub fn generate_enemies(&mut self, enemies: Vec<DungeonCoords>) {
         self.enemies = enemies;
 
     }

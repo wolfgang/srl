@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::game::dungeon::{CellCoords, Dungeon, DungeonObject};
+use crate::game::dungeon::{Dungeon, DungeonCoords, DungeonObject};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
 use crate::gen::dungeon_generator::DungeonGenerator;
@@ -12,15 +12,9 @@ fn generates_n_distinct_walls_and_enemies() {
     let dungeon = generator.generate();
     let walls = get_distinct_objects_of_type(Wall, &dungeon);
     let enemies = get_distinct_objects_of_type(Enemy, &dungeon);
+    let all_coords = get_distinct_coords(&dungeon);
     assert_eq!(walls.len(), 3);
     assert_eq!(enemies.len(), 2);
-
-    let all_coords: HashSet<CellCoords> = vec![walls.clone(), enemies.clone()]
-        .iter()
-        .flat_map(|v| { v.iter() })
-        .map(|(pos, _)| { *pos })
-        .collect();
-
     assert_eq!(all_coords.len(), walls.len() + enemies.len());
 }
 
@@ -41,5 +35,12 @@ fn get_distinct_objects_of_type(object_type: ObjectType, dungeon: &Dungeon) -> H
         .filter_map(|(pos, ty)| {
             if *ty == object_type { Some((*pos, *ty)) } else { None }
         })
+        .collect()
+}
+
+fn get_distinct_coords(dungeon: &Dungeon) -> HashSet<DungeonCoords> {
+    dungeon.get_objects()
+        .iter()
+        .map(|(pos, _)| { *pos })
         .collect()
 }
