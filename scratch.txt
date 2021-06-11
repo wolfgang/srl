@@ -1,6 +1,7 @@
 Extract Dungeon/GameState struct
-- Just move the vectors and any functions over
-- Move the player over
-- Implement move_player_by
-- Use move_player_by
+- [X] Just move the vectors and any functions over
+- [X] Move the player over
+- [X] Implement move_player_by
+- [X] Use move_player_by
+- [ ] Convert walls/enemies vecs into one objects vec with type?
 - add_walls/add_enemies: Move instead of cloning

@@ -1,7 +1,9 @@
+type CellCoords = (u32, u32);
+
 pub struct Dungeon {
-    walls: Vec<(u32, u32)>,
-    enemies: Vec<(u32, u32)>,
-    player_position: (u32, u32),
+    walls: Vec<CellCoords>,
+    enemies: Vec<CellCoords>,
+    player_position: CellCoords,
 }
 
 impl Dungeon {
@@ -13,23 +15,23 @@ impl Dungeon {
         }
     }
 
-    pub fn get_walls(&self) -> &Vec<(u32, u32)> {
+    pub fn get_walls(&self) -> &Vec<CellCoords> {
         &self.walls
     }
 
-    pub fn get_enemies(&self) -> &Vec<(u32, u32)> {
+    pub fn get_enemies(&self) -> &Vec<CellCoords> {
         &self.enemies
     }
 
-    pub fn get_player_position(&self) -> (u32, u32) {
+    pub fn get_player_position(&self) -> CellCoords {
         self.player_position
     }
 
-    pub fn add_walls(&mut self, walls: &Vec<(u32, u32)>) {
+    pub fn add_walls(&mut self, walls: &Vec<CellCoords>) {
         self.walls = walls.clone();
     }
 
-    pub fn add_enemies(&mut self, enemies: &Vec<(u32, u32)>) {
+    pub fn add_enemies(&mut self, enemies: &Vec<CellCoords>) {
         self.enemies = enemies.clone();
     }
 
