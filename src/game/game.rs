@@ -4,10 +4,7 @@ use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
 
-type CellCoords = (u32, u32);
-
 pub struct Game {
-    player: CellCoords,
     dungeon: Dungeon
 }
 
@@ -15,7 +12,6 @@ impl Game {
     pub fn new(_config: GameConfig) -> Self {
         Self {
             dungeon: Dungeon::new(),
-            player: (0, 0),
         }
     }
 
@@ -28,25 +24,28 @@ impl Game {
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {
-        self.player = (x, y);
+        self.dungeon.set_player_position(x, y);
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
+        let (mut player_x, mut player_y) = self.dungeon.get_player_position();
         if input.move_left() && self.can_move_to(-1, 0) {
-            self.player.0 -= 1;
+            player_x -= 1;
         }
 
         if input.move_right() && self.can_move_to(1, 0) {
-            self.player.0 += 1
+            player_x += 1;
         }
 
         if input.move_up() && self.can_move_to(0, -1) {
-            self.player.1 -= 1
+            player_y -= 1;
+
         }
 
         if input.move_down() && self.can_move_to(0, 1) {
-            self.player.1 += 1
+            player_y += 1;
         }
+        self.dungeon.set_player_position(player_x, player_y);
     }
 
 
@@ -60,11 +59,13 @@ impl Game {
             renderer.render_at(*x, *y, Wall);
         }
 
-        renderer.render_at(self.player.0, self.player.1, Player);
+        let (player_x, player_y) = self.dungeon.get_player_position();
+        renderer.render_at(player_x, player_y, Player);
     }
 
     fn can_move_to(&self, x_offset: i32, y_offset: i32) -> bool {
-        let new_pos = ((self.player.0 as i32 + x_offset) as u32, (self.player.1 as i32 + y_offset) as u32);
+        let (player_x, player_y) = self.dungeon.get_player_position();
+        let new_pos = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
 
         !self.dungeon.get_walls().contains(&new_pos) && !self.dungeon.get_enemies().contains(&new_pos)
     }
