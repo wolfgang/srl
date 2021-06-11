@@ -17,4 +17,12 @@ impl Dungeon {
         &self.enemies
     }
 
+    pub fn add_walls(&mut self, walls: &Vec<(u32, u32)>) {
+        self.walls = walls.clone();
+    }
+
+    pub fn add_enemies(&mut self, enemies: &Vec<(u32, u32)>) {
+        self.enemies = enemies.clone();
+    }
+
 }

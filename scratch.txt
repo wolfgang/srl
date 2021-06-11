@@ -3,3 +3,4 @@ Extract Dungeon/GameState struct
 - Move the player over
 - Implement move_player_by
 - Use move_player_by
+- add_walls/add_enemies: Move instead of cloning
