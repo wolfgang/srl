@@ -1,7 +1,7 @@
 use console::Term;
 
 use srl::game::Game;
-use srl::game::GameConfig;
+use srl::gen::random_dungeon_generator::RandomDungeonGenerator;
 use srl::gfx::terminal_renderer::TerminalRenderer;
 use srl::input::{Input, TerminalInput};
 
@@ -24,12 +24,8 @@ fn main() -> std::io::Result<()> {
 }
 
 fn make_example_game() -> Game {
-    let config = GameConfig {
-        dungeon_size: (GAME_WIDTH, GAME_HEIGHT)
-    };
-
-    let mut game = Game::new(config);
-    game.add_enemies(&vec![(5, 5), (3, 4), (2, 8)]);
+    let generator = RandomDungeonGenerator::new(GAME_WIDTH, GAME_HEIGHT, 20, 10);
+    let mut game = Game::generate_with(&generator);
     let mut walls: Vec<(u32, u32)> = Vec::new();
     for y in 0..GAME_HEIGHT {
         walls.push((0, y as u32));
