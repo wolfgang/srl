@@ -37,4 +37,23 @@ impl Dungeon {
     pub fn set_player_position(&mut self, x: u32, y: u32) {
         self.player_position = (x, y);
     }
+
+    pub fn move_player_left(&mut self) {
+        self.player_position.0 -= 1;
+    }
+
+    pub fn move_player_right(&mut self) {
+        self.player_position.0 += 1;
+
+    }
+
+    pub fn move_player_up(&mut self) {
+        self.player_position.1 -= 1;
+
+    }
+
+    pub fn move_player_down(&mut self) {
+        self.player_position.1 += 1;
+    }
+
 }

@@ -34,5 +34,17 @@ fn can_set_player_position() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 2);
     assert_eq!((1, 2), dungeon.get_player_position());
+}
 
+#[test]
+fn move_player_by_without_obstacles() {
+    let mut dungeon = Dungeon::new();
+    dungeon.move_player_right();
+    assert_eq!((1, 0), dungeon.get_player_position());
+    dungeon.move_player_down();
+    assert_eq!((1, 1), dungeon.get_player_position());
+    dungeon.move_player_left();
+    assert_eq!((0, 1), dungeon.get_player_position());
+    dungeon.move_player_up();
+    assert_eq!((0, 0), dungeon.get_player_position());
 }
