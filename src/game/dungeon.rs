@@ -1,8 +1,7 @@
-
 pub struct Dungeon {
     walls: Vec<(u32, u32)>,
     enemies: Vec<(u32, u32)>,
-    player_position: (u32, u32)
+    player_position: (u32, u32),
 }
 
 impl Dungeon {
@@ -10,7 +9,7 @@ impl Dungeon {
         Self {
             walls: Vec::new(),
             enemies: Vec::new(),
-            player_position: (0, 0)
+            player_position: (0, 0),
         }
     }
 
@@ -39,21 +38,25 @@ impl Dungeon {
     }
 
     pub fn move_player_left(&mut self) {
-        self.player_position.0 -= 1;
+        if self.can_move_to(-1, 0) { self.player_position.0 -= 1 };
     }
 
     pub fn move_player_right(&mut self) {
-        self.player_position.0 += 1;
-
+        if self.can_move_to(1, 0) { self.player_position.0 += 1 }
     }
 
     pub fn move_player_up(&mut self) {
-        self.player_position.1 -= 1;
-
+        if self.can_move_to(0, -1) { self.player_position.1 -= 1 };
     }
 
     pub fn move_player_down(&mut self) {
-        self.player_position.1 += 1;
+        if self.can_move_to(0, 1) { self.player_position.1 += 1 };
     }
 
+    fn can_move_to(&self, x_offset: i32, y_offset: i32) -> bool {
+        let (player_x, player_y) = self.player_position;
+        let new_pos = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
+
+        !self.walls.contains(&new_pos) && !self.enemies.contains(&new_pos)
+    }
 }
