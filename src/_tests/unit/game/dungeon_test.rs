@@ -21,5 +21,18 @@ fn can_add_enemies() {
     let mut dungeon = Dungeon::new();
     dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
     assert_eq!(&vec![(1, 2), (3, 4)], dungeon.get_enemies());
+}
+
+#[test]
+fn initially_has_zero_player_position() {
+    let dungeon = Dungeon::new();
+    assert_eq!((0, 0), dungeon.get_player_position());
+}
+
+#[test]
+fn can_set_player_position() {
+    let mut dungeon = Dungeon::new();
+    dungeon.set_player_position(1, 2);
+    assert_eq!((1, 2), dungeon.get_player_position());
 
 }
