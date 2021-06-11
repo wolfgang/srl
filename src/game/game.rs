@@ -16,9 +16,9 @@ impl Game {
         }
     }
 
-    pub fn generate_with<T: DungeonGenerator>(_generator: &T) -> Self {
+    pub fn generate_with<T: DungeonGenerator>(generator: &T) -> Self {
         Self {
-            dungeon: Dungeon::new(),
+            dungeon: generator.generate()
         }
     }
 

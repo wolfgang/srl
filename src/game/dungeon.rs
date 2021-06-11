@@ -4,6 +4,7 @@ use crate::game::ObjectType;
 pub type CellCoords = (u32, u32);
 pub type DungeonObject = (CellCoords, ObjectType);
 
+#[derive(Default)]
 pub struct Dungeon {
     objects: Vec<DungeonObject>,
     player_position: CellCoords,
