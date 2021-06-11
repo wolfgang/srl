@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 console = "0.14.1"
+rand ="*"

@@ -8,20 +8,31 @@ use crate::gen::random_dungeon_generator::RandomDungeonGenerator;
 
 #[test]
 fn generates_n_distinct_walls_and_enemies() {
-    let generator = RandomDungeonGenerator::new(3, 2);
+    let generator = RandomDungeonGenerator::new(10, 20, 3, 2);
     let dungeon = generator.generate();
-    let mut walls = get_distinct_objects_of_type(Wall, &dungeon);
-    let mut enemies = get_distinct_objects_of_type(Enemy, &dungeon);
+    let walls = get_distinct_objects_of_type(Wall, &dungeon);
+    let enemies = get_distinct_objects_of_type(Enemy, &dungeon);
     assert_eq!(walls.len(), 3);
     assert_eq!(enemies.len(), 2);
 
-    let mut all_coords: HashSet<CellCoords> = vec![walls, enemies]
+    let all_coords: HashSet<CellCoords> = vec![walls.clone(), enemies.clone()]
         .iter()
         .flat_map(|v| { v.iter() })
         .map(|(pos, _)| { *pos })
         .collect();
 
-    assert_eq!(all_coords.len(), 5);
+    assert_eq!(all_coords.len(), walls.len() + enemies.len());
+}
+
+#[test]
+fn generates_different_dungeons() {
+    let generator = RandomDungeonGenerator::new(10, 20, 3, 2);
+    let dungeon1 = generator.generate();
+    let dungeon2 = generator.generate();
+    assert_ne!(get_distinct_objects_of_type(Wall, &dungeon1), get_distinct_objects_of_type(Wall, &dungeon2));
+    assert_ne!(get_distinct_objects_of_type(Enemy, &dungeon1), get_distinct_objects_of_type(Enemy, &dungeon2));
+
+
 }
 
 fn get_distinct_objects_of_type(object_type: ObjectType, dungeon: &Dungeon) -> HashSet<DungeonObject> {
