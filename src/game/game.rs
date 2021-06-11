@@ -1,6 +1,6 @@
 use crate::game::dungeon::Dungeon;
 use crate::game::game_config::GameConfig;
-use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
+use crate::game::object_type::ObjectType::Player;
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
 
@@ -40,12 +40,8 @@ impl Game {
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
         renderer.clear();
-        for (x, y) in self.dungeon.get_enemies() {
-            renderer.render_at(*x, *y, Enemy);
-        }
-
-        for (x, y) in self.dungeon.get_walls() {
-            renderer.render_at(*x, *y, Wall);
+        for ((x, y), object_type) in self.dungeon.get_objects() {
+            renderer.render_at(*x, *y, *object_type);
         }
 
         let (player_x, player_y) = self.dungeon.get_player_position();

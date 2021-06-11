@@ -1,26 +1,22 @@
-use crate::game::dungeon::Dungeon;
+use crate::game::dungeon::{Dungeon, DungeonObject};
+use crate::game::object_type::ObjectType::{Enemy, Wall};
 
 #[test]
-fn initially_has_no_walls_or_enemies() {
+fn initially_has_no_objects() {
     let dungeon = Dungeon::new();
-    let empty_vec: Vec<(u32, u32)> = Vec::new();
-    assert_eq!(&empty_vec, dungeon.get_walls());
-    assert_eq!(&empty_vec, dungeon.get_enemies());
+    let empty_vec: Vec<DungeonObject> = Vec::new();
+    assert_eq!(&empty_vec, dungeon.get_objects());
 }
 
 #[test]
-fn can_add_walls() {
+fn can_add_walls_and_enemies() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 2), (3, 4)]);
-    assert_eq!(&vec![(1, 2), (3, 4)], dungeon.get_walls());
-
-}
-
-#[test]
-fn can_add_enemies() {
-    let mut dungeon = Dungeon::new();
-    dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
-    assert_eq!(&vec![(1, 2), (3, 4)], dungeon.get_enemies());
+    dungeon.add_enemies(&vec![(5, 6), (7, 8)]);
+    assert_eq!(dungeon.get_objects(), &vec![
+        ((1, 2), Wall), ((3, 4), Wall),
+        ((5, 6), Enemy), ((7, 8), Enemy),
+    ]);
 }
 
 #[test]
@@ -37,7 +33,7 @@ fn can_set_player_position() {
 }
 
 #[test]
-fn move_player_by_without_obstacles() {
+fn move_player_without_obstacles() {
     let mut dungeon = Dungeon::new();
     dungeon.move_player_right();
     assert_eq!((1, 0), dungeon.get_player_position());
@@ -50,7 +46,7 @@ fn move_player_by_without_obstacles() {
 }
 
 #[test]
-fn move_player_right_does_not_move_player_if_it_collides_with_enemy_or_wall() {
+fn move_player_right_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 0)]);
     dungeon.add_enemies(&vec![(1, 1)]);
@@ -59,21 +55,19 @@ fn move_player_right_does_not_move_player_if_it_collides_with_enemy_or_wall() {
     dungeon.move_player_down();
     dungeon.move_player_right();
     assert_eq!((0, 1), dungeon.get_player_position());
-
 }
 
 #[test]
-fn move_player_left_does_not_move_player_if_it_collides() {
+fn move_player_left_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 0);
     dungeon.add_walls(&vec![(0, 0)]);
     dungeon.move_player_left();
     assert_eq!((1, 0), dungeon.get_player_position());
-
 }
 
 #[test]
-fn move_player_up_down_does_not_move_player_if_it_collides() {
+fn move_player_up_down_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(0, 2);
     dungeon.add_walls(&vec![(0, 1)]);
@@ -82,5 +76,4 @@ fn move_player_up_down_does_not_move_player_if_it_collides() {
     assert_eq!((0, 2), dungeon.get_player_position());
     dungeon.move_player_down();
     assert_eq!((0, 2), dungeon.get_player_position());
-
 }
