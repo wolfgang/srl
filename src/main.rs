@@ -24,19 +24,7 @@ fn main() -> std::io::Result<()> {
 }
 
 fn make_example_game() -> Game {
-    let generator = RandomDungeonGenerator::new(GAME_WIDTH, GAME_HEIGHT, 20, 10);
+    let generator = RandomDungeonGenerator::new(GAME_WIDTH, GAME_HEIGHT, 30, 10);
     let mut game = Game::generate_with(&generator);
-    let mut walls: Vec<(u32, u32)> = Vec::new();
-    for y in 0..GAME_HEIGHT {
-        walls.push((0, y as u32));
-        walls.push((GAME_WIDTH as u32 - 1, y as u32));
-        for x in 0..GAME_WIDTH {
-            walls.push((x as u32, 0));
-            walls.push((x as u32, GAME_HEIGHT as u32 - 1));
-        }
-    }
-
-    game.add_walls(&walls);
-    game.set_player_position(3, 2);
     game
 }
