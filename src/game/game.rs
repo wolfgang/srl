@@ -5,7 +5,7 @@ use crate::gfx::renderer::Renderer;
 use crate::input::Input;
 
 pub struct Game {
-    dungeon: Dungeon
+    dungeon: Dungeon,
 }
 
 impl Game {
@@ -28,24 +28,13 @@ impl Game {
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
-        let (mut player_x, mut player_y) = self.dungeon.get_player_position();
-        if input.move_left() && self.can_move_to(-1, 0) {
-            player_x -= 1;
-        }
+        if input.move_left() { self.dungeon.move_player_left() }
 
-        if input.move_right() && self.can_move_to(1, 0) {
-            player_x += 1;
-        }
+        if input.move_right() { self.dungeon.move_player_right() }
 
-        if input.move_up() && self.can_move_to(0, -1) {
-            player_y -= 1;
+        if input.move_up() { self.dungeon.move_player_up() }
 
-        }
-
-        if input.move_down() && self.can_move_to(0, 1) {
-            player_y += 1;
-        }
-        self.dungeon.set_player_position(player_x, player_y);
+        if input.move_down() { self.dungeon.move_player_down() }
     }
 
 
@@ -61,12 +50,5 @@ impl Game {
 
         let (player_x, player_y) = self.dungeon.get_player_position();
         renderer.render_at(player_x, player_y, Player);
-    }
-
-    fn can_move_to(&self, x_offset: i32, y_offset: i32) -> bool {
-        let (player_x, player_y) = self.dungeon.get_player_position();
-        let new_pos = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
-
-        !self.dungeon.get_walls().contains(&new_pos) && !self.dungeon.get_enemies().contains(&new_pos)
     }
 }
