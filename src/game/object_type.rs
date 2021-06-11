@@ -1,4 +1,4 @@
-#[derive(PartialEq, Debug, Copy, Clone)]
+#[derive(Eq, Hash, PartialEq, Debug, Copy, Clone)]
 pub enum ObjectType {
     Wall,
     Player,
