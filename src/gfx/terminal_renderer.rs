@@ -58,6 +58,7 @@ impl Renderer for TerminalRenderer {
             Wall => { '#' }
             Player => { '@' }
             Enemy => { 'E' }
+            Floor => { '.'}
         };
 
         self.frame[y as usize][x as usize] = ch;

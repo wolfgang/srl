@@ -35,13 +35,13 @@ impl Game {
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
-        if input.move_left() { self.dungeon.move_player_left() }
+        if input.move_left() { self.dungeon.move_player_left(); }
 
-        if input.move_right() { self.dungeon.move_player_right() }
+        if input.move_right() { self.dungeon.move_player_right(); }
 
-        if input.move_up() { self.dungeon.move_player_up() }
+        if input.move_up() { self.dungeon.move_player_up(); }
 
-        if input.move_down() { self.dungeon.move_player_down() }
+        if input.move_down() { self.dungeon.move_player_down(); }
     }
 
 
