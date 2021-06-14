@@ -11,6 +11,7 @@ pub struct TestableGame {
 
 impl TestableGame {
     pub fn from_strings(strings: Vec<&str>) -> Self {
+        let strings: Vec<String> = strings.iter().map(|str| { str.replace(" ", "") }).collect();
         let width = strings[0].len();
         let height = strings.len();
         let mut game = Self::new(GameConfig { dungeon_size: (width, height) });
