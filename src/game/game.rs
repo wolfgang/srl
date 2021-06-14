@@ -1,3 +1,4 @@
+use crate::combat::combat_engine::CombatEngine;
 use crate::game::dungeon::Dungeon;
 use crate::game::object_type::ObjectType::Player;
 use crate::gen::dungeon_generator::DungeonGenerator;
@@ -13,6 +14,10 @@ impl Game {
         Self {
             dungeon: generator.generate()
         }
+    }
+
+    pub fn set_combat_engine<T: CombatEngine>(&mut self, _engine: T) {
+
     }
 
     pub fn add_enemies(&mut self, positions: &Vec<(u32, u32)>) {

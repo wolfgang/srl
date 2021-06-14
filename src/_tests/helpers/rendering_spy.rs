@@ -36,6 +36,10 @@ impl RenderingSpy {
     pub fn assert_frame(&self, expected: Vec<&str>) {
         assert_eq!(self.frame_as_string(), expected.join("\n").replace(" ", ""));
     }
+
+    pub fn assert_combat_log(&self, _expected: Vec<&str>) {
+        todo!()
+    }
 }
 
 impl Renderer for RenderingSpy {

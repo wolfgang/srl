@@ -4,7 +4,7 @@ use crate::_tests::helpers::rendering_spy::RenderingSpy;
 use crate::game::Game;
 
 pub struct TestableGame {
-    game: Game,
+    pub game: Game,
     pub renderer: RenderingSpy,
     pub input: InputSimulator,
 }
