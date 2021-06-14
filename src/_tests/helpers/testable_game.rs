@@ -14,7 +14,13 @@ impl TestableGame {
         let strings: Vec<String> = strings.iter().map(|str| { str.replace(" ", "") }).collect();
         let width = strings[0].len();
         let height = strings.len();
-        let mut game = Self::new(GameConfig { dungeon_size: (width, height) });
+        let config = GameConfig { dungeon_size: (width, height) };
+        let (width, height) = config.dungeon_size;
+        let mut game = Self {
+            game: Game::new(config),
+            renderer: RenderingSpy::new(width, height),
+            input: InputSimulator::new(),
+        };
         let mut walls: Vec<(u32, u32)> = Vec::new();
         let mut enemies: Vec<(u32, u32)> = Vec::new();
         for (y, row) in strings.iter().enumerate() {
@@ -32,15 +38,6 @@ impl TestableGame {
         game.game.add_walls(&walls);
         game.game.add_enemies(&enemies);
         game
-    }
-
-    pub fn new(config: GameConfig) -> Self {
-        let (width, height) = config.dungeon_size;
-        Self {
-            game: Game::new(config),
-            renderer: RenderingSpy::new(width, height),
-            input: InputSimulator::new(),
-        }
     }
 
     pub fn tick(&mut self) {
