@@ -9,12 +9,6 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new() -> Self {
-        Self {
-            dungeon: Dungeon::new(),
-        }
-    }
-
     pub fn generate_with<T: DungeonGenerator>(generator: &T) -> Self {
         Self {
             dungeon: generator.generate()

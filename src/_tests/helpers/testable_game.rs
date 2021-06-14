@@ -1,3 +1,4 @@
+use crate::_tests::helpers::fixed_dungeon_generator::FixedDungeonGenerator;
 use crate::_tests::helpers::input_simulator::InputSimulator;
 use crate::_tests::helpers::rendering_spy::RenderingSpy;
 use crate::game::Game;
@@ -13,13 +14,9 @@ impl TestableGame {
         let strings: Vec<String> = strings.iter().map(|str| { str.replace(" ", "") }).collect();
         let width = strings[0].len();
         let height = strings.len();
-        let mut game = Self {
-            game: Game::new(),
-            renderer: RenderingSpy::new(width, height),
-            input: InputSimulator::new(),
-        };
         let mut walls: Vec<(u32, u32)> = Vec::new();
         let mut enemies: Vec<(u32, u32)> = Vec::new();
+        let mut player_position = (0, 0);
         for (y, row) in strings.iter().enumerate() {
             let chars = row.chars().collect::<Vec<char>>();
             for (x, current) in chars.iter().enumerate() {
@@ -27,14 +24,22 @@ impl TestableGame {
                 match current {
                     '#' => { walls.push(pos) }
                     'E' => { enemies.push(pos) }
-                    '@' => { game.set_player_position(pos.0, pos.1) }
+                    '@' => { player_position = pos }
                     _ => {}
                 }
             }
         }
-        game.game.add_walls(&walls);
-        game.game.add_enemies(&enemies);
-        game
+
+        let mut generator = FixedDungeonGenerator::new();
+        generator.generate_walls(walls);
+        generator.generate_enemies(enemies);
+        generator.generate_player(player_position.0, player_position.1);
+
+        Self {
+            game: Game::generate_with(&generator),
+            renderer: RenderingSpy::new(width, height),
+            input: InputSimulator::new(),
+        }
     }
 
     pub fn tick(&mut self) {
@@ -43,10 +48,6 @@ impl TestableGame {
 
     pub fn render(&mut self) {
         self.game.render(&mut self.renderer);
-    }
-
-    pub fn set_player_position(&mut self, x: u32, y: u32) {
-        self.game.set_player_position(x, y);
     }
 
     pub fn verify_next_frame(&mut self, expected: Vec<&str>) {
