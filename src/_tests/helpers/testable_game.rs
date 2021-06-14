@@ -1,7 +1,6 @@
 use crate::_tests::helpers::input_simulator::InputSimulator;
 use crate::_tests::helpers::rendering_spy::RenderingSpy;
 use crate::game::Game;
-use crate::game::game_config::GameConfig;
 
 pub struct TestableGame {
     game: Game,
@@ -14,10 +13,8 @@ impl TestableGame {
         let strings: Vec<String> = strings.iter().map(|str| { str.replace(" ", "") }).collect();
         let width = strings[0].len();
         let height = strings.len();
-        let config = GameConfig { dungeon_size: (width, height) };
-        let (width, height) = config.dungeon_size;
         let mut game = Self {
-            game: Game::new(config),
+            game: Game::new(),
             renderer: RenderingSpy::new(width, height),
             input: InputSimulator::new(),
         };

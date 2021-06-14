@@ -1,5 +1,4 @@
 use crate::game::dungeon::Dungeon;
-use crate::game::game_config::GameConfig;
 use crate::game::object_type::ObjectType::Player;
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
@@ -10,7 +9,7 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new(_config: GameConfig) -> Self {
+    pub fn new() -> Self {
         Self {
             dungeon: Dungeon::new(),
         }

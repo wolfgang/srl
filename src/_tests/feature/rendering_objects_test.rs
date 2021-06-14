@@ -1,14 +1,9 @@
 use crate::_tests::helpers::rendering_spy::RenderingSpy;
 use crate::game::Game;
-use crate::game::game_config::GameConfig;
 
 #[test]
 fn renders_walls_enemies_and_player() {
-    let config = GameConfig {
-        dungeon_size: (5, 4)
-    };
-
-    let mut game = Game::new(config);
+    let mut game = Game::new();
     game.add_enemies(&vec![(1, 1), (4, 2), (2, 3)]);
     game.add_walls(&vec![(1, 0), (2, 0), (3, 1), (1, 2)]);
     game.set_player_position(3, 2);
