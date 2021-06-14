@@ -11,7 +11,7 @@ fn combat_on_collision() {
     combat_engine.say_damage((2, 0), 2);
 
     let mut game = TestableGame::from_strings(vec![".@E."]);
-    game.game.set_combat_engine(combat_engine);
+    game.game.override_combat_engine(combat_engine);
 
     game.input.simulate_move_right();
     game.tick();

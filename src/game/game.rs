@@ -1,4 +1,4 @@
-use crate::combat::combat_engine::CombatEngine;
+use crate::combat::combat_engine::{CombatEngine, NullCombatEngine};
 use crate::game::dungeon::Dungeon;
 use crate::game::object_type::ObjectType::Player;
 use crate::gen::dungeon_generator::DungeonGenerator;
@@ -7,17 +7,19 @@ use crate::input::Input;
 
 pub struct Game {
     dungeon: Dungeon,
+    combat_engine: Box<dyn CombatEngine>,
 }
 
 impl Game {
     pub fn generate_with<T: DungeonGenerator>(generator: &T) -> Self {
         Self {
-            dungeon: generator.generate()
+            combat_engine: Box::from(NullCombatEngine {}),
+            dungeon: generator.generate(),
         }
     }
 
-    pub fn set_combat_engine<T: CombatEngine>(&mut self, _engine: T) {
-
+    pub fn override_combat_engine<T: 'static + CombatEngine>(&mut self, engine: T) {
+        self.combat_engine = Box::from(engine);
     }
 
     pub fn add_enemies(&mut self, positions: &Vec<(u32, u32)>) {
