@@ -8,7 +8,7 @@ fn player_collides_with_north_wall() {
     ]);
 
     game.input.simulate_move_up();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         "###",
         ".@.",
     ]);
@@ -25,7 +25,7 @@ fn player_collides_with_west_wall() {
     ]);
 
     game.input.simulate_move_left();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         "#.",
         "#@",
         "#.",
@@ -41,7 +41,7 @@ fn player_collides_with_east_wall() {
     ]);
 
     game.input.simulate_move_right();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         "..#",
         ".@#",
         "..#",

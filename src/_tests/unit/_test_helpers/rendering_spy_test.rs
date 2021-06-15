@@ -3,9 +3,9 @@ use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
 use crate::gfx::renderer::Renderer;
 
 #[test]
-fn frame_is_initially_empty() {
+fn tiles_are_initially_empty() {
     let renderer = RenderingSpy::new(2, 3);
-    assert_eq!(renderer.frame(), &vec![
+    assert_eq!(renderer.tiles(), &vec![
         vec!['.', '.'],
         vec!['.', '.'],
         vec!['.', '.']
@@ -19,7 +19,7 @@ fn renders_objects_as_specific_characters() {
     renderer.render_at(1, 0, Wall);
     renderer.render_at(1, 2, Enemy);
 
-    assert_eq!(renderer.frame(), &vec![
+    assert_eq!(renderer.tiles(), &vec![
         vec!['@', '#'],
         vec!['.', '.'],
         vec!['.', 'E']
@@ -27,13 +27,13 @@ fn renders_objects_as_specific_characters() {
 }
 
 #[test]
-fn frame_as_string_converts_frame_to_string() {
+fn tiles_as_string_converts_tiles_to_string() {
     let mut renderer = RenderingSpy::new(2, 3);
     renderer.render_at(0, 0, Player);
     renderer.render_at(1, 0, Wall);
     renderer.render_at(1, 2, Enemy);
 
-    assert_eq!(renderer.frame_as_string(), "@#\n..\n.E");
+    assert_eq!(renderer.tiles_as_string(), "@#\n..\n.E");
 }
 
 #[test]
@@ -44,7 +44,7 @@ fn clear_replaces_content_with_dots() {
     renderer.render_at(1, 2, Enemy);
     renderer.clear();
 
-    assert_eq!(renderer.frame(), &vec![
+    assert_eq!(renderer.tiles(), &vec![
         vec!['.', '.'],
         vec!['.', '.'],
         vec!['.', '.']
@@ -53,9 +53,9 @@ fn clear_replaces_content_with_dots() {
 
 // #[test]
 // #[should_panic(expected="assertion failed")]
-// fn assert_frame_fails_if_frame_does_not_match() {
+// fn assert_tiles_fails_if_tiles_do_not_match() {
 //     let renderer = RenderingSpy::new(3, 3);
-//     renderer.assert_frame(vec![
+//     renderer.assert_tiles(vec![
 //         "@W.",
 //         "EE.",
 //         "..."

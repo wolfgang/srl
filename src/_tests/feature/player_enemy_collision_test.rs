@@ -9,7 +9,7 @@ fn player_collides_with_enemy_to_the_right() {
     ]);
 
     game.input.simulate_move_right();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         "....",
         ".@E.",
         "...."
@@ -25,7 +25,7 @@ fn player_collides_with_enemy_to_the_left() {
     ]);
 
     game.input.simulate_move_left();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         "....",
         "E@..",
         "...."
@@ -41,7 +41,7 @@ fn player_collides_with_enemy_above() {
     ]);
 
     game.input.simulate_move_up();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         ".E..",
         ".@..",
         "...."
@@ -57,7 +57,7 @@ fn player_collides_with_enemy_below() {
     ]);
 
     game.input.simulate_move_down();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         "....",
         ".@..",
         ".E.."

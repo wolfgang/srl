@@ -9,35 +9,35 @@ fn player_moves_according_to_input() {
     ]);
 
     game.render();
-    game.renderer.assert_frame(vec![
+    game.renderer.assert_tiles(vec![
         ". . . . .",
         ". . @ . .",
         ". . . . .",
     ]);
 
     game.input.simulate_move_right();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         ". . . . .",
         ". . . @ .",
         ". . . . .",
     ]);
 
     game.input.simulate_move_down();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         ". . . . .",
         ". . . . .",
         ". . . @ .",
     ]);
 
     game.input.simulate_move_left();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         ". . . . .",
         ". . . . .",
         ". . @ . .",
     ]);
 
     game.input.simulate_move_up();
-    game.verify_next_frame(vec![
+    game.verify_next_tiles(vec![
         ". . . . .",
         ". . @ . .",
         ". . . . .",

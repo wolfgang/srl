@@ -11,16 +11,16 @@ impl RenderingSpy {
         Self { backend: StringBackend::new(width, height) }
     }
 
-    pub fn frame_as_string(&self) -> String {
-        self.backend.frame_as_string()
+    pub fn tiles_as_string(&self) -> String {
+        self.backend.tiles_as_string()
     }
 
-    pub fn frame(&self) -> &Vec<Vec<char>> {
-        self.backend.frame()
+    pub fn tiles(&self) -> &Vec<Vec<char>> {
+        self.backend.tiles()
     }
 
-    pub fn assert_frame(&self, expected: Vec<&str>) {
-        assert_eq!(self.frame_as_string(), expected.join("\n").replace(" ", ""));
+    pub fn assert_tiles(&self, expected: Vec<&str>) {
+        assert_eq!(self.tiles_as_string(), expected.join("\n").replace(" ", ""));
     }
 
     pub fn assert_combat_log(&self, _expected: Vec<&str>) {

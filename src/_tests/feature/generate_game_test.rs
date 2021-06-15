@@ -12,7 +12,7 @@ fn generates_game_using_given_generator() {
     let game = Game::generate_with(&generator);
     let mut renderer = RenderingSpy::new(4, 2);
     game.render(&mut renderer);
-    renderer.assert_frame(vec![
+    renderer.assert_tiles(vec![
         "# # # .",
         "@ E E ."
     ])

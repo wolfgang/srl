@@ -16,13 +16,12 @@ impl TerminalRenderer {
     }
 
     pub fn flush<T: Write>(&mut self, write: &mut T) {
-        let frame_as_string = self.frame_as_string();
-        write.write(format!("{}", frame_as_string).as_bytes()).unwrap();
+        write.write(format!("{}", self.tiles_as_string()).as_bytes()).unwrap();
         write.flush().unwrap();
     }
 
-    fn frame_as_string(&self) -> String {
-        let mut output = self.backend.frame_as_string();
+    fn tiles_as_string(&self) -> String {
+        let mut output = self.backend.tiles_as_string();
         match output.find('@') {
             Some(offset) => {
                 output.replace_range(offset..offset + 1, style("@").red().to_string().as_str());

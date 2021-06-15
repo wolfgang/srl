@@ -9,7 +9,7 @@ fn can_be_constructed_from_strings() {
     ]);
 
     game.render();
-    game.renderer.assert_frame(vec![
+    game.renderer.assert_tiles(vec![
         "#..#",
         "E.@#",
         "####"
@@ -20,7 +20,7 @@ fn can_be_constructed_from_strings() {
 fn from_strings_strips_spaces() {
     let mut game = TestableGame::from_strings(vec!["# E @ # ."]);
     game.render();
-    game.renderer.assert_frame(vec!["#E@#.", ]);
+    game.renderer.assert_tiles(vec!["#E@#.", ]);
 
 
 

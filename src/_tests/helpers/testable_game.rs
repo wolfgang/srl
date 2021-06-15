@@ -50,9 +50,9 @@ impl TestableGame {
         self.game.render(&mut self.renderer);
     }
 
-    pub fn verify_next_frame(&mut self, expected: Vec<&str>) {
+    pub fn verify_next_tiles(&mut self, expected: Vec<&str>) {
         self.tick();
         self.render();
-        self.renderer.assert_frame(expected);
+        self.renderer.assert_tiles(expected);
     }
 }
