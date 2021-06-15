@@ -66,6 +66,19 @@ fn get_combat_log_gets_current_combat_log() {
     ]);
 }
 
+#[test]
+fn assert_combat_log_succeeds_if_combat_log_matches() {
+    let mut renderer = RenderingSpy::new(1, 1);
+    renderer.append_combat_log("combat log line 1");
+    renderer.append_combat_log("combat log line 2");
+
+    renderer.assert_combat_log(vec![
+        "combat log line 1",
+        "combat log line 2",
+    ]);
+
+}
+
 // #[test]
 // #[should_panic(expected="assertion failed")]
 // fn assert_tiles_fails_if_tiles_do_not_match() {
@@ -76,3 +89,17 @@ fn get_combat_log_gets_current_combat_log() {
 //         "..."
 //     ]);
 // }
+
+// #[test]
+// #[should_panic(expected="assertion failed")]
+// fn assert_combat_log_fails_if_combat_log_does_not_match() {
+//     let mut renderer = RenderingSpy::new(1, 1);
+//     renderer.append_combat_log("combat log line 1");
+//     renderer.append_combat_log("combat log line 2");
+//
+//     renderer.assert_combat_log(vec![
+//         "combat log line 2",
+//         "combat log line 1",
+//     ]);
+// }
+

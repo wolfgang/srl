@@ -23,12 +23,14 @@ impl RenderingSpy {
         assert_eq!(self.tiles_as_string(), expected.join("\n").replace(" ", ""));
     }
 
-    pub fn combat_log(&self) -> Vec<&str> {
-        self.backend.combat_log()
+    pub fn assert_combat_log(&self, expected: Vec<&str>) {
+        let expected_str = expected.join("\n");
+        let actual_str = self.combat_log().join("\n");
+        assert_eq!(actual_str, expected_str);
     }
 
-    pub fn assert_combat_log(&self, _expected: Vec<&str>) {
-        todo!()
+    pub fn combat_log(&self) -> Vec<&str> {
+        self.backend.combat_log()
     }
 }
 
