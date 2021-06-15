@@ -16,7 +16,12 @@ impl CombatEvent {
     pub fn text(&self) -> String {
         let attacker = if self.attacker == Player { "Player" } else { "Enemy" };
         let victim = if self.victim == Player { "Player" } else { "Enemy" };
-        return format!("{} hits {} for {} damage!", attacker, victim, self.damage);
+        if self.damage > 0 {
+        format!("{} hits {} for {} damage!", attacker, victim, self.damage)
+        } else {
+            format!("{} misses {}!", attacker, victim)
+        }
+
     }
 }
 
@@ -55,18 +60,41 @@ impl Game {
         if input.move_left() { self.dungeon.move_player_left(); }
 
         if input.move_right() {
-            self.dungeon.move_player_right();
-            self.combat_events.push(CombatEvent {
-                attacker: Player,
-                victim: Enemy,
-                damage: 6,
-            });
+            let result = self.dungeon.move_player_right();
 
-            self.combat_events.push(CombatEvent {
-                attacker: Enemy,
-                victim: Player,
-                damage: 2,
-            });
+            match result {
+                Some((coords, _object_type)) => {
+                    if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
+                        let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
+                        let enemy_damage = self.combat_engine.roll_damage(coords);
+                        self.combat_events.push(CombatEvent {
+                            attacker: Player,
+                            victim: Enemy,
+                            damage: player_damage,
+                        });
+
+                        self.combat_events.push(CombatEvent {
+                            attacker: Enemy,
+                            victim: Player,
+                            damage: enemy_damage,
+                        });
+                    } else {
+                        self.combat_events.push(CombatEvent {
+                            attacker: Player,
+                            victim: Enemy,
+                            damage: 0,
+                        });
+
+                        self.combat_events.push(CombatEvent {
+                            attacker: Enemy,
+                            victim: Player,
+                            damage: 0,
+                        });
+
+                    }
+                }
+                None => {}
+            }
         }
 
         if input.move_up() { self.dungeon.move_player_up(); }
