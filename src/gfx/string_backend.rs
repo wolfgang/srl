@@ -3,6 +3,7 @@ use crate::game::object_type::ObjectType;
 
 pub struct StringBackend {
     tiles: Vec<Vec<char>>,
+    combat_log: Vec<String>,
     width: usize,
     height: usize,
 }
@@ -13,6 +14,7 @@ impl StringBackend {
             width,
             height,
             tiles: Vec::new(),
+            combat_log: Vec::new()
         };
         backend.clear();
         backend
@@ -31,6 +33,10 @@ impl StringBackend {
         &self.tiles
     }
 
+    pub fn combat_log(&self) -> Vec<&str> {
+        self.combat_log.iter().map(|s| {s.as_str()}).collect()
+    }
+
 
     pub fn clear(&mut self) {
         self.tiles = vec![vec!['.'; self.width]; self.height];
@@ -45,5 +51,10 @@ impl StringBackend {
         };
 
         self.tiles[y as usize][x as usize] = ch;
+    }
+
+    pub fn append_combat_log(&mut self, text: &str) {
+        self.combat_log.push(text.to_string());
+
     }
 }

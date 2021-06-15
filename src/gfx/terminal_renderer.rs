@@ -41,4 +41,7 @@ impl Renderer for TerminalRenderer {
     fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
         self.backend.render_at(x, y, object_type);
     }
+
+    fn append_combat_log(&mut self, _text: &str) {
+    }
 }

@@ -51,6 +51,21 @@ fn clear_replaces_content_with_dots() {
     ])
 }
 
+#[test]
+fn get_combat_log_gets_current_combat_log() {
+    let mut renderer = RenderingSpy::new(1, 1);
+    renderer.append_combat_log("combat log line 1");
+    renderer.append_combat_log("combat log line 2");
+    let some_value = 1234;
+    renderer.append_combat_log(&format!("formatted combat log {}", some_value));
+
+    assert_eq!(renderer.combat_log(), vec![
+        "combat log line 1",
+        "combat log line 2",
+        "formatted combat log 1234"
+    ]);
+}
+
 // #[test]
 // #[should_panic(expected="assertion failed")]
 // fn assert_tiles_fails_if_tiles_do_not_match() {

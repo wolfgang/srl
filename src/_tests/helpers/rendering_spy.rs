@@ -23,6 +23,10 @@ impl RenderingSpy {
         assert_eq!(self.tiles_as_string(), expected.join("\n").replace(" ", ""));
     }
 
+    pub fn combat_log(&self) -> Vec<&str> {
+        self.backend.combat_log()
+    }
+
     pub fn assert_combat_log(&self, _expected: Vec<&str>) {
         todo!()
     }
@@ -35,5 +39,9 @@ impl Renderer for RenderingSpy {
 
     fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
         self.backend.render_at(x, y, object_type);
+    }
+
+    fn append_combat_log(&mut self, text: &str) {
+        self.backend.append_combat_log(text)
     }
 }
