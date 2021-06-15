@@ -1,13 +1,29 @@
 use crate::combat::combat_engine::{CombatEngine, NullCombatEngine};
 use crate::game::dungeon::Dungeon;
-use crate::game::object_type::ObjectType::Player;
+use crate::game::object_type::ObjectType::{Enemy, Player};
+use crate::game::ObjectType;
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
 
+struct CombatEvent {
+    attacker: ObjectType,
+    victim: ObjectType,
+    damage: u32,
+}
+
+impl CombatEvent {
+    pub fn text(&self) -> String {
+        let attacker = if self.attacker == Player { "Player" } else { "Enemy" };
+        let victim = if self.victim == Player { "Player" } else { "Enemy" };
+        return format!("{} hits {} for {} damage!", attacker, victim, self.damage);
+    }
+}
+
 pub struct Game {
     dungeon: Dungeon,
     combat_engine: Box<dyn CombatEngine>,
+    combat_events: Vec<CombatEvent>,
 }
 
 impl Game {
@@ -15,6 +31,7 @@ impl Game {
         Self {
             combat_engine: Box::from(NullCombatEngine {}),
             dungeon: generator.generate(),
+            combat_events: Vec::new(),
         }
     }
 
@@ -37,7 +54,20 @@ impl Game {
     pub fn tick<T: Input>(&mut self, input: &T) {
         if input.move_left() { self.dungeon.move_player_left(); }
 
-        if input.move_right() { self.dungeon.move_player_right(); }
+        if input.move_right() {
+            self.dungeon.move_player_right();
+            self.combat_events.push(CombatEvent {
+                attacker: Player,
+                victim: Enemy,
+                damage: 6,
+            });
+
+            self.combat_events.push(CombatEvent {
+                attacker: Enemy,
+                victim: Player,
+                damage: 2,
+            });
+        }
 
         if input.move_up() { self.dungeon.move_player_up(); }
 
@@ -53,5 +83,9 @@ impl Game {
 
         let (player_x, player_y) = self.dungeon.get_player_position();
         renderer.render_at(player_x, player_y, Player);
+
+        for evt in self.combat_events.iter() {
+            renderer.append_combat_log(evt.text().as_str())
+        }
     }
 }
