@@ -1,4 +1,5 @@
 use crate::_tests::_helpers::testable_game::TestableGame;
+use crate::input::move_direction::MoveDirection::*;
 
 #[test]
 fn player_moves_according_to_input() {
@@ -15,28 +16,28 @@ fn player_moves_according_to_input() {
         ". . . . .",
     ]);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.verify_next_tiles(vec![
         ". . . . .",
         ". . . @ .",
         ". . . . .",
     ]);
 
-    game.input.simulate_move_down();
+    game.input.simulate_move(Down);
     game.verify_next_tiles(vec![
         ". . . . .",
         ". . . . .",
         ". . . @ .",
     ]);
 
-    game.input.simulate_move_left();
+    game.input.simulate_move(Left);
     game.verify_next_tiles(vec![
         ". . . . .",
         ". . . . .",
         ". . @ . .",
     ]);
 
-    game.input.simulate_move_up();
+    game.input.simulate_move(Up);
     game.verify_next_tiles(vec![
         ". . . . .",
         ". . @ . .",

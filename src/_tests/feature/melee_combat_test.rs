@@ -1,6 +1,7 @@
 use crate::_tests::_helpers::controlled_combat_engine::ControlledCombatEngine;
 use crate::_tests::_helpers::testable_game::TestableGame;
 use crate::game::dungeon::DungeonCoords;
+use crate::input::move_direction::MoveDirection::*;
 
 const PLAYER: DungeonCoords = (1, 1);
 const ENEMY_RIGHT: DungeonCoords = (2, 1);
@@ -20,7 +21,7 @@ fn player_and_enemy_hits() {
     ]);
     game.game.override_combat_engine(combat_engine);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.tick();
     game.render();
     game.renderer.assert_combat_log(vec![
@@ -36,7 +37,7 @@ fn player_and_enemy_miss() {
     let mut game = TestableGame::from_strings(vec![".@E."]);
     game.game.override_combat_engine(combat_engine);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.tick();
     game.render();
     game.renderer.assert_combat_log(vec![
@@ -55,7 +56,7 @@ fn player_hits_enemy_misses() {
     let mut game = TestableGame::from_strings(vec![".@E."]);
     game.game.override_combat_engine(combat_engine);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.tick();
     game.render();
     game.renderer.assert_combat_log(vec![
@@ -74,7 +75,7 @@ fn enemy_hits_player_misses() {
     let mut game = TestableGame::from_strings(vec![".@E."]);
     game.game.override_combat_engine(combat_engine);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.tick();
     game.render();
     game.renderer.assert_combat_log(vec![
@@ -89,7 +90,7 @@ fn collision_with_non_enemy_does_nothing() {
     let mut game = TestableGame::from_strings(vec![".@#."]);
     game.game.override_combat_engine(combat_engine);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.tick();
     game.render();
     game.renderer.assert_combat_log(vec![]);

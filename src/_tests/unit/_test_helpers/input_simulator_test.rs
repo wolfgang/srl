@@ -19,17 +19,17 @@ fn initially_it_says_no_movement() {
 #[test]
 fn simulate_move_x_causes_move_x_to_return_true() {
     let mut input = InputSimulator::new();
-    input.simulate_move_left();
+    input.simulate_move(Left);
     assert!(input.wants_to_move(Left));
 
-    input.simulate_move_right();
+    input.simulate_move(Right);
     assert!(input.wants_to_move(Right));
 
-    input.simulate_move_up();
+    input.simulate_move(Up);
     assert!(input.wants_to_move(Up));
 
 
-    input.simulate_move_down();
+    input.simulate_move(Down);
     assert!(input.wants_to_move(Down));
 
 }

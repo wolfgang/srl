@@ -1,6 +1,5 @@
 use crate::input::Input;
 use crate::input::move_direction::MoveDirection;
-use crate::input::move_direction::MoveDirection::*;
 
 pub struct InputSimulator {
     simulating_move_left: bool,
@@ -22,41 +21,8 @@ impl InputSimulator {
         }
     }
 
-    pub fn simulate_move_left(&mut self) {
-        self.reset();
-        self.simulating_move_left = true;
-        self.simulated_direction = Some(Left);
-    }
-
-    pub fn simulate_move_right(&mut self) {
-        self.reset();
-        self.simulating_move_right = true;
-        self.simulated_direction = Some(Right);
-    }
-
-    pub fn simulate_move_up(&mut self) {
-        self.reset();
-        self.simulating_move_up = true;
-        self.simulated_direction = Some(Up);
-    }
-
-    pub fn simulate_move_down(&mut self) {
-        self.reset();
-        self.simulating_move_down = true;
-        self.simulated_direction = Some(Down);
-
-    }
-
     pub fn simulate_move(&mut self, direction: MoveDirection) {
         self.simulated_direction = Some(direction)
-    }
-
-    fn reset(&mut self) {
-        self.simulating_move_left = false;
-        self.simulating_move_right = false;
-        self.simulating_move_up = false;
-        self.simulating_move_down = false;
-        self.simulated_direction = None;
     }
 }
 

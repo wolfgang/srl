@@ -1,4 +1,5 @@
 use crate::_tests::_helpers::testable_game::TestableGame;
+use crate::input::move_direction::MoveDirection::*;
 
 #[test]
 fn player_collides_with_north_wall() {
@@ -7,7 +8,7 @@ fn player_collides_with_north_wall() {
         ".@.",
     ]);
 
-    game.input.simulate_move_up();
+    game.input.simulate_move(Up);
     game.verify_next_tiles(vec![
         "###",
         ".@.",
@@ -24,7 +25,7 @@ fn player_collides_with_west_wall() {
         "#.",
     ]);
 
-    game.input.simulate_move_left();
+    game.input.simulate_move(Left);
     game.verify_next_tiles(vec![
         "#.",
         "#@",
@@ -40,7 +41,7 @@ fn player_collides_with_east_wall() {
         "..#",
     ]);
 
-    game.input.simulate_move_right();
+    game.input.simulate_move(Right);
     game.verify_next_tiles(vec![
         "..#",
         ".@#",
