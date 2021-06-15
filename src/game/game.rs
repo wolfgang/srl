@@ -5,6 +5,7 @@ use crate::game::object_type::ObjectType::{Enemy, Player};
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
+use crate::input::move_direction::MoveDirection::{Down, Left, Right, Up};
 
 pub struct Game {
     dungeon: Dungeon,
@@ -26,17 +27,17 @@ impl Game {
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
-        if input.move_left() { self.dungeon.move_player_left(); }
+        if input.wants_to_move(Left) { self.dungeon.move_player_left(); }
 
-        if input.move_right() {
+        if input.wants_to_move(Right) {
             if let Some((coords, Enemy)) = self.dungeon.move_player_right() {
                 self.record_combat_with(coords)
             }
         }
 
-        if input.move_up() { self.dungeon.move_player_up(); }
+        if input.wants_to_move(Up) { self.dungeon.move_player_up(); }
 
-        if input.move_down() { self.dungeon.move_player_down(); }
+        if input.wants_to_move(Down) { self.dungeon.move_player_down(); }
     }
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
