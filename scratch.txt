@@ -1,7 +1,5 @@
 Combat next steps
-
-- CombatEvent logs DungeonObjects
-- Implement hit/miss miss/hit
+- [X] Implement hit/miss miss/hit
 - Extract CombatResolver:
     - Logs CombatEvents
     - generates combat log as string for rendering

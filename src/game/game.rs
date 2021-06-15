@@ -25,18 +25,6 @@ impl Game {
         self.combat_engine = Box::from(engine);
     }
 
-    pub fn add_enemies(&mut self, positions: &Vec<(u32, u32)>) {
-        self.dungeon.add_enemies(positions);
-    }
-
-    pub fn add_walls(&mut self, positions: &Vec<(u32, u32)>) {
-        self.dungeon.add_walls(positions);
-    }
-
-    pub fn set_player_position(&mut self, x: u32, y: u32) {
-        self.dungeon.set_player_position(x, y);
-    }
-
     pub fn tick<T: Input>(&mut self, input: &T) {
         if input.move_left() { self.dungeon.move_player_left(); }
 
