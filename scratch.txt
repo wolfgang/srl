@@ -1,5 +1,7 @@
 Combat next steps
 - [X] Implement hit/miss miss/hit
+- [ ] Implement all directions
+
 - Extract CombatResolver:
     - Logs CombatEvents
     - generates combat log as string for rendering
