@@ -1,6 +1,6 @@
-use crate::_tests::helpers::fixed_dungeon_generator::FixedDungeonGenerator;
-use crate::_tests::helpers::input_simulator::InputSimulator;
-use crate::_tests::helpers::rendering_spy::RenderingSpy;
+use crate::_tests::_helpers::fixed_dungeon_generator::FixedDungeonGenerator;
+use crate::_tests::_helpers::input_simulator::InputSimulator;
+use crate::_tests::_helpers::rendering_spy::RenderingSpy;
 use crate::game::Game;
 
 pub struct TestableGame {

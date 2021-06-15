@@ -1,4 +1,4 @@
-use crate::_tests::helpers::rendering_spy::RenderingSpy;
+use crate::_tests::_helpers::rendering_spy::RenderingSpy;
 use crate::game::object_type::ObjectType::{Enemy, Player, Wall};
 use crate::gfx::renderer::Renderer;
 

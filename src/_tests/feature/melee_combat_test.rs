@@ -1,5 +1,5 @@
-use crate::_tests::helpers::controlled_combat_engine::ControlledCombatEngine;
-use crate::_tests::helpers::testable_game::TestableGame;
+use crate::_tests::_helpers::controlled_combat_engine::ControlledCombatEngine;
+use crate::_tests::_helpers::testable_game::TestableGame;
 
 #[ignore]
 #[test]

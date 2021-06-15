@@ -1,4 +1,4 @@
-use crate::_tests::helpers::fixed_dungeon_generator::FixedDungeonGenerator;
+use crate::_tests::_helpers::fixed_dungeon_generator::FixedDungeonGenerator;
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::gen::dungeon_generator::DungeonGenerator;
 

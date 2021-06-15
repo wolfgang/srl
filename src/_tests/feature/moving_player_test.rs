@@ -1,4 +1,4 @@
-use crate::_tests::helpers::testable_game::TestableGame;
+use crate::_tests::_helpers::testable_game::TestableGame;
 
 #[test]
 fn player_moves_according_to_input() {

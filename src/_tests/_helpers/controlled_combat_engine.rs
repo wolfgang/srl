@@ -15,7 +15,7 @@ impl ControlledCombatEngine {
 
     }
 
-    pub fn say_damage(&mut self, _victim: DungeonCoords, _amount: u32) {
+    pub fn say_damage(&mut self, _attacker: DungeonCoords, _amount: u32) {
 
     }
 }

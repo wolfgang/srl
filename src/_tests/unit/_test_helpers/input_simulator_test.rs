@@ -1,4 +1,4 @@
-use crate::_tests::helpers::input_simulator::InputSimulator;
+use crate::_tests::_helpers::input_simulator::InputSimulator;
 use crate::input::Input;
 
 #[test]
