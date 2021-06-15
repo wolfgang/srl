@@ -1,29 +1,10 @@
 use crate::combat::combat_engine::{CombatEngine, NullCombatEngine};
+use crate::combat::combat_event::CombatEvent;
 use crate::game::dungeon::Dungeon;
 use crate::game::object_type::ObjectType::{Enemy, Player};
-use crate::game::ObjectType;
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
-
-struct CombatEvent {
-    attacker: ObjectType,
-    victim: ObjectType,
-    damage: u32,
-}
-
-impl CombatEvent {
-    pub fn text(&self) -> String {
-        let attacker = if self.attacker == Player { "Player" } else { "Enemy" };
-        let victim = if self.victim == Player { "Player" } else { "Enemy" };
-        if self.damage > 0 {
-        format!("{} hits {} for {} damage!", attacker, victim, self.damage)
-        } else {
-            format!("{} misses {}!", attacker, victim)
-        }
-
-    }
-}
 
 pub struct Game {
     dungeon: Dungeon,
@@ -67,30 +48,11 @@ impl Game {
                     if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
                         let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
                         let enemy_damage = self.combat_engine.roll_damage(coords);
-                        self.combat_events.push(CombatEvent {
-                            attacker: Player,
-                            victim: Enemy,
-                            damage: player_damage,
-                        });
-
-                        self.combat_events.push(CombatEvent {
-                            attacker: Enemy,
-                            victim: Player,
-                            damage: enemy_damage,
-                        });
+                        self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
+                        self.combat_events.push(CombatEvent::hit(Enemy, Player, enemy_damage));
                     } else {
-                        self.combat_events.push(CombatEvent {
-                            attacker: Player,
-                            victim: Enemy,
-                            damage: 0,
-                        });
-
-                        self.combat_events.push(CombatEvent {
-                            attacker: Enemy,
-                            victim: Player,
-                            damage: 0,
-                        });
-
+                        self.combat_events.push(CombatEvent::miss(Player, Enemy));
+                        self.combat_events.push(CombatEvent::miss(Enemy, Player));
                     }
                 }
                 None => {}
@@ -113,7 +75,7 @@ impl Game {
         renderer.render_at(player_x, player_y, Player);
 
         for evt in self.combat_events.iter() {
-            renderer.append_combat_log(evt.text().as_str())
+            renderer.append_combat_log(evt.log_string().as_str())
         }
     }
 }

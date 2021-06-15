@@ -1,6 +1,9 @@
-- Extract common code from RenderingSpy and TerminalRenderer
-    - Bring TerminalRenderer under test
-    - Extract (contract test?)
-- Rename frame* to tiles*
-- Rename render_at to render_tile
-- Implement RenderingSpy::add_combat_log
+Combat next steps
+
+- CombatEvent logs DungeonObjects
+- Implement hit/miss miss/hit
+- Extract CombatResolver:
+    - Logs CombatEvents
+    - generates combat log as string for rendering
+    - later: applies damages, etc
+- Rename CombatEngine to ..? (CombatRoller?)

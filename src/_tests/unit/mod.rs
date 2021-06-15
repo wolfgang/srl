@@ -3,3 +3,4 @@ mod input;
 mod game;
 mod gen;
 mod gfx;
+mod combat;
