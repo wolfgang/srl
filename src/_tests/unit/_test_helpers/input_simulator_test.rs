@@ -5,11 +5,6 @@ use crate::input::move_direction::MoveDirection::*;
 #[test]
 fn initially_it_says_no_movement() {
     let input = InputSimulator::new();
-
-    assert!(!input.move_left());
-    assert!(!input.move_right());
-    assert!(!input.move_up());
-    assert!(!input.move_down());
     assert!(!input.wants_to_move(Left));
     assert!(!input.wants_to_move(Right));
     assert!(!input.wants_to_move(Up));

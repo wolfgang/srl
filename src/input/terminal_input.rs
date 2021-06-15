@@ -19,22 +19,6 @@ impl TerminalInput {
 }
 
 impl Input for TerminalInput {
-    fn move_left(&self) -> bool {
-        self.pressed_key == Key::ArrowLeft
-    }
-
-    fn move_right(&self) -> bool {
-        self.pressed_key == Key::ArrowRight
-    }
-
-    fn move_up(&self) -> bool {
-        self.pressed_key == Key::ArrowUp
-    }
-
-    fn move_down(&self) -> bool {
-        self.pressed_key == Key::ArrowDown
-    }
-
     fn quit_game(&self) -> bool {
         self.pressed_key == Key::Escape
     }
