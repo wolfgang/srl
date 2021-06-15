@@ -27,6 +27,11 @@ impl StringBackend {
         strings.join("\n")
     }
 
+    pub fn frame(&self) -> &Vec<Vec<char>> {
+        &self.frame
+    }
+
+
     pub fn clear(&mut self) {
         self.frame = vec![vec!['.'; self.width]; self.height];
     }
