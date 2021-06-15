@@ -47,6 +47,10 @@ impl InputSimulator {
 
     }
 
+    pub fn simulate_move(&mut self, direction: MoveDirection) {
+        self.simulated_direction = Some(direction)
+    }
+
     fn reset(&mut self) {
         self.simulating_move_left = false;
         self.simulating_move_right = false;
