@@ -47,13 +47,18 @@ impl Game {
                 Some((coords, _object_type)) => {
                     if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
                         let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
-                        let enemy_damage = self.combat_engine.roll_damage(coords);
                         self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
-                        self.combat_events.push(CombatEvent::hit(Enemy, Player, enemy_damage));
                     } else {
                         self.combat_events.push(CombatEvent::miss(Player, Enemy));
+                    }
+
+                    if self.combat_engine.is_hit(coords, self.dungeon.get_player_position()) {
+                        let enemy_damage = self.combat_engine.roll_damage(coords);
+                        self.combat_events.push(CombatEvent::hit(Enemy, Player, enemy_damage));
+                    } else {
                         self.combat_events.push(CombatEvent::miss(Enemy, Player));
                     }
+
                 }
                 None => {}
             }

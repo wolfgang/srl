@@ -36,3 +36,41 @@ fn nobody_hits() {
         "Enemy misses Player!"
     ])
 }
+
+#[test]
+fn player_hits_enemy_misses() {
+    let mut combat_engine = ControlledCombatEngine::new();
+    combat_engine.say_is_hit((1, 0), (2, 0));
+    combat_engine.say_damage((1, 0), 5);
+
+
+    let mut game = TestableGame::from_strings(vec![".@E."]);
+    game.game.override_combat_engine(combat_engine);
+
+    game.input.simulate_move_right();
+    game.tick();
+    game.render();
+    game.renderer.assert_combat_log(vec![
+        "Player hits Enemy for 5 damage!",
+        "Enemy misses Player!"
+    ])
+}
+
+#[test]
+fn enemy_hits_player_misses() {
+    let mut combat_engine = ControlledCombatEngine::new();
+    combat_engine.say_is_hit((2, 0), (1, 0));
+    combat_engine.say_damage((2, 0), 5);
+
+
+    let mut game = TestableGame::from_strings(vec![".@E."]);
+    game.game.override_combat_engine(combat_engine);
+
+    game.input.simulate_move_right();
+    game.tick();
+    game.render();
+    game.renderer.assert_combat_log(vec![
+        "Player misses Enemy!",
+        "Enemy hits Player for 5 damage!",
+    ])
+}
