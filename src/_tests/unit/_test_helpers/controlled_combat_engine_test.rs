@@ -27,6 +27,18 @@ fn say_is_hit_causes_hit_for_given_attacker() {
     engine.say_is_hit(ATTACKER_2, VICTIM_2);
     assert!(engine.is_hit(ATTACKER_1, VICTIM_1));
     assert!(engine.is_hit(ATTACKER_2, VICTIM_2));
+}
 
+#[test]
+fn say_damage_determines_damage_for_given_attacker() {
+    let mut engine = ControlledCombatEngine::new();
+
+    engine.say_damage(ATTACKER_1, 1111);
+    assert_eq!(engine.roll_damage(ATTACKER_1), 1111);
+    assert_eq!(engine.roll_damage(ATTACKER_2), 0);
+
+    engine.say_damage(ATTACKER_2, 2222);
+    assert_eq!(engine.roll_damage(ATTACKER_1), 1111);
+    assert_eq!(engine.roll_damage(ATTACKER_2), 2222);
 
 }

@@ -5,12 +5,14 @@ use crate::game::dungeon::DungeonCoords;
 
 pub struct ControlledCombatEngine {
     hits: HashMap<DungeonCoords, DungeonCoords>,
+    damages: HashMap<DungeonCoords, u32>
 }
 
 impl ControlledCombatEngine {
     pub fn new() -> Self {
         Self {
-            hits: HashMap::new()
+            hits: HashMap::new(),
+            damages: HashMap::new()
         }
     }
 
@@ -18,7 +20,9 @@ impl ControlledCombatEngine {
         self.hits.insert(attacker, victim);
     }
 
-    pub fn say_damage(&mut self, _attacker: DungeonCoords, _amount: u32) {}
+    pub fn say_damage(&mut self, attacker: DungeonCoords, amount: u32) {
+        self.damages.insert(attacker, amount);
+    }
 }
 
 impl CombatEngine for ControlledCombatEngine {
@@ -27,7 +31,7 @@ impl CombatEngine for ControlledCombatEngine {
         self.hits.get(&attacker).unwrap() == &victim
     }
 
-    fn roll_damage(&self, _attacker: (u32, u32)) -> u32 {
-        0
+    fn roll_damage(&self, attacker: (u32, u32)) -> u32 {
+        *self.damages.get(&attacker).unwrap_or(&0)
     }
 }
