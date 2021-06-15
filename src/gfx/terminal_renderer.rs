@@ -21,7 +21,7 @@ impl TerminalRenderer {
             height,
             frame: Vec::new(),
         };
-        renderer.init_frame();
+        renderer.clear();
         renderer
     }
 
@@ -29,10 +29,6 @@ impl TerminalRenderer {
         let frame_as_string = self.frame_as_string();
         write.write(format!("{}", frame_as_string).as_bytes()).unwrap();
         write.flush().unwrap();
-    }
-
-    fn init_frame(&mut self) {
-        self.frame = vec![vec!['.'; self.width]; self.height];
     }
 
     fn frame_as_string(&self) -> String {
@@ -56,7 +52,7 @@ impl TerminalRenderer {
 
 impl Renderer for TerminalRenderer {
     fn clear(&mut self) {
-        self.init_frame()
+        self.frame = vec![vec!['.'; self.width]; self.height];
     }
 
     fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
