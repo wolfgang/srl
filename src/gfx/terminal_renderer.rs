@@ -1,5 +1,7 @@
 use std::io::Write;
 
+use console::style;
+
 use crate::game::object_type::ObjectType::*;
 use crate::game::object_type::ObjectType;
 use crate::gfx::renderer::Renderer;
@@ -40,9 +42,13 @@ impl TerminalRenderer {
             .collect();
 
 
-        let output = strings.join("\n");
-        // let offset = output.find('@').unwrap();
-        // output.replace_range(offset..offset+1, style("@").red().to_string().as_str());
+        let mut output = strings.join("\n");
+        match output.find('@') {
+            Some(offset) => {
+                output.replace_range(offset..offset+1, style("@").red().to_string().as_str());
+            }
+            _ => {}
+        }
 
         return output;
     }
