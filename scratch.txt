@@ -5,3 +5,4 @@ Combat next steps
     - generates combat log as string for rendering
     - later: applies damages, etc
 - Rename CombatEngine to ..? (CombatRoller?)
+- Clear combat log/resolver before tick

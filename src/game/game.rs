@@ -29,26 +29,8 @@ impl Game {
         if input.move_left() { self.dungeon.move_player_left(); }
 
         if input.move_right() {
-            let result = self.dungeon.move_player_right();
-
-            match result {
-                Some((coords, _object_type)) => {
-                    if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
-                        let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
-                        self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
-                    } else {
-                        self.combat_events.push(CombatEvent::miss(Player, Enemy));
-                    }
-
-                    if self.combat_engine.is_hit(coords, self.dungeon.get_player_position()) {
-                        let enemy_damage = self.combat_engine.roll_damage(coords);
-                        self.combat_events.push(CombatEvent::hit(Enemy, Player, enemy_damage));
-                    } else {
-                        self.combat_events.push(CombatEvent::miss(Enemy, Player));
-                    }
-
-                }
-                None => {}
+            if let Some((coords, Enemy)) = self.dungeon.move_player_right() {
+                self.record_combat_with(coords)
             }
         }
 
@@ -56,7 +38,6 @@ impl Game {
 
         if input.move_down() { self.dungeon.move_player_down(); }
     }
-
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
         renderer.clear();
@@ -69,6 +50,23 @@ impl Game {
 
         for evt in self.combat_events.iter() {
             renderer.append_combat_log(evt.log_string().as_str())
+        }
+    }
+
+
+    fn record_combat_with(&mut self, coords: (u32, u32)) {
+        if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
+            let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
+            self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
+        } else {
+            self.combat_events.push(CombatEvent::miss(Player, Enemy));
+        }
+
+        if self.combat_engine.is_hit(coords, self.dungeon.get_player_position()) {
+            let enemy_damage = self.combat_engine.roll_damage(coords);
+            self.combat_events.push(CombatEvent::hit(Enemy, Player, enemy_damage));
+        } else {
+            self.combat_events.push(CombatEvent::miss(Enemy, Player));
         }
     }
 }
