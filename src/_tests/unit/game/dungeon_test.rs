@@ -1,5 +1,4 @@
 use crate::game::dungeon::{Dungeon, DungeonObject};
-use crate::game::dungeon::CollisionResult::{EnemyCollision, NoCollision, WallCollision};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 
 #[test]
@@ -83,10 +82,10 @@ fn move_player_up_down_stopped_by_obstacle() {
 fn move_player_returns_no_collision_if_no_collision() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(2, 2);
-    assert_eq!(NoCollision, dungeon.move_player_left());
-    assert_eq!(NoCollision, dungeon.move_player_right());
-    assert_eq!(NoCollision, dungeon.move_player_up());
-    assert_eq!(NoCollision, dungeon.move_player_down());
+    assert_eq!(None, dungeon.move_player_left());
+    assert_eq!(None, dungeon.move_player_right());
+    assert_eq!(None, dungeon.move_player_up());
+    assert_eq!(None, dungeon.move_player_down());
 }
 
 #[test]
@@ -94,19 +93,20 @@ fn move_player_returns_collisions_with_enemy() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 1);
     dungeon.add_enemies(&vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
-    assert_eq!(EnemyCollision, dungeon.move_player_left());
-    assert_eq!(EnemyCollision, dungeon.move_player_right());
-    assert_eq!(EnemyCollision, dungeon.move_player_up());
-    assert_eq!(EnemyCollision, dungeon.move_player_down());
+    assert_eq!(Some(((0, 1), Enemy)), dungeon.move_player_left());
+    assert_eq!(Some(((2, 1), Enemy)), dungeon.move_player_right());
+    assert_eq!(Some(((1, 0), Enemy)), dungeon.move_player_up());
+    assert_eq!(Some(((1, 2), Enemy)), dungeon.move_player_down());
 }
+
 
 #[test]
 fn move_player_returns_collisions_with_wall() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 1);
     dungeon.add_walls(&vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
-    assert_eq!(WallCollision, dungeon.move_player_left());
-    assert_eq!(WallCollision, dungeon.move_player_right());
-    assert_eq!(WallCollision, dungeon.move_player_up());
-    assert_eq!(WallCollision, dungeon.move_player_down());
+    assert_eq!(Some(((0, 1), Wall)), dungeon.move_player_left());
+    assert_eq!(Some(((2, 1), Wall)), dungeon.move_player_right());
+    assert_eq!(Some(((1, 0), Wall)), dungeon.move_player_up());
+    assert_eq!(Some(((1, 2), Wall)), dungeon.move_player_down());
 }

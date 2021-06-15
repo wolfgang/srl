@@ -1,16 +1,11 @@
-use crate::game::dungeon::CollisionResult::{EnemyCollision, NoCollision, WallCollision};
 use crate::game::object_type::ObjectType::{Enemy, Floor, Wall};
 use crate::game::ObjectType;
 
 pub type DungeonCoords = (u32, u32);
 pub type DungeonObject = (DungeonCoords, ObjectType);
 
-#[derive(PartialEq, Debug)]
-pub enum CollisionResult {
-    NoCollision,
-    EnemyCollision,
-    WallCollision,
-}
+pub type CollisionResult=Option<DungeonObject>;
+
 
 #[derive(Default)]
 pub struct Dungeon {
@@ -68,9 +63,9 @@ impl Dungeon {
         let object_type = self.object_type_at(new_player_position);
         if object_type == Floor {
             self.player_position = new_player_position;
-            return NoCollision;
+            return None;
         }
-        if object_type == Wall { WallCollision } else { EnemyCollision }
+        Some((new_player_position, object_type))
     }
 
     fn object_type_at(&self, coords: DungeonCoords) -> ObjectType {
