@@ -1,26 +1,6 @@
-Combat on enemy collision
-
-Feature test
-- One-hit an enemy ('E' goes away, next move has no collision)
-- 2-hit an enemy
-
-
-Option 1: Keep randomness
-- Must make fuzzy tests against text output (Player hits/misses Enemy [for X damage])
-- Must keep hitting in a loop until enemy/player is defeated, with some kind of cut-off
-
-Option 2: Control randomness
-- Use domain specific language like "pretend_player_hits_for(damage)"
-- Can make precise output tests and behavior tests
-
-Maybe add a randomness test at the end, as a test for using the real random generator
-
-Option 3:
-trait CombatEngine
-- is_hit(attacker, attackee)
-- get_damage_done(attacker)
-- apply_damage(attackee)
-
-- Pass controlled CombatEngine to game (game config)
-- Can make precise output tests and behavior tests
-
+- Extract common code from RenderingSpy and TerminalRenderer
+    - Bring TerminalRenderer under test
+    - Extract (contract test?)
+- Rename frame* to tiles*
+- Rename render_at to render_tile
+- Implement RenderingSpy::add_combat_log

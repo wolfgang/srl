@@ -1,10 +1,10 @@
 use std::io::Write;
 
-use console::style;
-
 use crate::game::object_type::ObjectType::*;
 use crate::game::object_type::ObjectType;
 use crate::gfx::renderer::Renderer;
+
+// use console::style;
 
 pub struct TerminalRenderer {
     frame: Vec<Vec<char>>,
@@ -40,9 +40,9 @@ impl TerminalRenderer {
             .collect();
 
 
-        let mut output = strings.join("\n");
-        let offset = output.find('@').unwrap();
-        output.replace_range(offset..offset+1, style("@").red().to_string().as_str());
+        let output = strings.join("\n");
+        // let offset = output.find('@').unwrap();
+        // output.replace_range(offset..offset+1, style("@").red().to_string().as_str());
 
         return output;
     }
