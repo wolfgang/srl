@@ -3,3 +3,4 @@ pub use terminal_renderer::TerminalRenderer;
 
 pub mod renderer;
 pub mod terminal_renderer;
+pub mod string_backend;
