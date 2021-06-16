@@ -1,6 +1,6 @@
 use crate::combat::combat_engine::CombatEngine;
 use crate::combat::combat_event::CombatEvent;
-use crate::combat::fixed_combat_engine::FixedCombatEngine;
+use crate::combat::randomized_combat_engine::RandomizedCombatEngine;
 use crate::game::dungeon::Dungeon;
 use crate::game::object_type::ObjectType::{Enemy, Player};
 use crate::gen::dungeon_generator::DungeonGenerator;
@@ -17,7 +17,7 @@ pub struct Game {
 impl Game {
     pub fn generate_with<T: DungeonGenerator>(generator: &T) -> Self {
         Self {
-            combat_engine: Box::from(FixedCombatEngine {}),
+            combat_engine: Box::from(RandomizedCombatEngine {}),
             dungeon: generator.generate(),
             combat_events: Vec::new(),
         }
