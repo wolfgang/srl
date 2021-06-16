@@ -45,7 +45,7 @@ impl StringBackend {
         self.combat_log.clear();
     }
 
-    pub fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
+    pub fn render_tile(&mut self, x: u32, y: u32, object_type: ObjectType) {
         let ch = match object_type {
             Wall => { '#' }
             Player => { '@' }

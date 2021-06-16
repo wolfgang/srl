@@ -54,8 +54,8 @@ impl Renderer for TerminalRenderer {
         self.backend.clear();
     }
 
-    fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {
-        self.backend.render_at(x, y, object_type);
+    fn render_tile(&mut self, x: u32, y: u32, object_type: ObjectType) {
+        self.backend.render_tile(x, y, object_type);
     }
 
     fn append_combat_log(&mut self, text: &str) {

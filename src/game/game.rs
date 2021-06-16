@@ -41,11 +41,11 @@ impl Game {
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
         renderer.clear();
         for ((x, y), object_type) in self.dungeon.get_objects() {
-            renderer.render_at(*x, *y, *object_type);
+            renderer.render_tile(*x, *y, *object_type);
         }
 
         let (player_x, player_y) = self.dungeon.get_player_position();
-        renderer.render_at(player_x, player_y, Player);
+        renderer.render_tile(player_x, player_y, Player);
 
         for evt in self.combat_events.iter() {
             renderer.append_combat_log(evt.log_string().as_str())

@@ -16,10 +16,10 @@ fn flush_writes_empty_tiles() {
 fn flush_writes_previously_rendered_tiles() {
     let mut renderer = TerminalRenderer::new(2, 2);
 
-    renderer.render_at(0, 0, Player);
-    renderer.render_at(1, 0, Wall);
-    renderer.render_at(0, 1, Enemy);
-    renderer.render_at(1, 1, Floor);
+    renderer.render_tile(0, 0, Player);
+    renderer.render_tile(1, 0, Wall);
+    renderer.render_tile(0, 1, Enemy);
+    renderer.render_tile(1, 1, Floor);
 
     verify_flush_writes(&mut renderer, vec!["@#", "E."]);
 }
@@ -28,10 +28,10 @@ fn flush_writes_previously_rendered_tiles() {
 fn clear_resets_tiles_to_empty() {
     let mut renderer = TerminalRenderer::new(2, 2);
 
-    renderer.render_at(0, 0, Player);
-    renderer.render_at(1, 0, Wall);
-    renderer.render_at(0, 1, Enemy);
-    renderer.render_at(1, 1, Floor);
+    renderer.render_tile(0, 0, Player);
+    renderer.render_tile(1, 0, Wall);
+    renderer.render_tile(0, 1, Enemy);
+    renderer.render_tile(1, 1, Floor);
     renderer.clear();
 
     verify_flush_writes(&mut renderer, vec!["..", ".."]);

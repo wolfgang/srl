@@ -15,9 +15,9 @@ fn tiles_are_initially_empty() {
 #[test]
 fn renders_objects_as_specific_characters() {
     let mut renderer = RenderingSpy::new(2, 3);
-    renderer.render_at(0, 0, Player);
-    renderer.render_at(1, 0, Wall);
-    renderer.render_at(1, 2, Enemy);
+    renderer.render_tile(0, 0, Player);
+    renderer.render_tile(1, 0, Wall);
+    renderer.render_tile(1, 2, Enemy);
 
     assert_eq!(renderer.tiles(), &vec![
         vec!['@', '#'],
@@ -29,9 +29,9 @@ fn renders_objects_as_specific_characters() {
 #[test]
 fn tiles_as_string_converts_tiles_to_string() {
     let mut renderer = RenderingSpy::new(2, 3);
-    renderer.render_at(0, 0, Player);
-    renderer.render_at(1, 0, Wall);
-    renderer.render_at(1, 2, Enemy);
+    renderer.render_tile(0, 0, Player);
+    renderer.render_tile(1, 0, Wall);
+    renderer.render_tile(1, 2, Enemy);
 
     assert_eq!(renderer.tiles_as_string(), "@#\n..\n.E");
 }
@@ -39,9 +39,9 @@ fn tiles_as_string_converts_tiles_to_string() {
 #[test]
 fn clear_replaces_content_with_dots() {
     let mut renderer = RenderingSpy::new(2, 3);
-    renderer.render_at(0, 0, Player);
-    renderer.render_at(1, 0, Wall);
-    renderer.render_at(1, 2, Enemy);
+    renderer.render_tile(0, 0, Player);
+    renderer.render_tile(1, 0, Wall);
+    renderer.render_tile(1, 2, Enemy);
     renderer.clear();
 
     assert_eq!(renderer.tiles(), &vec![
