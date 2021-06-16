@@ -1,5 +1,6 @@
 use crate::game::dungeon::{Dungeon, DungeonObject};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
+use crate::input::move_direction::MoveDirection::*;
 
 #[test]
 fn initially_has_no_objects() {
@@ -44,6 +45,20 @@ fn move_player_without_obstacles() {
     dungeon.move_player_up();
     assert_eq!((0, 0), dungeon.get_player_position());
 }
+
+#[test]
+fn move_player_without_obstacles_new_api() {
+    let mut dungeon = Dungeon::new();
+    dungeon.move_player(Right);
+    assert_eq!((1, 0), dungeon.get_player_position());
+    dungeon.move_player(Down);
+    assert_eq!((1, 1), dungeon.get_player_position());
+    dungeon.move_player(Left);
+    assert_eq!((0, 1), dungeon.get_player_position());
+    dungeon.move_player(Up);
+    assert_eq!((0, 0), dungeon.get_player_position());
+}
+
 
 #[test]
 fn move_player_right_stopped_by_obstacle() {

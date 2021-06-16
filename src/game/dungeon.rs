@@ -1,10 +1,12 @@
 use crate::game::object_type::ObjectType::{Enemy, Floor, Wall};
 use crate::game::ObjectType;
+use crate::input::move_direction::MoveDirection;
+use crate::input::move_direction::MoveDirection::*;
 
 pub type DungeonCoords = (u32, u32);
 pub type DungeonObject = (DungeonCoords, ObjectType);
 
-pub type CollisionResult=Option<DungeonObject>;
+pub type CollisionResult = Option<DungeonObject>;
 
 
 #[derive(Default)]
@@ -56,6 +58,17 @@ impl Dungeon {
     pub fn move_player_down(&mut self) -> CollisionResult {
         self.try_move_by(0, 1)
     }
+
+    pub fn move_player(&mut self, direction: MoveDirection) -> CollisionResult {
+        let offsets = match direction {
+            Left => { (-1, 0) }
+            Right => { (1, 0) }
+            Up => { (0, -1) }
+            Down => { (0, 1) }
+        };
+        self.try_move_by(offsets.0, offsets.1)
+    }
+
 
     fn try_move_by(&mut self, x_offset: i32, y_offset: i32) -> CollisionResult {
         let (player_x, player_y) = self.player_position;
