@@ -21,12 +21,14 @@ impl StringBackend {
     }
 
     pub fn tiles_as_string(&self) -> String {
-        let strings: Vec<String> = self.tiles
+        self.tiles_as_strings() .join("\n")
+    }
+
+    pub fn tiles_as_strings(&self) -> Vec<String> {
+       self.tiles
             .iter()
             .map(|row| { row.iter().collect() })
-            .collect();
-
-        strings.join("\n")
+            .collect()
     }
 
     pub fn tiles(&self) -> &Vec<Vec<char>> {
@@ -40,6 +42,7 @@ impl StringBackend {
 
     pub fn clear(&mut self) {
         self.tiles = vec![vec!['.'; self.width]; self.height];
+        self.combat_log.clear();
     }
 
     pub fn render_at(&mut self, x: u32, y: u32, object_type: ObjectType) {

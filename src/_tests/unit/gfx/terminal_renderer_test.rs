@@ -7,7 +7,9 @@ use crate::gfx::{Renderer, TerminalRenderer};
 #[test]
 fn flush_writes_empty_tiles() {
     let mut renderer = TerminalRenderer::new(3, 2);
-    verify_flush_writes("...\n...", &mut renderer);
+    verify_flush_writes(&mut renderer, vec![
+        "...",
+        "..."]);
 }
 
 #[test]
@@ -19,7 +21,7 @@ fn flush_writes_previously_rendered_tiles() {
     renderer.render_at(0, 1, Enemy);
     renderer.render_at(1, 1, Floor);
 
-    verify_flush_writes("@#\nE.", &mut renderer);
+    verify_flush_writes(&mut renderer, vec!["@#", "E."]);
 }
 
 #[test]
@@ -32,13 +34,36 @@ fn clear_resets_tiles_to_empty() {
     renderer.render_at(1, 1, Floor);
     renderer.clear();
 
-    verify_flush_writes("..\n..", &mut renderer);
+    verify_flush_writes(&mut renderer, vec!["..", ".."]);
 }
 
-fn verify_flush_writes(expected: &str, renderer: &mut TerminalRenderer) {
+#[test]
+fn renders_combat_log_to_the_right_of_dugeon() {
+    let mut renderer = TerminalRenderer::new(3, 2);
+    renderer.append_combat_log("combat log line 1");
+    renderer.append_combat_log("combat log line 2");
+
+    verify_flush_writes(&mut renderer, vec![
+        "...  combat log line 1",
+        "...  combat log line 2"]);
+}
+
+#[test]
+fn clear_clears_combat_log() {
+    let mut renderer = TerminalRenderer::new(3, 2);
+    renderer.append_combat_log("combat log line 1");
+    renderer.append_combat_log("combat log line 2");
+    renderer.clear();
+
+    verify_flush_writes(&mut renderer, vec![
+        "...",
+        "..."]);
+}
+
+fn verify_flush_writes(renderer: &mut TerminalRenderer, expected: Vec<&str>) {
     let mut buffer = Cursor::new(Vec::new());
     renderer.flush(&mut buffer);
     let actual = str::from_utf8(&buffer.get_ref()).unwrap();
-    assert_eq!(actual, expected);
+    assert_eq!(actual, expected.join("\n"));
 }
 

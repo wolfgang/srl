@@ -21,15 +21,31 @@ impl TerminalRenderer {
     }
 
     fn tiles_as_string(&self) -> String {
-        let mut output = self.backend.tiles_as_string();
-        match output.find('@') {
-            Some(offset) => {
-                output.replace_range(offset..offset + 1, style("@").red().to_string().as_str());
-            }
-            _ => {}
+        let combat_log = self.backend.combat_log();
+        let tile_lines = self.backend.tiles_as_strings();
+        let mut result = Vec::with_capacity(tile_lines.len());
+        for (index, tiles_line) in tile_lines.iter().enumerate() {
+            let mut tiles_line = tiles_line.clone();
+            Self::color_player(&mut tiles_line);
+            result.push(format!("{}{}", tiles_line, Self::combat_log_line_at(index, &combat_log)));
         }
 
-        return output;
+        return result.join("\n");
+    }
+
+    fn combat_log_line_at(index: usize, combat_log: &Vec<&str>) -> String {
+        let combat_log_line = if index < combat_log.len() {
+            format!("  {}", combat_log[index])
+        } else {
+            "".into()
+        };
+        combat_log_line
+    }
+
+    fn color_player(tiles_line: &mut String) {
+        if let Some(offset) = tiles_line.find('@') {
+            tiles_line.replace_range(offset..offset + 1, style("@").red().to_string().as_str());
+        }
     }
 }
 
@@ -42,6 +58,7 @@ impl Renderer for TerminalRenderer {
         self.backend.render_at(x, y, object_type);
     }
 
-    fn append_combat_log(&mut self, _text: &str) {
+    fn append_combat_log(&mut self, text: &str) {
+        self.backend.append_combat_log(text)
     }
 }

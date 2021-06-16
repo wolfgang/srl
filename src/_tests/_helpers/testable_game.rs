@@ -25,7 +25,10 @@ impl TestableGame {
                     '#' => { walls.push(pos) }
                     'E' => { enemies.push(pos) }
                     '@' => { player_position = pos }
-                    _ => {}
+                    '.' => {}
+                    c => {
+                        assert!(false, "Invalid character in dungeon definition: {}", c);
+                    }
                 }
             }
         }
