@@ -38,7 +38,7 @@ fn clear_resets_tiles_to_empty() {
 }
 
 #[test]
-fn renders_combat_log_to_the_right_of_dugeon() {
+fn renders_combat_log_to_the_right_of_dungeon() {
     let mut renderer = TerminalRenderer::new(3, 2);
     renderer.append_combat_log("combat log line 1");
     renderer.append_combat_log("combat log line 2");
