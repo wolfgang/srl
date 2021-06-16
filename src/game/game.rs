@@ -27,17 +27,15 @@ impl Game {
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
-        if input.wants_to_move(Left) { self.dungeon.move_player_left(); }
+        if input.wants_to_move(Left) { self.dungeon.move_player(Left); }
+        if input.wants_to_move(Up) { self.dungeon.move_player(Up); }
+        if input.wants_to_move(Down) { self.dungeon.move_player(Down); }
 
         if input.wants_to_move(Right) {
-            if let Some((coords, Enemy)) = self.dungeon.move_player_right() {
+            if let Some((coords, Enemy)) = self.dungeon.move_player(Right) {
                 self.record_combat_with(coords)
             }
         }
-
-        if input.wants_to_move(Up) { self.dungeon.move_player_up(); }
-
-        if input.wants_to_move(Down) { self.dungeon.move_player_down(); }
     }
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
