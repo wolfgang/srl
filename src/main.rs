@@ -5,8 +5,8 @@ use srl::gen::random_dungeon_generator::RandomDungeonGenerator;
 use srl::gfx::terminal_renderer::TerminalRenderer;
 use srl::input::{Input, TerminalInput};
 
-const GAME_WIDTH: usize = 20;
-const GAME_HEIGHT: usize = 10;
+const GAME_WIDTH: usize = 40;
+const GAME_HEIGHT: usize = 20;
 
 fn main() -> std::io::Result<()> {
     let mut game = make_example_game();
@@ -24,6 +24,6 @@ fn main() -> std::io::Result<()> {
 }
 
 fn make_example_game() -> Game {
-    let generator = RandomDungeonGenerator::new(GAME_WIDTH, GAME_HEIGHT, 30, 10);
+    let generator = RandomDungeonGenerator::new(GAME_WIDTH, GAME_HEIGHT, 60, 20);
     Game::generate_with(&generator)
 }
