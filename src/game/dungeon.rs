@@ -43,22 +43,6 @@ impl Dungeon {
         self.player_position = (x, y);
     }
 
-    pub fn move_player_left(&mut self) -> CollisionResult {
-        self.try_move_by(-1, 0)
-    }
-
-    pub fn move_player_right(&mut self) -> CollisionResult {
-        self.try_move_by(1, 0)
-    }
-
-    pub fn move_player_up(&mut self) -> CollisionResult {
-        self.try_move_by(0, -1)
-    }
-
-    pub fn move_player_down(&mut self) -> CollisionResult {
-        self.try_move_by(0, 1)
-    }
-
     pub fn move_player(&mut self, direction: MoveDirection) -> CollisionResult {
         let offsets = match direction {
             Left => { (-1, 0) }
@@ -66,11 +50,11 @@ impl Dungeon {
             Up => { (0, -1) }
             Down => { (0, 1) }
         };
-        self.try_move_by(offsets.0, offsets.1)
+        self.try_move_by(offsets)
     }
 
 
-    fn try_move_by(&mut self, x_offset: i32, y_offset: i32) -> CollisionResult {
+    fn try_move_by(&mut self, (x_offset, y_offset): (i32, i32)) -> CollisionResult {
         let (player_x, player_y) = self.player_position;
         let new_player_position = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
         let object_type = self.object_type_at(new_player_position);

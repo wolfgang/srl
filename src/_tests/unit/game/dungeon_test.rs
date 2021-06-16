@@ -36,19 +36,6 @@ fn can_set_player_position() {
 #[test]
 fn move_player_without_obstacles() {
     let mut dungeon = Dungeon::new();
-    dungeon.move_player_right();
-    assert_eq!((1, 0), dungeon.get_player_position());
-    dungeon.move_player_down();
-    assert_eq!((1, 1), dungeon.get_player_position());
-    dungeon.move_player_left();
-    assert_eq!((0, 1), dungeon.get_player_position());
-    dungeon.move_player_up();
-    assert_eq!((0, 0), dungeon.get_player_position());
-}
-
-#[test]
-fn move_player_without_obstacles_new_api() {
-    let mut dungeon = Dungeon::new();
     dungeon.move_player(Right);
     assert_eq!((1, 0), dungeon.get_player_position());
     dungeon.move_player(Down);
@@ -65,10 +52,10 @@ fn move_player_right_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 0)]);
     dungeon.add_enemies(&vec![(1, 1)]);
-    dungeon.move_player_right();
+    dungeon.move_player(Right);
     assert_eq!((0, 0), dungeon.get_player_position());
-    dungeon.move_player_down();
-    dungeon.move_player_right();
+    dungeon.move_player(Down);
+    dungeon.move_player(Right);
     assert_eq!((0, 1), dungeon.get_player_position());
 }
 
@@ -77,7 +64,7 @@ fn move_player_left_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 0);
     dungeon.add_walls(&vec![(0, 0)]);
-    dungeon.move_player_left();
+    dungeon.move_player(Left);
     assert_eq!((1, 0), dungeon.get_player_position());
 }
 
@@ -87,9 +74,9 @@ fn move_player_up_down_stopped_by_obstacle() {
     dungeon.set_player_position(0, 2);
     dungeon.add_walls(&vec![(0, 1)]);
     dungeon.add_enemies(&vec![(0, 3)]);
-    dungeon.move_player_up();
+    dungeon.move_player(Up);
     assert_eq!((0, 2), dungeon.get_player_position());
-    dungeon.move_player_down();
+    dungeon.move_player(Down);
     assert_eq!((0, 2), dungeon.get_player_position());
 }
 
@@ -97,10 +84,10 @@ fn move_player_up_down_stopped_by_obstacle() {
 fn move_player_returns_no_collision_if_no_collision() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(2, 2);
-    assert_eq!(None, dungeon.move_player_left());
-    assert_eq!(None, dungeon.move_player_right());
-    assert_eq!(None, dungeon.move_player_up());
-    assert_eq!(None, dungeon.move_player_down());
+    assert_eq!(None, dungeon.move_player(Left));
+    assert_eq!(None, dungeon.move_player(Right));
+    assert_eq!(None, dungeon.move_player(Up));
+    assert_eq!(None, dungeon.move_player(Down));
 }
 
 #[test]
@@ -108,10 +95,10 @@ fn move_player_returns_collisions_with_enemy() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 1);
     dungeon.add_enemies(&vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
-    assert_eq!(Some(((0, 1), Enemy)), dungeon.move_player_left());
-    assert_eq!(Some(((2, 1), Enemy)), dungeon.move_player_right());
-    assert_eq!(Some(((1, 0), Enemy)), dungeon.move_player_up());
-    assert_eq!(Some(((1, 2), Enemy)), dungeon.move_player_down());
+    assert_eq!(Some(((0, 1), Enemy)), dungeon.move_player(Left));
+    assert_eq!(Some(((2, 1), Enemy)), dungeon.move_player(Right));
+    assert_eq!(Some(((1, 0), Enemy)), dungeon.move_player(Up));
+    assert_eq!(Some(((1, 2), Enemy)), dungeon.move_player(Down));
 }
 
 
@@ -120,8 +107,8 @@ fn move_player_returns_collisions_with_wall() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 1);
     dungeon.add_walls(&vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
-    assert_eq!(Some(((0, 1), Wall)), dungeon.move_player_left());
-    assert_eq!(Some(((2, 1), Wall)), dungeon.move_player_right());
-    assert_eq!(Some(((1, 0), Wall)), dungeon.move_player_up());
-    assert_eq!(Some(((1, 2), Wall)), dungeon.move_player_down());
+    assert_eq!(Some(((0, 1), Wall)), dungeon.move_player(Left));
+    assert_eq!(Some(((2, 1), Wall)), dungeon.move_player(Right));
+    assert_eq!(Some(((1, 0), Wall)), dungeon.move_player(Up));
+    assert_eq!(Some(((1, 2), Wall)), dungeon.move_player(Down));
 }
