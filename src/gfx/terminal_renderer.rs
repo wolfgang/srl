@@ -34,12 +34,11 @@ impl TerminalRenderer {
     }
 
     fn combat_log_line_at(index: usize, combat_log: &Vec<&str>) -> String {
-        let combat_log_line = if index < combat_log.len() {
+        if index < combat_log.len() {
             format!("  {}", combat_log[index])
         } else {
             "".into()
-        };
-        combat_log_line
+        }
     }
 
     fn color_player(tiles_line: &mut String) {
