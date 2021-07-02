@@ -16,11 +16,11 @@ impl TerminalRenderer {
     }
 
     pub fn flush<T: Write>(&mut self, write: &mut T) {
-        write.write(format!("{}", self.tiles_as_string()).as_bytes()).unwrap();
+        write.write(format!("{}", self.frame_as_string()).as_bytes()).unwrap();
         write.flush().unwrap();
     }
 
-    fn tiles_as_string(&self) -> String {
+    fn frame_as_string(&self) -> String {
         let combat_log = self.backend.combat_log();
         let tile_lines = self.backend.tiles_as_strings();
         let mut result = Vec::with_capacity(tile_lines.len());
