@@ -1,10 +1,12 @@
-Combat next steps
-- [X] Implement hit/miss miss/hit
-- [ ] Implement all directions
+Combat use cases:
 
-- Extract CombatResolver:
-    - Logs CombatEvents
-    - generates combat log as string for rendering
-    - later: applies damages, etc
-- Rename CombatEngine to ..? (CombatRoller?)
-- Clear combat log/resolver before tick
+- If enemy hp goes to 0, remove enemy
+- If player hp goes to 0, game over
+- Display player hp in first line (status line)
+
+GameConfig { enemy_health: 20 }
+
+is it time for the builder?
+
+
+
