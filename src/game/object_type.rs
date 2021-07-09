@@ -4,8 +4,7 @@ use std::fmt::{Display, Formatter, Result};
 pub enum ObjectType {
     Wall,
     Player,
-    Enemy,
-    Floor
+    Enemy
 }
 
 impl Display for ObjectType {

@@ -50,7 +50,6 @@ impl StringBackend {
             Wall => { '#' }
             Player => { '@' }
             Enemy => { 'E' }
-            Floor => { '.' }
         };
 
         self.tiles[y as usize][x as usize] = ch;

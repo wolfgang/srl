@@ -19,7 +19,6 @@ fn flush_writes_previously_rendered_tiles() {
     renderer.render_tile(0, 0, Player);
     renderer.render_tile(1, 0, Wall);
     renderer.render_tile(0, 1, Enemy);
-    renderer.render_tile(1, 1, Floor);
 
     verify_flush_writes(&mut renderer, vec!["@#", "E."]);
 }
@@ -31,7 +30,6 @@ fn clear_resets_tiles_to_empty() {
     renderer.render_tile(0, 0, Player);
     renderer.render_tile(1, 0, Wall);
     renderer.render_tile(0, 1, Enemy);
-    renderer.render_tile(1, 1, Floor);
     renderer.clear();
 
     verify_flush_writes(&mut renderer, vec!["..", ".."]);
