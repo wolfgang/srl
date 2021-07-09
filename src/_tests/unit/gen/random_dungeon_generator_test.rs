@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use crate::game::dungeon::{Dungeon, DungeonCoords, DungeonObject};
+use crate::game::dungeon::{Dungeon, DungeonCoords, DungeonObjectTuple};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
 use crate::gen::dungeon_generator::DungeonGenerator;
@@ -38,7 +38,7 @@ fn generates_player_position_distinct_from_objects() {
 
 }
 
-fn get_distinct_objects_of_type(object_type: ObjectType, dungeon: &Dungeon) -> HashSet<DungeonObject> {
+fn get_distinct_objects_of_type(object_type: ObjectType, dungeon: &Dungeon) -> HashSet<DungeonObjectTuple> {
     dungeon.get_objects()
         .iter()
         .filter_map(|(pos, ty)| {

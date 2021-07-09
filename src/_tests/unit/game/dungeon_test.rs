@@ -1,11 +1,11 @@
-use crate::game::dungeon::{Dungeon, DungeonObject};
+use crate::game::dungeon::{Dungeon, DungeonObjectTuple};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::input::move_direction::MoveDirection::*;
 
 #[test]
 fn initially_has_no_objects() {
     let dungeon = Dungeon::new();
-    let empty_vec: Vec<DungeonObject> = Vec::new();
+    let empty_vec: Vec<DungeonObjectTuple> = Vec::new();
     assert_eq!(&empty_vec, dungeon.get_objects());
 }
 

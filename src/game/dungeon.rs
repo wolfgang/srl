@@ -4,14 +4,14 @@ use crate::input::move_direction::MoveDirection;
 use crate::input::move_direction::MoveDirection::*;
 
 pub type DungeonCoords = (u32, u32);
-pub type DungeonObject = (DungeonCoords, ObjectType);
+pub type DungeonObjectTuple = (DungeonCoords, ObjectType);
 
-pub type CollisionResult = Option<DungeonObject>;
+pub type CollisionResult = Option<DungeonObjectTuple>;
 
 
 #[derive(Default)]
 pub struct Dungeon {
-    objects: Vec<DungeonObject>,
+    objects: Vec<DungeonObjectTuple>,
     player_position: DungeonCoords,
 }
 
@@ -23,7 +23,7 @@ impl Dungeon {
         }
     }
 
-    pub fn get_objects(&self) -> &Vec<DungeonObject> {
+    pub fn get_objects(&self) -> &Vec<DungeonObjectTuple> {
         &self.objects
     }
 
