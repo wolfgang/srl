@@ -8,23 +8,35 @@ pub type DungeonObjectTuple = (DungeonCoords, ObjectType);
 
 pub type CollisionResult = Option<DungeonObjectTuple>;
 
+struct Creature {
+    position: DungeonCoords,
+}
 
 #[derive(Default)]
 pub struct Dungeon {
-    objects: Vec<DungeonObjectTuple>,
+    walls: Vec<DungeonCoords>,
+    enemies: Vec<Creature>,
     player_position: DungeonCoords,
 }
 
 impl Dungeon {
     pub fn new() -> Self {
         Self {
-            objects: Vec::new(),
+            walls: Vec::new(),
+            enemies: Vec::new(),
             player_position: (0, 0),
         }
     }
 
-    pub fn get_objects(&self) -> &Vec<DungeonObjectTuple> {
-        &self.objects
+    pub fn get_objects(&self) -> Vec<DungeonObjectTuple> {
+        let mut result: Vec<DungeonObjectTuple> = self.walls.iter()
+            .map(|coord| { (*coord, Wall) })
+            .collect();
+
+        for enemy in self.enemies.iter() {
+            result.push((enemy.position, Enemy));
+        }
+        result
     }
 
     pub fn get_player_position(&self) -> DungeonCoords {
@@ -32,11 +44,13 @@ impl Dungeon {
     }
 
     pub fn add_walls(&mut self, walls: &Vec<DungeonCoords>) {
-        for pos in walls { self.objects.push((*pos, Wall)) }
+        for pos in walls { self.walls.push(*pos) }
     }
 
     pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
-        for pos in enemies { self.objects.push((*pos, Enemy)) }
+        for pos in enemies {
+            self.enemies.push(Creature { position: *pos });
+        }
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {
@@ -66,7 +80,7 @@ impl Dungeon {
     }
 
     fn object_type_at(&self, coords: DungeonCoords) -> ObjectType {
-        match self.objects.iter().find(|(obj_coords, _)| { *obj_coords == coords }) {
+        match self.get_objects().iter().find(|(obj_coords, _)| { *obj_coords == coords }) {
             Some((_, object_type)) => { *object_type }
             None => Floor
         }

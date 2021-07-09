@@ -6,7 +6,7 @@ use crate::input::move_direction::MoveDirection::*;
 fn initially_has_no_objects() {
     let dungeon = Dungeon::new();
     let empty_vec: Vec<DungeonObjectTuple> = Vec::new();
-    assert_eq!(&empty_vec, dungeon.get_objects());
+    assert_eq!(empty_vec, dungeon.get_objects());
 }
 
 #[test]
@@ -14,7 +14,7 @@ fn can_add_walls_and_enemies() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 2), (3, 4)]);
     dungeon.add_enemies(&vec![(5, 6), (7, 8)]);
-    assert_eq!(dungeon.get_objects(), &vec![
+    assert_eq!(dungeon.get_objects(), vec![
         ((1, 2), Wall), ((3, 4), Wall),
         ((5, 6), Enemy), ((7, 8), Enemy),
     ]);
