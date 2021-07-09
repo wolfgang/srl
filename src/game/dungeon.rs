@@ -1,4 +1,4 @@
-use crate::game::object_type::ObjectType::{Enemy, Floor, Wall};
+use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
 use crate::input::move_direction::MoveDirection;
 use crate::input::move_direction::MoveDirection::*;
@@ -71,18 +71,18 @@ impl Dungeon {
     fn try_move_by(&mut self, (x_offset, y_offset): (i32, i32)) -> CollisionResult {
         let (player_x, player_y) = self.player_position;
         let new_player_position = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
-        let object_type = self.object_type_at(new_player_position);
-        if object_type == Floor {
+        if let Some(object_type) = self.object_type_at(new_player_position) {
+            Some((new_player_position, object_type))
+        } else {
             self.player_position = new_player_position;
-            return None;
+            None
         }
-        Some((new_player_position, object_type))
     }
 
-    fn object_type_at(&self, coords: DungeonCoords) -> ObjectType {
+    fn object_type_at(&self, coords: DungeonCoords) -> Option<ObjectType> {
         match self.get_objects().iter().find(|(obj_coords, _)| { *obj_coords == coords }) {
-            Some((_, object_type)) => { *object_type }
-            None => Floor
+            Some((_, object_type)) => { Some(*object_type) }
+            None => None
         }
     }
 }
