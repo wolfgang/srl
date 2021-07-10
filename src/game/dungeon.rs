@@ -53,6 +53,18 @@ impl Dungeon {
         }
     }
 
+    pub fn remove_enemy(&mut self, x: u32, y: u32) {
+        let mut i = 0;
+        while i < self.enemies.len() {
+            if self.enemies[i].position == (x, y) {
+                self.enemies.remove(i);
+            }
+            else {
+                i += 1;
+            }
+        }
+    }
+
     pub fn set_player_position(&mut self, x: u32, y: u32) {
         self.player_position = (x, y);
     }

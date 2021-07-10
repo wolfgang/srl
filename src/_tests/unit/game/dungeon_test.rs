@@ -114,3 +114,25 @@ fn move_player_returns_collisions_with_wall() {
     assert_eq!(Some(((1, 0), Wall)), dungeon.move_player(Up));
     assert_eq!(Some(((1, 2), Wall)), dungeon.move_player(Down));
 }
+
+#[test]
+fn remove_enemy_removes_enemy() {
+    let mut dungeon = Dungeon::new();
+    dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
+    dungeon.add_walls(&vec![(5, 6)]);
+
+    let objects = dungeon.get_objects();
+    assert_eq!(objects.len(), 3);
+
+    dungeon.remove_enemy(1, 2);
+    let objects = dungeon.get_objects();
+    assert_eq!(objects.len(), 2);
+    assert!(objects.contains(&((3, 4), Enemy)));
+    assert!(objects.contains(&((5, 6), Wall)));
+
+
+    dungeon.remove_enemy(3, 4);
+    let objects = dungeon.get_objects();
+    assert_eq!(objects.len(), 1);
+    assert!(objects.contains(&((5, 6), Wall)));
+}
