@@ -2,7 +2,6 @@ use crate::_tests::_helpers::controlled_combat_engine::ControlledCombatEngine;
 use crate::_tests::_helpers::testable_game::TestableGame;
 use crate::input::move_direction::MoveDirection::Right;
 
-#[ignore]
 #[test]
 fn enemy_is_removed_when_dead() {
     let mut game = TestableGame::from_strings(vec![". @ E ."]);

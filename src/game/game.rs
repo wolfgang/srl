@@ -32,7 +32,7 @@ impl Game {
         for direction in MoveDirection::iter() {
             if input.wants_to_move(*direction) {
                 if let Some((coords, Enemy)) = self.dungeon.move_player(*direction) {
-                    self.record_combat_with(coords)
+                    self.record_combat_with(coords, *direction)
                 }
             }
         }
@@ -53,9 +53,14 @@ impl Game {
     }
 
 
-    fn record_combat_with(&mut self, coords: (u32, u32)) {
+    fn record_combat_with(&mut self, coords: (u32, u32), direction: MoveDirection) {
         if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
             let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
+            if player_damage >= self.combat_engine.get_hp(coords) {
+                self.dungeon.remove_enemy(coords.0, coords.1);
+                self.dungeon.move_player(direction);
+
+            }
             self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
         } else {
             self.combat_events.push(CombatEvent::miss(Player, Enemy));
