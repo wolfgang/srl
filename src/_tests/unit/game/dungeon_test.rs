@@ -14,10 +14,12 @@ fn can_add_walls_and_enemies() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 2), (3, 4)]);
     dungeon.add_enemies(&vec![(5, 6), (7, 8)]);
-    assert_eq!(dungeon.get_objects(), vec![
-        ((1, 2), Wall), ((3, 4), Wall),
-        ((5, 6), Enemy), ((7, 8), Enemy),
-    ]);
+    let objects = dungeon.get_objects();
+    assert_eq!(objects.len(), 4);
+    assert!(objects.contains(&((1, 2), Wall)));
+    assert!(objects.contains(&((3, 4), Wall)));
+    assert!(objects.contains(&((5, 6), Enemy)));
+    assert!(objects.contains(&((7, 8), Enemy)));
 }
 
 #[test]
