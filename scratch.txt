@@ -3,11 +3,14 @@ melee_combat_test:
 - test for different combat log
 - test for different directions (necessary?)
 
-dungeon:
-- apply_damage, remove_enemy are clunky
-- put enemies into hashmap?
-- get_objects usage in object_type_at?
-
 Configure enemy HP
 - FixedGeneratorConfig?
+
+dungeon:
+- [ ] Dungeon::apply_damage: assert that enemy exists
+- [ ] Dungeon::remove_enemy should take DungeonCoords
+- [X] apply_damage, remove_enemy are clunky
+- [X] put enemies into hashmap?
+- [X] get_objects usage in object_type_at?
+
 

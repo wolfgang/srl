@@ -62,12 +62,11 @@ impl Dungeon {
     }
 
     pub fn apply_damage(&mut self, coords: DungeonCoords, damage: u32) -> i32 {
-        if let Some(enemy) = self.enemies.get_mut(&coords) {
-            enemy.hp -= damage as i32;
-            enemy.hp
-        } else {
-            100
-        }
+        let enemy = self.enemies.get_mut(&coords);
+        debug_assert!(enemy.is_some(), "No enemy at {:?}", coords);
+        let enemy = enemy.unwrap();
+        enemy.hp -= damage as i32;
+        enemy.hp
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {

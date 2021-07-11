@@ -143,5 +143,11 @@ fn apply_damage_reduces_hp_and_returns_remaining() {
     dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
     assert_eq!(60, dungeon.apply_damage((1, 2), 40));
     assert_eq!(-10, dungeon.apply_damage((1, 2), 70));
-
 }
+
+// #[test]
+// #[should_panic(expected="No enemy")]
+// fn apply_damage_should_panic_if_no_enemy_at_coords() {
+//     let mut dungeon = Dungeon::new();
+//     dungeon.apply_damage((1, 2), 40);
+// }

@@ -15,6 +15,7 @@ fn flush_writes_empty_tiles() {
 #[test]
 fn flush_writes_previously_rendered_tiles() {
     let mut renderer = TerminalRenderer::new(2, 2);
+    renderer.disable_colors();
 
     renderer.render_tile(0, 0, Player);
     renderer.render_tile(1, 0, Wall);
