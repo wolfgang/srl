@@ -17,7 +17,6 @@ struct Creature {
 
 #[derive(Default)]
 pub struct Dungeon {
-    walls: Vec<DungeonCoords>,
     enemies: Vec<Creature>,
     player_position: DungeonCoords,
     object_types: HashMap<DungeonCoords, ObjectType>,
@@ -28,7 +27,6 @@ const DEFAULT_ENEMY_HP: i32 = 100;
 impl Dungeon {
     pub fn new() -> Self {
         Self {
-            walls: Vec::new(),
             enemies: Vec::new(),
             object_types: HashMap::new(),
             player_position: (0, 0),
@@ -48,7 +46,6 @@ impl Dungeon {
 
     pub fn add_walls(&mut self, walls: &Vec<DungeonCoords>) {
         for pos in walls {
-            self.walls.push(*pos);
             self.object_types.insert(*pos, Wall);
         }
     }
