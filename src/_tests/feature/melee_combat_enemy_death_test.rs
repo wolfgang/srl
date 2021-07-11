@@ -33,12 +33,10 @@ fn combat_log_reflects_enemy_death() {
     let mut combat_engine = ControlledCombatEngine::new();
     combat_engine.say_is_hit((1, 0), (2, 0));
     combat_engine.say_damage((1, 0), 1000);
-
     game.game.override_combat_engine(combat_engine);
+
     game.input.simulate_move(Right);
-    game.tick();
-    game.render();
-    game.renderer.assert_combat_log(vec![
+    game.verify_next_combat_log(vec![
         "Player hits Enemy for 1000 damage!",
         "Enemy dies!"
     ])

@@ -48,9 +48,7 @@ fn collision_with_non_enemy_does_nothing() {
 
     for direction in MoveDirection::iter() {
         game.input.simulate_move(*direction);
-        game.tick();
-        game.render();
-        game.renderer.assert_combat_log(vec![]);
+        game.verify_next_combat_log(vec![]);
     }
 }
 
@@ -64,9 +62,7 @@ fn combat_log_is_cleared_next_tick() {
     assert!(!game.renderer.combat_log().is_empty());
 
     game.input.simulate_move(Left);
-    game.tick();
-    game.render();
-    game.renderer.assert_combat_log(vec![]);
+    game.verify_next_combat_log(vec![]);
 }
 
 fn verify_combat_scenarios_when_moving(direction: MoveDirection, enemy: DungeonCoords) {
@@ -120,7 +116,5 @@ fn verify_next_combat_log_when_moving<F: Fn(&mut ControlledCombatEngine)>(move_d
     game.game.override_combat_engine(combat_engine);
 
     game.input.simulate_move(move_direction);
-    game.tick();
-    game.render();
-    game.renderer.assert_combat_log(expected)
+    game.verify_next_combat_log(expected)
 }

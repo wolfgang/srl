@@ -58,4 +58,11 @@ impl TestableGame {
         self.render();
         self.renderer.assert_tiles(expected);
     }
+
+    pub fn verify_next_combat_log(&mut self, expected: Vec<&str>) {
+        self.tick();
+        self.render();
+        self.renderer.assert_combat_log(expected);
+    }
+
 }
