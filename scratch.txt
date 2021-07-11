@@ -1,12 +1,9 @@
-Combat use cases:
+melee_combat_test:
+- extract common setup (combat, etc)
+- test for different combat log
+- test for different directions (necessary?)
 
-- If enemy hp goes to 0, remove enemy
-- If player hp goes to 0, game over
-- Display player hp in first line (status line)
-
-GameConfig { enemy_health: 20 }
-
-is it time for the builder?
-
-
-
+dungeon:
+- apply_damage, remove_enemy are clunky
+- put enemies into hashmap?
+- get_objects usage in object_type_at?

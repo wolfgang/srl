@@ -56,7 +56,8 @@ impl Game {
     fn record_combat_with(&mut self, coords: (u32, u32), direction: MoveDirection) {
         if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
             let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
-            if player_damage >= self.combat_engine.get_hp(coords) {
+            let remaining_hp = self.dungeon.apply_damage(coords, player_damage);
+            if remaining_hp <= 0 {
                 self.dungeon.remove_enemy(coords.0, coords.1);
                 self.dungeon.move_player(direction);
 

@@ -10,6 +10,7 @@ pub type CollisionResult = Option<DungeonObjectTuple>;
 
 struct Creature {
     position: DungeonCoords,
+    hp: i32
 }
 
 #[derive(Default)]
@@ -18,6 +19,8 @@ pub struct Dungeon {
     enemies: Vec<Creature>,
     player_position: DungeonCoords,
 }
+
+const DEFAULT_ENEMY_HP: i32 = 100;
 
 impl Dungeon {
     pub fn new() -> Self {
@@ -49,7 +52,7 @@ impl Dungeon {
 
     pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
         for pos in enemies {
-            self.enemies.push(Creature { position: *pos });
+            self.enemies.push(Creature { position: *pos, hp: DEFAULT_ENEMY_HP });
         }
     }
 
@@ -63,6 +66,16 @@ impl Dungeon {
                 i += 1;
             }
         }
+    }
+
+    pub fn apply_damage(&mut self, coords: DungeonCoords, damage: u32) -> i32 {
+        for mut enemy in &mut self.enemies {
+            if enemy.position == coords {
+                enemy.hp -= damage as i32;
+                return enemy.hp;
+            }
+        }
+        100
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {
