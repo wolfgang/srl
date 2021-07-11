@@ -57,12 +57,13 @@ impl Game {
         if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
             let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
             let remaining_hp = self.dungeon.apply_damage(coords, player_damage);
+            self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
             if remaining_hp <= 0 {
                 self.dungeon.remove_enemy(coords);
                 self.dungeon.move_player(direction);
-
+                self.combat_events.push(CombatEvent::death(Enemy));
+                return;
             }
-            self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
         } else {
             self.combat_events.push(CombatEvent::miss(Player, Enemy));
         }

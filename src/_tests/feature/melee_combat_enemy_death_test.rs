@@ -27,3 +27,20 @@ fn enemy_is_removed_after_two_hits() {
     game.verify_next_tiles(vec![". . @ ."]);
 }
 
+#[test]
+fn combat_log_reflects_enemy_death() {
+    let mut game = TestableGame::from_strings(vec![". @ E ."]);
+    let mut combat_engine = ControlledCombatEngine::new();
+    combat_engine.say_is_hit((1, 0), (2, 0));
+    combat_engine.say_damage((1, 0), 1000);
+
+    game.game.override_combat_engine(combat_engine);
+    game.input.simulate_move(Right);
+    game.tick();
+    game.render();
+    game.renderer.assert_combat_log(vec![
+        "Player hits Enemy for 1000 damage!",
+        "Enemy dies!"
+    ])
+}
+

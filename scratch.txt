@@ -7,7 +7,7 @@ Configure enemy HP
 - FixedGeneratorConfig?
 
 dungeon:
-- [ ] Dungeon::remove_enemy should take DungeonCoords
+- [X] Dungeon::remove_enemy should take DungeonCoords
 - [X] Dungeon::apply_damage: assert that enemy exists
 - [X] apply_damage, remove_enemy are clunky
 - [X] put enemies into hashmap?
