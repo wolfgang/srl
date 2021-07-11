@@ -110,10 +110,8 @@ fn verify_combat_scenarios_when_moving(direction: MoveDirection, enemy: DungeonC
 }
 
 fn verify_next_combat_log_when_moving<F: Fn(&mut ControlledCombatEngine)>(move_direction: MoveDirection, combat_setup_fn: F, expected: Vec<&str>) {
-    let mut combat_engine = ControlledCombatEngine::new();
-    combat_setup_fn(&mut combat_engine);
     let mut game = TestableGame::from_strings(Vec::from(DUNGEON_WITH_SURROUNDING_ENEMIES));
-    game.game.override_combat_engine(combat_engine);
+    game.configure_combat(combat_setup_fn);
 
     game.input.simulate_move(move_direction);
     game.verify_next_combat_log(expected)

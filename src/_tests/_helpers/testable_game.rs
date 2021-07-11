@@ -1,3 +1,4 @@
+use crate::_tests::_helpers::controlled_combat_engine::ControlledCombatEngine;
 use crate::_tests::_helpers::fixed_dungeon_generator::FixedDungeonGenerator;
 use crate::_tests::_helpers::input_simulator::InputSimulator;
 use crate::_tests::_helpers::rendering_spy::RenderingSpy;
@@ -45,6 +46,12 @@ impl TestableGame {
         }
     }
 
+    pub fn configure_combat<F: Fn(&mut ControlledCombatEngine)>(&mut self, combat_setup_fn: F) {
+        let mut combat_engine = ControlledCombatEngine::new();
+        combat_setup_fn(&mut combat_engine);
+        self.game.override_combat_engine(combat_engine);
+    }
+
     pub fn tick(&mut self) {
         self.game.tick(&mut self.input)
     }
@@ -64,5 +71,4 @@ impl TestableGame {
         self.render();
         self.renderer.assert_combat_log(expected);
     }
-
 }
