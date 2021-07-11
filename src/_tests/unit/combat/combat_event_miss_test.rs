@@ -1,5 +1,5 @@
+use crate::combat::combat_event::CombatEvent;
 use crate::combat::combat_event_miss::CombatEventMiss;
-use crate::combat::combat_event_trait::CombatEventTrait;
 use crate::game::object_type::ObjectType::{Enemy, Player};
 
 #[test]

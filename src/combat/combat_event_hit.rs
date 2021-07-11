@@ -1,4 +1,4 @@
-use crate::combat::combat_event_trait::CombatEventTrait;
+use crate::combat::combat_event::CombatEvent;
 use crate::game::ObjectType;
 
 pub struct CombatEventHit {
@@ -13,7 +13,7 @@ impl CombatEventHit {
     }
 }
 
-impl CombatEventTrait for CombatEventHit {
+impl CombatEvent for CombatEventHit {
     fn log_string(&self) -> String {
         format!("{} hits {} for {} damage!", self.attacker, self.victim, self.damage)
     }

@@ -1,4 +1,4 @@
-use crate::combat::combat_event_trait::CombatEventTrait;
+use crate::combat::combat_event::CombatEvent;
 use crate::game::ObjectType;
 
 pub struct CombatEventMiss {
@@ -12,7 +12,7 @@ impl CombatEventMiss {
     }
 }
 
-impl CombatEventTrait for CombatEventMiss {
+impl CombatEvent for CombatEventMiss {
     fn log_string(&self) -> String {
         format!("{} misses {}!", self.attacker, self.victim)
     }
