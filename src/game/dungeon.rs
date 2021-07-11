@@ -56,9 +56,9 @@ impl Dungeon {
         }
     }
 
-    pub fn remove_enemy(&mut self, x: u32, y: u32) {
-        self.enemies.remove(&(x, y));
-        self.object_types.remove(&(x, y));
+    pub fn remove_enemy(&mut self, coords: DungeonCoords) {
+        self.enemies.remove(&coords);
+        self.object_types.remove(&coords);
     }
 
     pub fn apply_damage(&mut self, coords: DungeonCoords, damage: u32) -> i32 {

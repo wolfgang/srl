@@ -58,7 +58,7 @@ impl Game {
             let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
             let remaining_hp = self.dungeon.apply_damage(coords, player_damage);
             if remaining_hp <= 0 {
-                self.dungeon.remove_enemy(coords.0, coords.1);
+                self.dungeon.remove_enemy(coords);
                 self.dungeon.move_player(direction);
 
             }

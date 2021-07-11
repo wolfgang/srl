@@ -124,14 +124,14 @@ fn remove_enemy_removes_enemy() {
     let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 3);
 
-    dungeon.remove_enemy(1, 2);
+    dungeon.remove_enemy((1, 2));
     let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 2);
     assert!(objects.contains(&((3, 4), Enemy)));
     assert!(objects.contains(&((5, 6), Wall)));
 
 
-    dungeon.remove_enemy(3, 4);
+    dungeon.remove_enemy((3, 4));
     let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 1);
     assert!(objects.contains(&((5, 6), Wall)));
