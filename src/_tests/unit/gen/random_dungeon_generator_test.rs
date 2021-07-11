@@ -39,7 +39,7 @@ fn generates_player_position_distinct_from_objects() {
 }
 
 fn get_distinct_objects_of_type(object_type: ObjectType, dungeon: &Dungeon) -> HashSet<DungeonObjectTuple> {
-    dungeon.get_objects()
+    dungeon.get_object_types()
         .iter()
         .filter_map(|(pos, ty)| {
             if *ty == object_type { Some((*pos, *ty)) } else { None }
@@ -48,7 +48,7 @@ fn get_distinct_objects_of_type(object_type: ObjectType, dungeon: &Dungeon) -> H
 }
 
 fn get_distinct_coords(dungeon: &Dungeon) -> HashSet<DungeonCoords> {
-    dungeon.get_objects()
+    dungeon.get_object_types()
         .iter()
         .map(|(pos, _)| { *pos })
         .collect()

@@ -40,7 +40,7 @@ impl Game {
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
         renderer.clear();
-        for ((x, y), object_type) in self.dungeon.get_objects() {
+        for ((x, y), object_type) in self.dungeon.get_object_types() {
             renderer.render_tile(x, y, object_type);
         }
 

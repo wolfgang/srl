@@ -6,7 +6,7 @@ use crate::input::move_direction::MoveDirection::*;
 fn initially_has_no_objects() {
     let dungeon = Dungeon::new();
     let empty_vec: Vec<DungeonObjectTuple> = Vec::new();
-    assert_eq!(empty_vec, dungeon.get_objects());
+    assert_eq!(empty_vec, dungeon.get_object_types());
 }
 
 #[test]
@@ -14,7 +14,7 @@ fn can_add_walls_and_enemies() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 2), (3, 4)]);
     dungeon.add_enemies(&vec![(5, 6), (7, 8)]);
-    let objects = dungeon.get_objects();
+    let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 4);
     assert!(objects.contains(&((1, 2), Wall)));
     assert!(objects.contains(&((3, 4), Wall)));
@@ -121,18 +121,18 @@ fn remove_enemy_removes_enemy() {
     dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
     dungeon.add_walls(&vec![(5, 6)]);
 
-    let objects = dungeon.get_objects();
+    let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 3);
 
     dungeon.remove_enemy(1, 2);
-    let objects = dungeon.get_objects();
+    let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 2);
     assert!(objects.contains(&((3, 4), Enemy)));
     assert!(objects.contains(&((5, 6), Wall)));
 
 
     dungeon.remove_enemy(3, 4);
-    let objects = dungeon.get_objects();
+    let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 1);
     assert!(objects.contains(&((5, 6), Wall)));
 }

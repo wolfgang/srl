@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
 use crate::input::move_direction::MoveDirection;
@@ -10,7 +12,7 @@ pub type CollisionResult = Option<DungeonObjectTuple>;
 
 struct Creature {
     position: DungeonCoords,
-    hp: i32
+    hp: i32,
 }
 
 #[derive(Default)]
@@ -18,6 +20,7 @@ pub struct Dungeon {
     walls: Vec<DungeonCoords>,
     enemies: Vec<Creature>,
     player_position: DungeonCoords,
+    object_types: HashMap<DungeonCoords, ObjectType>,
 }
 
 const DEFAULT_ENEMY_HP: i32 = 100;
@@ -27,19 +30,16 @@ impl Dungeon {
         Self {
             walls: Vec::new(),
             enemies: Vec::new(),
+            object_types: HashMap::new(),
             player_position: (0, 0),
         }
     }
 
-    pub fn get_objects(&self) -> Vec<DungeonObjectTuple> {
-        let mut result: Vec<DungeonObjectTuple> = self.walls.iter()
-            .map(|coord| { (*coord, Wall) })
-            .collect();
-
-        for enemy in self.enemies.iter() {
-            result.push((enemy.position, Enemy));
-        }
-        result
+    pub fn get_object_types(&self) -> Vec<DungeonObjectTuple> {
+        self.object_types
+            .iter()
+            .map(|(coords, object_type)| { (*coords, *object_type) })
+            .collect()
     }
 
     pub fn get_player_position(&self) -> DungeonCoords {
@@ -47,12 +47,16 @@ impl Dungeon {
     }
 
     pub fn add_walls(&mut self, walls: &Vec<DungeonCoords>) {
-        for pos in walls { self.walls.push(*pos) }
+        for pos in walls {
+            self.walls.push(*pos);
+            self.object_types.insert(*pos, Wall);
+        }
     }
 
     pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
         for pos in enemies {
             self.enemies.push(Creature { position: *pos, hp: DEFAULT_ENEMY_HP });
+            self.object_types.insert(*pos, Enemy);
         }
     }
 
@@ -61,8 +65,8 @@ impl Dungeon {
         while i < self.enemies.len() {
             if self.enemies[i].position == (x, y) {
                 self.enemies.remove(i);
-            }
-            else {
+                self.object_types.remove(&(x, y));
+            } else {
                 i += 1;
             }
         }
@@ -97,17 +101,14 @@ impl Dungeon {
         let (player_x, player_y) = self.player_position;
         let new_player_position = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
         if let Some(object_type) = self.object_type_at(new_player_position) {
-            Some((new_player_position, object_type))
+            Some((new_player_position, *object_type))
         } else {
             self.player_position = new_player_position;
             None
         }
     }
 
-    fn object_type_at(&self, coords: DungeonCoords) -> Option<ObjectType> {
-        match self.get_objects().iter().find(|(obj_coords, _)| { *obj_coords == coords }) {
-            Some((_, object_type)) => { Some(*object_type) }
-            None => None
-        }
+    fn object_type_at(&self, coords: DungeonCoords) -> Option<&ObjectType> {
+        self.object_types.get(&coords)
     }
 }

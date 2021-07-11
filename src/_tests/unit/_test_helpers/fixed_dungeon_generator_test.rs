@@ -10,7 +10,7 @@ fn generates_given_objects() {
     generator.generate_player(9, 10);
 
     let dungeon = generator.generate();
-    let objects = dungeon.get_objects();
+    let objects = dungeon.get_object_types();
     assert_eq!(4, objects.len());
     assert!(objects.contains(&((1, 2), Wall)));
     assert!(objects.contains(&((3, 4), Wall)));
