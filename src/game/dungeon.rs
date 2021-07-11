@@ -11,13 +11,12 @@ pub type DungeonObjectTuple = (DungeonCoords, ObjectType);
 pub type CollisionResult = Option<DungeonObjectTuple>;
 
 struct Creature {
-    position: DungeonCoords,
     hp: i32,
 }
 
 #[derive(Default)]
 pub struct Dungeon {
-    enemies: Vec<Creature>,
+    enemies: HashMap<DungeonCoords, Creature>,
     player_position: DungeonCoords,
     object_types: HashMap<DungeonCoords, ObjectType>,
 }
@@ -27,7 +26,7 @@ const DEFAULT_ENEMY_HP: i32 = 100;
 impl Dungeon {
     pub fn new() -> Self {
         Self {
-            enemies: Vec::new(),
+            enemies: HashMap::new(),
             object_types: HashMap::new(),
             player_position: (0, 0),
         }
@@ -52,31 +51,23 @@ impl Dungeon {
 
     pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
         for pos in enemies {
-            self.enemies.push(Creature { position: *pos, hp: DEFAULT_ENEMY_HP });
+            self.enemies.insert(*pos, Creature { hp: DEFAULT_ENEMY_HP });
             self.object_types.insert(*pos, Enemy);
         }
     }
 
     pub fn remove_enemy(&mut self, x: u32, y: u32) {
-        let mut i = 0;
-        while i < self.enemies.len() {
-            if self.enemies[i].position == (x, y) {
-                self.enemies.remove(i);
-                self.object_types.remove(&(x, y));
-            } else {
-                i += 1;
-            }
-        }
+        self.enemies.remove(&(x, y));
+        self.object_types.remove(&(x, y));
     }
 
     pub fn apply_damage(&mut self, coords: DungeonCoords, damage: u32) -> i32 {
-        for mut enemy in &mut self.enemies {
-            if enemy.position == coords {
-                enemy.hp -= damage as i32;
-                return enemy.hp;
-            }
+        if let Some(enemy) = self.enemies.get_mut(&coords) {
+            enemy.hp -= damage as i32;
+            enemy.hp
+        } else {
+            100
         }
-        100
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {
