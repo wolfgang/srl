@@ -1,10 +1,13 @@
-melee_combat_test:
-- extract common setup (combat, etc)
-- test for different combat log
-- test for different directions (necessary?)
-
 Configure enemy HP
 - FixedGeneratorConfig?
+
+Cleanup combat event (is_death?)
+
+melee_combat_test:
+- [ ] extract common setup (combat, etc)
+- [X] test for different combat log
+- [ ] test for different directions (necessary?)
+
 
 dungeon:
 - [X] Dungeon::remove_enemy should take DungeonCoords

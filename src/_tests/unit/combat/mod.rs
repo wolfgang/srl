@@ -1,2 +1,3 @@
 mod combat_event_test;
 mod randomized_combat_engine_test;
+mod combat_event_hit_test;
