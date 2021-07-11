@@ -6,15 +6,6 @@ const PLAYER: DungeonCoords = (1, 0);
 const ENEMY: DungeonCoords = (2, 0);
 
 #[test]
-fn enemy_is_removed_after_one_hit() {
-    let mut game = TestableGame::from_strings(vec![". @ E ."]);
-    player_hits_for(1000, &mut game);
-
-    game.input.simulate_move(Right);
-    game.verify_next_tiles(vec![". . @ ."]);
-}
-
-#[test]
 fn enemy_is_removed_after_two_hits() {
     let mut game = TestableGame::from_strings(vec![". @ E ."]);
     player_hits_for(60, &mut game);

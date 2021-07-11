@@ -1,10 +1,12 @@
 Configure enemy HP
 - FixedGeneratorConfig?
 
+game:
+- [ ] clean up handle_combat_at
+
 melee_combat_test:
-- [ ] extract common setup (combat, etc)
+- [X] extract common setup (combat, etc)
 - [X] test for different combat log
-- [ ] test for different directions (necessary?)
 
 
 dungeon:
