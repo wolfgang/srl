@@ -1,5 +1,4 @@
 use crate::combat::combat_engine::CombatEngine;
-use crate::combat::combat_event::CombatEvent;
 use crate::combat::combat_event_death::CombatEventDeath;
 use crate::combat::combat_event_hit::CombatEventHit;
 use crate::combat::combat_event_miss::CombatEventMiss;
@@ -15,8 +14,7 @@ use crate::input::move_direction::MoveDirection;
 pub struct Game {
     dungeon: Dungeon,
     combat_engine: Box<dyn CombatEngine>,
-    combat_events: Vec<CombatEvent>,
-    combat_events_2: Vec<Box<dyn CombatEventTrait>>,
+    combat_events: Vec<Box<dyn CombatEventTrait>>,
 }
 
 impl Game {
@@ -24,8 +22,7 @@ impl Game {
         Self {
             combat_engine: Box::from(RandomizedCombatEngine {}),
             dungeon: generator.generate(),
-            combat_events: Vec::new(),
-            combat_events_2: Vec::new()
+            combat_events: Vec::new()
         }
     }
 
@@ -35,11 +32,10 @@ impl Game {
 
     pub fn tick<T: Input>(&mut self, input: &T) {
         self.combat_events.clear();
-        self.combat_events_2.clear();
         for direction in MoveDirection::iter() {
             if input.wants_to_move(*direction) {
                 if let Some((coords, Enemy)) = self.dungeon.move_player(*direction) {
-                    self.record_combat_with(coords, *direction)
+                    self.handle_combat_with(coords, *direction)
                 }
             }
         }
@@ -54,40 +50,34 @@ impl Game {
         let (player_x, player_y) = self.dungeon.get_player_position();
         renderer.render_tile(player_x, player_y, Player);
 
-        for evt in self.combat_events_2.iter() {
+        for evt in self.combat_events.iter() {
             renderer.append_combat_log(evt.log_string().as_str())
         }
     }
 
 
-    fn record_combat_with(&mut self, coords: (u32, u32), direction: MoveDirection) {
+    fn handle_combat_with(&mut self, coords: (u32, u32), direction: MoveDirection) {
         if self.combat_engine.is_hit(self.dungeon.get_player_position(), coords) {
             let player_damage = self.combat_engine.roll_damage(self.dungeon.get_player_position());
             let remaining_hp = self.dungeon.apply_damage(coords, player_damage);
-            self.combat_events.push(CombatEvent::hit(Player, Enemy, player_damage));
-            self.combat_events_2.push(Box::from(CombatEventHit::new(Player, Enemy, player_damage)));
+            self.combat_events.push(Box::from(CombatEventHit::new(Player, Enemy, player_damage)));
             if remaining_hp <= 0 {
                 self.dungeon.remove_enemy(coords);
                 self.dungeon.move_player(direction);
-                self.combat_events.push(CombatEvent::death(Enemy));
-                self.combat_events_2.push(Box::from(CombatEventDeath::new(Enemy)));
+                self.combat_events.push(Box::from(CombatEventDeath::new(Enemy)));
 
                 return;
             }
         } else {
-            self.combat_events.push(CombatEvent::miss(Player, Enemy));
-            self.combat_events_2.push(Box::from(CombatEventMiss::new(Player, Enemy)));
+            self.combat_events.push(Box::from(CombatEventMiss::new(Player, Enemy)));
         }
 
         if self.combat_engine.is_hit(coords, self.dungeon.get_player_position()) {
             let enemy_damage = self.combat_engine.roll_damage(coords);
-            self.combat_events.push(CombatEvent::hit(Enemy, Player, enemy_damage));
-            self.combat_events_2.push(Box::from(CombatEventHit::new(Enemy, Player, enemy_damage)));
+            self.combat_events.push(Box::from(CombatEventHit::new(Enemy, Player, enemy_damage)));
 
         } else {
-            self.combat_events.push(CombatEvent::miss(Enemy, Player));
-            self.combat_events_2.push(Box::from(CombatEventMiss::new(Enemy, Player)));
-
+            self.combat_events.push(Box::from(CombatEventMiss::new(Enemy, Player)));
         }
     }
 }
