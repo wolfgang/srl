@@ -17,10 +17,9 @@ struct Creature {
     hp: i32,
 }
 
-#[derive(Default)]
 pub struct Dungeon {
     enemies: HashMap<DungeonCoords, Creature>,
-    player_hp: i32,
+    player: Creature,
     player_position: DungeonCoords,
     object_types: HashMap<DungeonCoords, ObjectType>,
 }
@@ -31,10 +30,10 @@ const DEFAULT_PLAYER_HP: i32 = 100;
 impl Dungeon {
     pub fn new() -> Self {
         Self {
+            player: Creature { hp: DEFAULT_PLAYER_HP },
             enemies: HashMap::new(),
             object_types: HashMap::new(),
             player_position: (0, 0),
-            player_hp: DEFAULT_PLAYER_HP
         }
     }
 
@@ -76,8 +75,8 @@ impl Dungeon {
     }
 
     pub fn damage_player(&mut self, damage: u32) -> i32 {
-        self.player_hp -= damage as i32;
-        self.player_hp
+        self.player.hp -= damage as i32;
+        self.player.hp
     }
 
     pub fn set_player_position(&mut self, x: u32, y: u32) {
