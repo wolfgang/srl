@@ -33,9 +33,9 @@ fn game_over_after_player_death() {
     enemy_hits_for(60, &mut game);
     game.input.simulate_move(Right);
     game.tick();
-    assert!(!game.game.is_over());
+    assert!(!game.game.player_died());
     game.tick();
-    assert!(game.game.is_over());
+    assert!(game.game.player_died());
 }
 
 #[test]

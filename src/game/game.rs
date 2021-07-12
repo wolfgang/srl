@@ -11,7 +11,7 @@ use crate::input::Input;
 use crate::input::move_direction::MoveDirection;
 
 pub struct Game {
-    is_over: bool,
+    player_died: bool,
     dungeon_ref: DungeonRef,
     combat_resolver: CombatResolver,
 }
@@ -20,7 +20,7 @@ impl Game {
     pub fn generate_with<T: DungeonGenerator>(generator: &T) -> Self {
         let dungeon_ref = Rc::new(RefCell::new(generator.generate()));
         Self {
-            is_over: false,
+            player_died: false,
             dungeon_ref: dungeon_ref.clone(),
             combat_resolver: CombatResolver::new(dungeon_ref.clone())
         }
@@ -30,8 +30,8 @@ impl Game {
         self.combat_resolver.override_combat_engine(engine)
     }
 
-    pub fn is_over(&self) -> bool {
-        self.is_over
+    pub fn player_died(&self) -> bool {
+        self.player_died
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
@@ -40,7 +40,7 @@ impl Game {
             if input.wants_to_move(*direction) {
                 let result = self.dungeon_ref.borrow_mut().move_player(*direction);
                 if let Some((coords, Enemy)) = result {
-                    self.is_over = self.combat_resolver.handle_combat_with(coords, *direction);
+                    self.player_died = self.combat_resolver.handle_combat_with(coords, *direction);
                 };
             }
         }
