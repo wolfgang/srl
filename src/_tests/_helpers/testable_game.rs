@@ -35,6 +35,7 @@ impl TestableGame {
         }
 
         let mut generator = FixedDungeonGenerator::new();
+        generator.roll_enemies_hp(Self::default_enemy_hp());
         generator.generate_walls(walls);
         generator.generate_enemies(enemies);
         generator.generate_player(player_position.0, player_position.1);
@@ -44,6 +45,10 @@ impl TestableGame {
             renderer: RenderingSpy::new(width, height),
             input: InputSimulator::new(),
         }
+    }
+
+    pub fn default_enemy_hp() -> u32 {
+        100
     }
 
     pub fn configure_combat<F: Fn(&mut ControlledCombatEngine)>(&mut self, combat_setup_fn: F) {

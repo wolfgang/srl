@@ -12,12 +12,8 @@ pub struct FixedDungeonGenerator {
 
 impl FixedDungeonGenerator {
     pub fn new() -> Self {
-        Self {
-            enemies_hp: 100,
-            .. Default::default()
-        }
+        Self::default()
     }
-
     pub fn generate_walls(&mut self, walls: Vec<DungeonCoords>) {
         self.walls = walls;
     }

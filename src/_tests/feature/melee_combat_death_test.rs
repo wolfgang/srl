@@ -8,7 +8,7 @@ const ENEMY: DungeonCoords = (2, 0);
 #[test]
 fn enemy_is_removed_after_two_hits() {
     let mut game = TestableGame::from_strings(vec![". @ E ."]);
-    player_hits_for(60, &mut game);
+    player_hits_for(TestableGame::default_enemy_hp() / 2 + 1, &mut game);
 
     game.input.simulate_move(Right);
     game.verify_next_tiles(vec![". @ E ."]);
@@ -18,7 +18,7 @@ fn enemy_is_removed_after_two_hits() {
 #[test]
 fn combat_log_reflects_enemy_death() {
     let mut game = TestableGame::from_strings(vec![". @ E ."]);
-    player_hits_for(1000, &mut game);
+    player_hits_for(TestableGame::default_enemy_hp() * 10, &mut game);
 
     game.input.simulate_move(Right);
     game.verify_next_combat_log(vec![
@@ -30,7 +30,7 @@ fn combat_log_reflects_enemy_death() {
 #[test]
 fn game_over_after_player_death() {
     let mut game = TestableGame::from_strings(vec![". @ E ."]);
-    enemy_hits_for(60, &mut game);
+    enemy_hits_for(TestableGame::default_enemy_hp() / 2 + 1, &mut game);
     game.input.simulate_move(Right);
     game.tick();
     assert!(!game.game.player_died());
@@ -41,7 +41,7 @@ fn game_over_after_player_death() {
 #[test]
 fn combat_log_reflects_player_death() {
     let mut game = TestableGame::from_strings(vec![". @ E ."]);
-    enemy_hits_for(1000, &mut game);
+    enemy_hits_for(TestableGame::default_enemy_hp()*10, &mut game);
 
     game.input.simulate_move(Right);
     game.verify_next_combat_log(vec![
