@@ -1,4 +1,6 @@
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
@@ -9,6 +11,7 @@ pub type DungeonCoords = (u32, u32);
 pub type DungeonObjectTuple = (DungeonCoords, ObjectType);
 
 pub type CollisionResult = Option<DungeonObjectTuple>;
+pub type DungeonRef = Rc<RefCell<Dungeon>>;
 
 struct Creature {
     hp: i32,

@@ -4,3 +4,4 @@ pub mod combat_event_hit;
 pub mod combat_event;
 pub mod combat_event_miss;
 pub mod combat_event_death;
+pub mod combat_resolver;
