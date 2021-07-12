@@ -2,6 +2,7 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 
+use crate::game::creature::Creature;
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
 use crate::input::move_direction::MoveDirection;
@@ -12,10 +13,6 @@ pub type DungeonObjectTuple = (DungeonCoords, ObjectType);
 
 pub type CollisionResult = Option<DungeonObjectTuple>;
 pub type DungeonRef = Rc<RefCell<Dungeon>>;
-
-struct Creature {
-    hp: i32,
-}
 
 pub struct Dungeon {
     enemies: HashMap<DungeonCoords, Creature>,
@@ -56,9 +53,13 @@ impl Dungeon {
 
     pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
         for pos in enemies {
-            self.enemies.insert(*pos, Creature { hp: DEFAULT_ENEMY_HP });
-            self.object_types.insert(*pos, Enemy);
+            self.add_enemy(*pos, Creature { hp: DEFAULT_ENEMY_HP });
         }
+    }
+    pub fn add_enemy(&mut self, coords: DungeonCoords, enemy: Creature) {
+        self.enemies.insert(coords, enemy);
+        self.object_types.insert(coords, Enemy);
+
     }
 
     pub fn remove_enemy(&mut self, coords: DungeonCoords) {

@@ -1,19 +1,9 @@
-Configure enemy HP
-- FixedGeneratorConfig?
+- Dungeon::add_enemy(enemy: Creature)
 
-game:
-- [ ] clean up handle_combat_at
+- DungeonGenerator::roll_enemy() -> Creature
 
-melee_combat_test:
-- [X] extract common setup (combat, etc)
-- [X] test for different combat log
+- FixedDungeonGenerator::rolls_enemies_hp(hp: u32)
 
+- FixedDungeonGenerator::from_strings
 
-dungeon:
-- [X] Dungeon::remove_enemy should take DungeonCoords
-- [X] Dungeon::apply_damage: assert that enemy exists
-- [X] apply_damage, remove_enemy are clunky
-- [X] put enemies into hashmap?
-- [X] get_objects usage in object_type_at?
-
-
+- TestableGame::generate_with
