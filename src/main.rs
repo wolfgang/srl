@@ -13,13 +13,16 @@ fn main() -> std::io::Result<()> {
     let mut renderer = TerminalRenderer::new(GAME_WIDTH, GAME_HEIGHT);
     let mut input = TerminalInput::new();
     let mut term = Term::buffered_stdout();
-    while !input.quit_game() {
+    while !input.quit_game() && !game.is_over() {
         game.render(&mut renderer);
         renderer.flush(&mut term);
         input.on_key(term.read_key()?);
         game.tick(&input);
-        term.clear_last_lines(GAME_HEIGHT - 1)?;
+        if !game.is_over() {
+            term.clear_last_lines(GAME_HEIGHT - 1)?;
+        }
     }
+    println!("\nYou died. Thanks for playing!");
     term.clear_to_end_of_screen()
 }
 

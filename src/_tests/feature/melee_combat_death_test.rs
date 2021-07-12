@@ -27,10 +27,29 @@ fn combat_log_reflects_enemy_death() {
     ])
 }
 
+#[test]
+fn game_over_after_player_death() {
+    let mut game = TestableGame::from_strings(vec![". @ E ."]);
+    enemy_hits_for(60, &mut game);
+    game.input.simulate_move(Right);
+    game.tick();
+    assert!(!game.game.is_over());
+    game.tick();
+    assert!(game.game.is_over());
+}
+
 fn player_hits_for(damage: u32, game: &mut TestableGame) {
     game.configure_combat(|combat_engine| {
         combat_engine.say_is_hit(PLAYER, ENEMY);
         combat_engine.say_damage(PLAYER, damage);
     });
 }
+
+fn enemy_hits_for(damage: u32, game: &mut TestableGame) {
+    game.configure_combat(|combat_engine| {
+        combat_engine.say_is_hit(ENEMY, PLAYER);
+        combat_engine.say_damage(ENEMY, damage);
+    });
+}
+
 

@@ -36,29 +36,34 @@ impl CombatResolver {
     }
 
 
-    pub fn handle_combat_with(&mut self, coords: DungeonCoords, direction: MoveDirection) {
+    pub fn handle_combat_with(&mut self, coords: DungeonCoords, direction: MoveDirection) -> bool {
         let player_pos = self.dungeon_ref.borrow().get_player_position();
         if self.combat_engine.is_hit(player_pos, coords) {
             let player_damage = self.combat_engine.roll_damage(player_pos);
             self.add_combat_event(CombatEventHit::new(Player, Enemy, player_damage));
-            let remaining_hp = self.dungeon_ref.borrow_mut().apply_damage(coords, player_damage);
+            let remaining_hp = self.dungeon_ref.borrow_mut().damage_enemy(coords, player_damage);
             if remaining_hp <= 0 {
                 self.dungeon_ref.borrow_mut().remove_enemy(coords);
                 self.dungeon_ref.borrow_mut().move_player(direction);
                 self.add_combat_event(CombatEventDeath::new(Enemy));
-
-                return;
+                return false;
             }
         } else {
             self.add_combat_event(CombatEventMiss::new(Player, Enemy));
         }
 
         if self.combat_engine.is_hit(coords, player_pos) {
-            let enemy_damage = self.combat_engine.roll_damage(coords);
-            self.add_combat_event(CombatEventHit::new(Enemy, Player, enemy_damage));
+            let damage = self.combat_engine.roll_damage(coords);
+            self.add_combat_event(CombatEventHit::new(Enemy, Player, damage));
+            let remaining_hp = self.dungeon_ref.borrow_mut().damage_player(damage);
+            if remaining_hp <= 0 {
+                return true;
+            }
         } else {
             self.add_combat_event(CombatEventMiss::new(Enemy, Player));
         }
+
+        false
     }
 
     fn add_combat_event<T: CombatEvent + 'static>(&mut self, event: T) {

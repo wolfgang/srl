@@ -141,8 +141,8 @@ fn remove_enemy_removes_enemy() {
 fn apply_damage_reduces_hp_and_returns_remaining() {
     let mut dungeon = Dungeon::new();
     dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
-    assert_eq!(60, dungeon.apply_damage((1, 2), 40));
-    assert_eq!(-10, dungeon.apply_damage((1, 2), 70));
+    assert_eq!(60, dungeon.damage_enemy((1, 2), 40));
+    assert_eq!(-10, dungeon.damage_enemy((1, 2), 70));
 }
 
 // #[test]
