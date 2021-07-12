@@ -21,7 +21,6 @@ pub struct Dungeon {
     object_types: HashMap<DungeonCoords, ObjectType>,
 }
 
-const DEFAULT_ENEMY_HP: i32 = 100;
 const DEFAULT_PLAYER_HP: i32 = 100;
 
 impl Dungeon {
@@ -51,11 +50,6 @@ impl Dungeon {
         }
     }
 
-    pub fn add_enemies(&mut self, enemies: &Vec<DungeonCoords>) {
-        for pos in enemies {
-            self.add_enemy(*pos, Creature { hp: DEFAULT_ENEMY_HP });
-        }
-    }
     pub fn add_enemy(&mut self, coords: DungeonCoords, enemy: Creature) {
         self.enemies.insert(coords, enemy);
         self.object_types.insert(coords, Enemy);

@@ -1,5 +1,5 @@
 use crate::game::creature::Creature;
-use crate::game::dungeon::{Dungeon, DungeonObjectTuple};
+use crate::game::dungeon::{Dungeon, DungeonCoords, DungeonObjectTuple};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::input::move_direction::MoveDirection::*;
 
@@ -11,10 +11,17 @@ fn initially_has_no_objects() {
 }
 
 #[test]
+fn add_enemy_adds_given_creature_as_enemy() {
+    let mut dungeon = Dungeon::new();
+    dungeon.add_enemy((1, 2), Creature { hp: 15 });
+    assert_eq!(dungeon.damage_enemy((1, 2), 7), 8);
+}
+
+#[test]
 fn can_add_walls_and_enemies() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 2), (3, 4)]);
-    dungeon.add_enemies(&vec![(5, 6), (7, 8)]);
+    add_enemies(&mut dungeon, &vec![(5, 6), (7, 8)]);
     let objects = dungeon.get_object_types();
     assert_eq!(objects.len(), 4);
     assert!(objects.contains(&((1, 2), Wall)));
@@ -36,6 +43,7 @@ fn can_set_player_position() {
     assert_eq!((1, 2), dungeon.get_player_position());
 }
 
+
 #[test]
 fn move_player_without_obstacles() {
     let mut dungeon = Dungeon::new();
@@ -49,12 +57,11 @@ fn move_player_without_obstacles() {
     assert_eq!((0, 0), dungeon.get_player_position());
 }
 
-
 #[test]
 fn move_player_right_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.add_walls(&vec![(1, 0)]);
-    dungeon.add_enemies(&vec![(1, 1)]);
+    add_enemies(&mut dungeon, &vec![(1, 1)]);
     dungeon.move_player(Right);
     assert_eq!((0, 0), dungeon.get_player_position());
     dungeon.move_player(Down);
@@ -76,7 +83,7 @@ fn move_player_up_down_stopped_by_obstacle() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(0, 2);
     dungeon.add_walls(&vec![(0, 1)]);
-    dungeon.add_enemies(&vec![(0, 3)]);
+    add_enemies(&mut dungeon, &vec![(0, 3)]);
     dungeon.move_player(Up);
     assert_eq!((0, 2), dungeon.get_player_position());
     dungeon.move_player(Down);
@@ -93,17 +100,17 @@ fn move_player_returns_no_collision_if_no_collision() {
     assert_eq!(None, dungeon.move_player(Down));
 }
 
+
 #[test]
 fn move_player_returns_collisions_with_enemy() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 1);
-    dungeon.add_enemies(&vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
+    add_enemies(&mut dungeon, &vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
     assert_eq!(Some(((0, 1), Enemy)), dungeon.move_player(Left));
     assert_eq!(Some(((2, 1), Enemy)), dungeon.move_player(Right));
     assert_eq!(Some(((1, 0), Enemy)), dungeon.move_player(Up));
     assert_eq!(Some(((1, 2), Enemy)), dungeon.move_player(Down));
 }
-
 
 #[test]
 fn move_player_returns_collisions_with_wall() {
@@ -119,7 +126,7 @@ fn move_player_returns_collisions_with_wall() {
 #[test]
 fn remove_enemy_removes_enemy() {
     let mut dungeon = Dungeon::new();
-    dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
+    add_enemies(&mut dungeon, &vec![(1, 2), (3, 4)]);
     dungeon.add_walls(&vec![(5, 6)]);
 
     let objects = dungeon.get_object_types();
@@ -141,17 +148,18 @@ fn remove_enemy_removes_enemy() {
 #[test]
 fn apply_damage_reduces_hp_and_returns_remaining() {
     let mut dungeon = Dungeon::new();
-    dungeon.add_enemies(&vec![(1, 2), (3, 4)]);
+    add_enemies(&mut dungeon, &vec![(1, 2), (3, 4)]);
     assert_eq!(60, dungeon.damage_enemy((1, 2), 40));
     assert_eq!(-10, dungeon.damage_enemy((1, 2), 70));
 }
 
-#[test]
-fn add_enemy_adds_given_creature_as_enemy() {
-    let mut dungeon = Dungeon::new();
-    dungeon.add_enemy((1, 2), Creature { hp: 15 });
-    assert_eq!(dungeon.damage_enemy((1, 2), 7), 8);
+fn add_enemies(dungeon: &mut Dungeon, enemies: &Vec<DungeonCoords>) {
+    for coords in enemies {
+        dungeon.add_enemy(*coords, Creature { hp: 100 });
+    }
+
 }
+
 
 // #[test]
 // #[should_panic(expected="No enemy")]
