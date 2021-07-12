@@ -26,7 +26,7 @@ pub struct Dungeon {
 }
 
 const DEFAULT_ENEMY_HP: i32 = 100;
-const DEFAULT_PLAYER_HP: i32 = 20;
+const DEFAULT_PLAYER_HP: i32 = 100;
 
 impl Dungeon {
     pub fn new() -> Self {

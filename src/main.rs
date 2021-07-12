@@ -18,9 +18,11 @@ fn main() -> std::io::Result<()> {
         renderer.flush(&mut term);
         input.on_key(term.read_key()?);
         game.tick(&input);
-        if !game.is_over() {
-            term.clear_last_lines(GAME_HEIGHT - 1)?;
-        }
+        term.clear_last_lines(GAME_HEIGHT - 1)?;
+    }
+    if game.is_over() {
+        game.render(&mut renderer);
+        renderer.flush(&mut term);
     }
     println!("\nYou died. Thanks for playing!");
     term.clear_to_end_of_screen()

@@ -57,6 +57,7 @@ impl CombatResolver {
             self.add_combat_event(CombatEventHit::new(Enemy, Player, damage));
             let remaining_hp = self.dungeon_ref.borrow_mut().damage_player(damage);
             if remaining_hp <= 0 {
+                self.add_combat_event(CombatEventDeath::new(Player));
                 return true;
             }
         } else {
