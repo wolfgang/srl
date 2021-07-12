@@ -18,3 +18,13 @@ fn generates_given_objects() {
     assert!(objects.contains(&((7, 8), Enemy)));
     assert_eq!((9, 10), dungeon.get_player_position())
 }
+
+#[test]
+fn can_determine_enemy_hp() {
+    let mut generator = FixedDungeonGenerator::new();
+    generator.generate_enemies(vec![(1, 2), (3, 4)]);
+    generator.roll_enemies_hp(20);
+    let mut dungeon = generator.generate();
+    assert_eq!(dungeon.damage_enemy((1, 2), 5), 15);
+    assert_eq!(dungeon.damage_enemy((3, 4), 10), 10);
+}

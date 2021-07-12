@@ -1,9 +1,7 @@
-- Dungeon::add_enemy(enemy: Creature)
+- [X] Dungeon::add_enemy(enemy: Creature)
 
-- DungeonGenerator::roll_enemy() -> Creature
+- [ ] FixedDungeonGenerator::rolls_enemies_hp(hp: u32)
 
-- FixedDungeonGenerator::rolls_enemies_hp(hp: u32)
+- [ ] FixedDungeonGenerator::from_strings
 
-- FixedDungeonGenerator::from_strings
-
-- TestableGame::generate_with
+- [ ] TestableGame::generate_with
