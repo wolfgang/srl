@@ -35,7 +35,7 @@ impl TestableGame {
         }
 
         let mut generator = FixedDungeonGenerator::new();
-        generator.roll_enemies_hp(Self::default_enemy_hp());
+        generator.set_hp_for_all_enemies(Self::default_enemy_hp());
         generator.generate_walls(walls);
         generator.generate_enemies(enemies);
         generator.generate_player(player_position.0, player_position.1);

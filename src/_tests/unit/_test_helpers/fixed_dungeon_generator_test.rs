@@ -20,10 +20,10 @@ fn generates_given_objects() {
 }
 
 #[test]
-fn can_determine_enemy_hp() {
+fn set_hp_for_all_enemies_causes_all_enemies_to_get_this_hp() {
     let mut generator = FixedDungeonGenerator::new();
     generator.generate_enemies(vec![(1, 2), (3, 4)]);
-    generator.roll_enemies_hp(20);
+    generator.set_hp_for_all_enemies(20);
     let mut dungeon = generator.generate();
     assert_eq!(dungeon.damage_enemy((1, 2), 5), 15);
     assert_eq!(dungeon.damage_enemy((3, 4), 10), 10);

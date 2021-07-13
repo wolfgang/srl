@@ -27,7 +27,7 @@ impl FixedDungeonGenerator {
         self.player = (x, y);
     }
 
-    pub fn roll_enemies_hp(&mut self, value: u32) {
+    pub fn set_hp_for_all_enemies(&mut self, value: u32) {
         self.enemies_hp = value;
     }
 }
