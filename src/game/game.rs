@@ -4,14 +4,21 @@ use std::rc::Rc;
 use crate::combat::combat_engine::CombatEngine;
 use crate::combat::combat_resolver::CombatResolver;
 use crate::game::dungeon::DungeonRef;
+use crate::game::game::GameState::{PlayerDied, Running};
 use crate::game::object_type::ObjectType::{Enemy, Player};
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
 use crate::input::move_direction::MoveDirection;
 
+#[derive(Copy, Clone, PartialEq, Debug)]
+pub enum GameState {
+    Running,
+    PlayerDied,
+}
+
 pub struct Game {
-    player_died: bool,
+    game_state: GameState,
     dungeon_ref: DungeonRef,
     combat_resolver: CombatResolver,
 }
@@ -20,9 +27,9 @@ impl Game {
     pub fn generate_with<T: DungeonGenerator>(generator: &T) -> Self {
         let dungeon_ref = Rc::new(RefCell::new(generator.generate()));
         Self {
-            player_died: false,
+            game_state: Running,
             dungeon_ref: dungeon_ref.clone(),
-            combat_resolver: CombatResolver::new(dungeon_ref.clone())
+            combat_resolver: CombatResolver::new(dungeon_ref.clone()),
         }
     }
 
@@ -30,8 +37,8 @@ impl Game {
         self.combat_resolver.override_combat_engine(engine)
     }
 
-    pub fn player_died(&self) -> bool {
-        self.player_died
+    pub fn game_state(&self) -> GameState {
+        self.game_state
     }
 
     pub fn tick<T: Input>(&mut self, input: &T) {
@@ -40,8 +47,11 @@ impl Game {
             if input.wants_to_move(*direction) {
                 let result = self.dungeon_ref.borrow_mut().move_player(*direction);
                 if let Some((coords, Enemy)) = result {
-                    self.player_died = self.combat_resolver.handle_combat_with(coords, *direction);
-                };
+                    self.combat_resolver.handle_combat_with(coords, *direction);
+                    if self.dungeon_ref.borrow().get_player_hp() <= 0 {
+                        self.game_state = PlayerDied;
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 use crate::_tests::_helpers::testable_game::TestableGame;
 use crate::game::dungeon::DungeonCoords;
+use crate::game::game::GameState::{PlayerDied, Running};
 use crate::input::move_direction::MoveDirection::Right;
 
 const PLAYER: DungeonCoords = (1, 0);
@@ -33,9 +34,9 @@ fn game_over_after_player_death() {
     enemy_hits_for(TestableGame::default_enemy_hp() / 2 + 1, &mut game);
     game.input.simulate_move(Right);
     game.tick();
-    assert!(!game.game.player_died());
+    assert_eq!(Running, game.game.game_state());
     game.tick();
-    assert!(game.game.player_died());
+    assert_eq!(PlayerDied, game.game.game_state());
 }
 
 #[test]
