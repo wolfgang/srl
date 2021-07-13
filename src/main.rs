@@ -4,7 +4,7 @@ use srl::game::Game;
 use srl::game::game::GameState::{PlayerDied, Running};
 use srl::gen::random_dungeon_generator::RandomDungeonGenerator;
 use srl::gfx::terminal_renderer::TerminalRenderer;
-use srl::input::{Input, TerminalInput};
+use srl::input::TerminalInput;
 
 const GAME_WIDTH: usize = 40;
 const GAME_HEIGHT: usize = 20;
@@ -14,7 +14,7 @@ fn main() -> std::io::Result<()> {
     let mut renderer = TerminalRenderer::new(GAME_WIDTH, GAME_HEIGHT);
     let mut input = TerminalInput::new();
     let mut term = Term::buffered_stdout();
-    while !input.quit_game() && game.game_state() == Running {
+    while game.game_state() == Running {
         game.render(&mut renderer);
         let rendered_lines = renderer.flush(&mut term);
         input.on_key(term.read_key()?);

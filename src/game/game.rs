@@ -4,7 +4,7 @@ use std::rc::Rc;
 use crate::combat::combat_engine::CombatEngine;
 use crate::combat::combat_resolver::CombatResolver;
 use crate::game::dungeon::DungeonRef;
-use crate::game::game::GameState::{PlayerDied, Running};
+use crate::game::game::GameState::*;
 use crate::game::object_type::ObjectType::{Enemy, Player};
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
@@ -15,6 +15,7 @@ use crate::input::move_direction::MoveDirection;
 pub enum GameState {
     Running,
     PlayerDied,
+    PlayerQuit
 }
 
 pub struct Game {
@@ -45,14 +46,12 @@ impl Game {
         self.combat_resolver.reset();
         for direction in MoveDirection::iter() {
             if input.wants_to_move(*direction) {
-                let result = self.dungeon_ref.borrow_mut().move_player(*direction);
-                if let Some((coords, Enemy)) = result {
-                    self.combat_resolver.handle_combat_with(coords, *direction);
-                    if self.dungeon_ref.borrow().get_player_hp() <= 0 {
-                        self.game_state = PlayerDied;
-                    }
-                }
+                self.resolve_possible_combat(direction)
             }
+        }
+
+        if input.quit_game() {
+            self.game_state = PlayerQuit
         }
     }
 
@@ -70,6 +69,16 @@ impl Game {
 
         for evt in self.combat_resolver.get_combat_events() {
             renderer.append_combat_log(evt.log_string().as_str())
+        }
+    }
+
+    fn resolve_possible_combat(&mut self, direction: &MoveDirection) {
+        let result = self.dungeon_ref.borrow_mut().move_player(*direction);
+        if let Some((coords, Enemy)) = result {
+            self.combat_resolver.handle_combat_with(coords, *direction);
+            if self.dungeon_ref.borrow().get_player_hp() <= 0 {
+                self.game_state = PlayerDied;
+            }
         }
     }
 }
