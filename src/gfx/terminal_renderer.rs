@@ -35,13 +35,16 @@ impl TerminalRenderer {
     fn frame_as_string(&self) -> (usize, String) {
         let combat_log = self.backend.combat_log();
         let tile_lines = self.backend.tiles_as_strings();
-        let mut result = Vec::with_capacity(tile_lines.len());
+        let mut result = Vec::with_capacity(tile_lines.len() + 1);
         if self.current_player_hp != -1 {
             result.push(format!("HP: {}", self.current_player_hp));
         }
         for (index, tiles_line) in tile_lines.iter().enumerate() {
             let mut tiles_line = tiles_line.clone();
-            if self.colors_enabled { Self::color_player(&mut tiles_line) }
+            if self.colors_enabled {
+                Self::color_player(&mut tiles_line);
+                tiles_line = Self::color_enemies(&tiles_line);
+            }
             result.push(format!("{}{}", tiles_line, Self::combat_log_line_at(index, &combat_log)));
         }
 
@@ -60,6 +63,18 @@ impl TerminalRenderer {
         if let Some(offset) = tiles_line.find('@') {
             tiles_line.replace_range(offset..offset + 1, style("@").red().to_string().as_str());
         }
+    }
+
+    fn color_enemies(tiles_line: &String) -> String {
+        let mut result = String::with_capacity(tiles_line.len());
+        for ch in tiles_line.chars() {
+            if ch == 'E' {
+                result.push_str(style('E').yellow().to_string().as_str())
+            } else {
+                result.push(ch)
+            }
+        }
+        result
     }
 }
 
