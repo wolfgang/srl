@@ -15,10 +15,10 @@ fn main() -> std::io::Result<()> {
     let mut term = Term::buffered_stdout();
     while !input.quit_game() && !game.player_died() {
         game.render(&mut renderer);
-        renderer.flush(&mut term);
+        let rendered_lines = renderer.flush(&mut term);
         input.on_key(term.read_key()?);
         game.tick(&input);
-        term.clear_last_lines(GAME_HEIGHT - 1)?;
+        term.clear_last_lines(rendered_lines - 1)?;
     }
     if game.player_died() {
         game.render(&mut renderer);

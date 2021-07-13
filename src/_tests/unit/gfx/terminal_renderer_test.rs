@@ -59,10 +59,33 @@ fn clear_clears_combat_log() {
         "..."]);
 }
 
+#[test]
+fn render_player_hp_displays_player_hp_on_top() {
+    let mut renderer = TerminalRenderer::new(10, 2);
+    renderer.render_player_hp(123);
+    verify_flush_writes(&mut renderer, vec![
+        "HP: 123",
+        "..........",
+        ".........."]);
+}
+
+#[test]
+fn flush_returns_number_of_lines_written() {
+    let mut renderer = TerminalRenderer::new(2, 3);
+    renderer.render_player_hp(123);
+    assert_eq!(renderer.flush(&mut cursor_buffer()), 4);
+
+
+}
+
 fn verify_flush_writes(renderer: &mut TerminalRenderer, expected: Vec<&str>) {
-    let mut buffer = Cursor::new(Vec::new());
+    let mut buffer = cursor_buffer();
     renderer.flush(&mut buffer);
     let actual = str::from_utf8(&buffer.get_ref()).unwrap();
     assert_eq!(actual, expected.join("\n"));
+}
+
+fn cursor_buffer() -> Cursor<Vec<u8>> {
+    Cursor::new(Vec::new())
 }
 

@@ -153,6 +153,15 @@ fn apply_damage_reduces_hp_and_returns_remaining() {
     assert_eq!(-10, dungeon.damage_enemy((1, 2), 70));
 }
 
+#[test]
+fn get_player_hp_returns_current_player_hp() {
+    let mut dungeon = Dungeon::new();
+    assert_eq!(dungeon.get_player_hp(), 100);
+    dungeon.damage_player(20);
+    assert_eq!(dungeon.get_player_hp(), 80);
+
+}
+
 fn add_enemies(dungeon: &mut Dungeon, enemies: &Vec<DungeonCoords>) {
     for coords in enemies {
         dungeon.add_enemy(*coords, Creature { hp: 100 });

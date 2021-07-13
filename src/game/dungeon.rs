@@ -78,6 +78,10 @@ impl Dungeon {
         self.player_position = (x, y);
     }
 
+    pub fn get_player_hp(&self) -> i32 {
+        self.player.hp
+    }
+
     pub fn move_player(&mut self, direction: MoveDirection) -> CollisionResult {
         let offsets = match direction {
             Left => { (-1, 0) }

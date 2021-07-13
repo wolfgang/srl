@@ -4,7 +4,7 @@ use crate::gfx::string_backend::StringBackend;
 
 pub struct RenderingSpy {
     backend: StringBackend,
-    current_player_hp: u32
+    current_player_hp: i32
 }
 
 impl RenderingSpy {
@@ -33,7 +33,7 @@ impl RenderingSpy {
         assert_eq!(actual_str, expected_str);
     }
 
-    pub fn assert_player_hp_rendered(&self, expected: u32) {
+    pub fn assert_player_hp_rendered(&self, expected: i32) {
         assert_eq!(self.current_player_hp, expected)
     }
 
@@ -56,7 +56,7 @@ impl Renderer for RenderingSpy {
         self.backend.append_combat_log(text)
     }
 
-    fn render_player_hp(&mut self, value: u32) {
+    fn render_player_hp(&mut self, value: i32) {
         self.current_player_hp = value;
     }
 }

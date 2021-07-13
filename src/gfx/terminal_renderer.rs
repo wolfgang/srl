@@ -8,34 +8,44 @@ use crate::gfx::string_backend::StringBackend;
 
 pub struct TerminalRenderer {
     backend: StringBackend,
-    colors_enabled: bool
+    colors_enabled: bool,
+    current_player_hp: i32,
 }
 
 impl TerminalRenderer {
     pub fn new(width: usize, height: usize) -> Self {
-        Self { backend: StringBackend::new(width, height), colors_enabled: true }
+        Self {
+            backend: StringBackend::new(width, height),
+            colors_enabled: true,
+            current_player_hp: -1
+        }
     }
 
-    pub fn flush<T: Write>(&mut self, write: &mut T) {
-        write.write(format!("{}", self.frame_as_string()).as_bytes()).unwrap();
+    pub fn flush<T: Write>(&mut self, write: &mut T) -> usize {
+        let (num_lines, frame) = self.frame_as_string();
+        write.write(format!("{}", frame).as_bytes()).unwrap();
         write.flush().unwrap();
+        num_lines
     }
 
     pub fn disable_colors(&mut self) {
         self.colors_enabled = false;
     }
 
-    fn frame_as_string(&self) -> String {
+    fn frame_as_string(&self) -> (usize, String) {
         let combat_log = self.backend.combat_log();
         let tile_lines = self.backend.tiles_as_strings();
         let mut result = Vec::with_capacity(tile_lines.len());
+        if self.current_player_hp != -1 {
+            result.push(format!("HP: {}", self.current_player_hp));
+        }
         for (index, tiles_line) in tile_lines.iter().enumerate() {
             let mut tiles_line = tiles_line.clone();
             if self.colors_enabled { Self::color_player(&mut tiles_line) }
             result.push(format!("{}{}", tiles_line, Self::combat_log_line_at(index, &combat_log)));
         }
 
-        return result.join("\n");
+        return (result.len(), result.join("\n"));
     }
 
     fn combat_log_line_at(index: usize, combat_log: &Vec<&str>) -> String {
@@ -66,7 +76,7 @@ impl Renderer for TerminalRenderer {
         self.backend.append_combat_log(text)
     }
 
-    fn render_player_hp(&mut self, _value: u32) {
-        todo!()
+    fn render_player_hp(&mut self, value: i32) {
+        self.current_player_hp = value
     }
 }
