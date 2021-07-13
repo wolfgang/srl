@@ -17,7 +17,7 @@ impl TerminalRenderer {
         Self {
             backend: StringBackend::new(width, height),
             colors_enabled: true,
-            current_player_hp: -1
+            current_player_hp: -1,
         }
     }
 
@@ -42,8 +42,7 @@ impl TerminalRenderer {
         for (index, tiles_line) in tile_lines.iter().enumerate() {
             let mut tiles_line = tiles_line.clone();
             if self.colors_enabled {
-                Self::color_player(&mut tiles_line);
-                tiles_line = Self::color_enemies(&tiles_line);
+                tiles_line = Self::color_tiles(&tiles_line);
             }
             result.push(format!("{}{}", tiles_line, Self::combat_log_line_at(index, &combat_log)));
         }
@@ -59,19 +58,13 @@ impl TerminalRenderer {
         }
     }
 
-    fn color_player(tiles_line: &mut String) {
-        if let Some(offset) = tiles_line.find('@') {
-            tiles_line.replace_range(offset..offset + 1, style("@").red().to_string().as_str());
-        }
-    }
-
-    fn color_enemies(tiles_line: &String) -> String {
+    fn color_tiles(tiles_line: &String) -> String {
         let mut result = String::with_capacity(tiles_line.len());
         for ch in tiles_line.chars() {
-            if ch == 'E' {
-                result.push_str(style('E').yellow().to_string().as_str())
-            } else {
-                result.push(ch)
+            match ch {
+                '@' => { result.push_str(style(ch).red().to_string().as_str()) }
+                'E' => { result.push_str(style(ch).yellow().to_string().as_str()) }
+                _ => { result.push(ch)}
             }
         }
         result
