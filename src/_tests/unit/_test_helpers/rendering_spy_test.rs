@@ -76,6 +76,14 @@ fn assert_combat_log_succeeds_if_combat_log_matches() {
         "combat log line 1",
         "combat log line 2",
     ]);
+}
+
+#[test]
+fn assert_player_hp_rendered_succeeds_if_given_value_was_rendered() {
+    let mut renderer = RenderingSpy::new(1, 1);
+    renderer.render_player_hp(1234);
+    renderer.assert_player_hp_rendered(1234);
+
 
 }
 

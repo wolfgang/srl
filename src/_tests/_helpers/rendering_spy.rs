@@ -3,12 +3,16 @@ use crate::gfx::renderer::Renderer;
 use crate::gfx::string_backend::StringBackend;
 
 pub struct RenderingSpy {
-    backend: StringBackend
+    backend: StringBackend,
+    current_player_hp: u32
 }
 
 impl RenderingSpy {
     pub fn new(width: usize, height: usize) -> Self {
-        Self { backend: StringBackend::new(width, height) }
+        Self {
+            backend: StringBackend::new(width, height),
+            current_player_hp: 0
+        }
     }
 
     pub fn tiles_as_string(&self) -> String {
@@ -29,6 +33,11 @@ impl RenderingSpy {
         assert_eq!(actual_str, expected_str);
     }
 
+    pub fn assert_player_hp_rendered(&self, expected: u32) {
+        assert_eq!(self.current_player_hp, expected)
+    }
+
+
     pub fn combat_log(&self) -> Vec<&str> {
         self.backend.combat_log()
     }
@@ -45,5 +54,9 @@ impl Renderer for RenderingSpy {
 
     fn append_combat_log(&mut self, text: &str) {
         self.backend.append_combat_log(text)
+    }
+
+    fn render_player_hp(&mut self, value: u32) {
+        self.current_player_hp = value;
     }
 }

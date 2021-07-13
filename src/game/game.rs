@@ -48,6 +48,9 @@ impl Game {
 
     pub fn render<T: Renderer>(&self, renderer: &mut T) {
         renderer.clear();
+
+        renderer.render_player_hp(100);
+
         for ((x, y), object_type) in self.dungeon_ref.borrow().get_object_types() {
             renderer.render_tile(x, y, object_type);
         }

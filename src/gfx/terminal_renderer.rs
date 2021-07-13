@@ -65,4 +65,8 @@ impl Renderer for TerminalRenderer {
     fn append_combat_log(&mut self, text: &str) {
         self.backend.append_combat_log(text)
     }
+
+    fn render_player_hp(&mut self, _value: u32) {
+        todo!()
+    }
 }
