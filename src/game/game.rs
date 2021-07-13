@@ -15,6 +15,7 @@ use crate::input::move_direction::MoveDirection;
 pub enum GameState {
     Running,
     PlayerDied,
+    AllEnemiesDied,
     PlayerQuit
 }
 
@@ -78,6 +79,10 @@ impl Game {
             self.combat_resolver.handle_combat_with(coords, *direction);
             if self.dungeon_ref.borrow().get_player_hp() <= 0 {
                 self.game_state = PlayerDied;
+            }
+
+            if self.dungeon_ref.borrow_mut().get_num_enemies() == 0 {
+                self.game_state = AllEnemiesDied;
             }
         }
     }

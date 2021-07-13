@@ -1,7 +1,7 @@
 use console::Term;
 
 use srl::game::Game;
-use srl::game::game::GameState::{PlayerDied, Running};
+use srl::game::game::GameState::{AllEnemiesDied, PlayerDied, PlayerQuit, Running};
 use srl::gen::random_dungeon_generator::RandomDungeonGenerator;
 use srl::gfx::terminal_renderer::TerminalRenderer;
 use srl::input::TerminalInput;
@@ -21,10 +21,17 @@ fn main() -> std::io::Result<()> {
         game.tick(&input);
         term.clear_last_lines(rendered_lines - 1)?;
     }
-    if game.game_state() == PlayerDied {
+    if game.game_state() != PlayerQuit {
         game.render(&mut renderer);
         renderer.flush(&mut term);
-        println!("\nYou died. Thanks for playing!");
+        if game.game_state() == PlayerDied {
+            println!("\nYou died. Thanks for playing!");
+        }
+
+        if game.game_state() == AllEnemiesDied {
+            println!("\nYou win. Thanks for playing!");
+        }
+
     }
     term.clear_to_end_of_screen()
 }

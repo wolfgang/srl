@@ -82,6 +82,10 @@ impl Dungeon {
         self.player.hp
     }
 
+    pub fn get_num_enemies(&self) -> usize {
+        return self.enemies.len()
+    }
+
     pub fn move_player(&mut self, direction: MoveDirection) -> CollisionResult {
         let offsets = match direction {
             Left => { (-1, 0) }

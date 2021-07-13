@@ -159,6 +159,14 @@ fn get_player_hp_returns_current_player_hp() {
     assert_eq!(dungeon.get_player_hp(), 100);
     dungeon.damage_player(20);
     assert_eq!(dungeon.get_player_hp(), 80);
+}
+
+#[test]
+fn get_num_enemies_returns_number_of_enemies() {
+    let mut dungeon = Dungeon::new();
+    assert_eq!(dungeon.get_num_enemies(), 0);
+    add_enemies(&mut dungeon, &vec![(1, 2), (3, 4)]);
+    assert_eq!(dungeon.get_num_enemies(), 2);
 
 }
 
