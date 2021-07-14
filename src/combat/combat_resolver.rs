@@ -6,7 +6,6 @@ use crate::combat::combat_event_miss::CombatEventMiss;
 use crate::combat::randomized_combat_engine::RandomizedCombatEngine;
 use crate::game::dungeon::{DungeonCoords, DungeonRef};
 use crate::game::object_type::ObjectType::{Enemy, Player};
-use crate::input::move_direction::MoveDirection;
 
 pub struct CombatResolver {
     dungeon_ref: DungeonRef,
@@ -36,7 +35,7 @@ impl CombatResolver {
     }
 
 
-    pub fn handle_combat_with(&mut self, coords: DungeonCoords, direction: MoveDirection) {
+    pub fn handle_combat_with(&mut self, coords: DungeonCoords) {
         let player_pos = self.dungeon_ref.borrow().get_player_position();
         if self.combat_engine.is_hit(player_pos, coords) {
             let player_damage = self.combat_engine.roll_damage(player_pos);
@@ -44,7 +43,6 @@ impl CombatResolver {
             let remaining_hp = self.dungeon_ref.borrow_mut().damage_enemy(coords, player_damage);
             if remaining_hp <= 0 {
                 self.dungeon_ref.borrow_mut().remove_enemy(coords);
-                self.dungeon_ref.borrow_mut().move_player(direction);
                 self.add_combat_event(CombatEventDeath::new(Enemy));
                 return;
             }

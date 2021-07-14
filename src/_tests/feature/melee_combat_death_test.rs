@@ -13,7 +13,7 @@ fn enemy_is_removed_after_two_hits() {
 
     game.input.simulate_move(Right);
     game.verify_next_tiles(vec![". @ E ."]);
-    game.verify_next_tiles(vec![". . @ ."]);
+    game.verify_next_tiles(vec![". @ . ."]);
 }
 
 #[test]

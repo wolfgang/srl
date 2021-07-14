@@ -76,7 +76,7 @@ impl Game {
     fn resolve_possible_combat(&mut self, direction: &MoveDirection) {
         let result = self.dungeon_ref.borrow_mut().move_player(*direction);
         if let Some((coords, Enemy)) = result {
-            self.combat_resolver.handle_combat_with(coords, *direction);
+            self.combat_resolver.handle_combat_with(coords);
             if self.dungeon_ref.borrow().get_player_hp() <= 0 {
                 self.game_state = PlayerDied;
             }
