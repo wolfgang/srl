@@ -27,7 +27,7 @@ impl PlayerController {
             (player_x as i32 + x_offset) as u32,
             (player_y as i32 + y_offset) as u32
         );
-        if let Some(object_type) = self.dungeon_ref.borrow().object_type_at(new_player_position) {
+        if let Some(object_type) = self.dungeon_ref.borrow().get_object_type_at(new_player_position) {
             return Some((new_player_position, *object_type));
         }
         self.dungeon_ref.borrow_mut().set_player_position(new_player_position.0, new_player_position.1);

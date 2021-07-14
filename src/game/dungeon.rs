@@ -5,8 +5,6 @@ use std::rc::Rc;
 use crate::game::creature::Creature;
 use crate::game::object_type::ObjectType::{Enemy, Wall};
 use crate::game::ObjectType;
-use crate::input::move_direction::MoveDirection;
-use crate::input::move_direction::MoveDirection::*;
 
 pub type DungeonCoords = (u32, u32);
 pub type DungeonObjectTuple = (DungeonCoords, ObjectType);
@@ -86,29 +84,7 @@ impl Dungeon {
         return self.enemies.len()
     }
 
-    pub fn move_player(&mut self, direction: MoveDirection) -> CollisionResult {
-        let offsets = match direction {
-            Left => { (-1, 0) }
-            Right => { (1, 0) }
-            Up => { (0, -1) }
-            Down => { (0, 1) }
-        };
-        self.try_move_by(offsets)
-    }
-
-
-    fn try_move_by(&mut self, (x_offset, y_offset): (i32, i32)) -> CollisionResult {
-        let (player_x, player_y) = self.player_position;
-        let new_player_position = ((player_x as i32 + x_offset) as u32, (player_y as i32 + y_offset) as u32);
-        if let Some(object_type) = self.object_type_at(new_player_position) {
-            Some((new_player_position, *object_type))
-        } else {
-            self.player_position = new_player_position;
-            None
-        }
-    }
-
-    pub(crate) fn object_type_at(&self, coords: DungeonCoords) -> Option<&ObjectType> {
+    pub(crate) fn get_object_type_at(&self, coords: DungeonCoords) -> Option<&ObjectType> {
         self.object_types.get(&coords)
     }
 }

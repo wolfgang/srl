@@ -1,7 +1,6 @@
 use crate::game::creature::Creature;
 use crate::game::dungeon::{Dungeon, DungeonCoords, DungeonObjectTuple};
 use crate::game::object_type::ObjectType::{Enemy, Wall};
-use crate::input::move_direction::MoveDirection::*;
 
 #[test]
 fn initially_has_no_objects() {
@@ -42,65 +41,6 @@ fn can_set_player_position() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(1, 2);
     assert_eq!((1, 2), dungeon.get_player_position());
-}
-
-#[test]
-fn move_player_with_nothing_in_the_way() {
-    let mut dungeon = Dungeon::new();
-    dungeon.set_player_position(2, 2);
-    assert_eq!(None, dungeon.move_player(Left));
-    assert_eq!(dungeon.get_player_position(), (1, 2));
-    assert_eq!(None, dungeon.move_player(Right));
-    assert_eq!(dungeon.get_player_position(), (2, 2));
-    assert_eq!(None, dungeon.move_player(Up));
-    assert_eq!(dungeon.get_player_position(), (2, 1));
-    assert_eq!(None, dungeon.move_player(Down));
-    assert_eq!(dungeon.get_player_position(), (2, 2));
-
-}
-
-
-#[test]
-fn move_player_surrounded_by_enemies() {
-    let mut dungeon = Dungeon::new();
-
-    const PLAYER: DungeonCoords = (1, 1);
-    const ENEMY_LEFT: DungeonCoords = (0, 1);
-    const ENEMY_RIGHT: DungeonCoords = (2, 1);
-    const ENEMY_ABOVE: DungeonCoords = (1, 0);
-    const ENEMY_BELOW: DungeonCoords = (1, 2);
-
-    dungeon.set_player_position(PLAYER.0, PLAYER.1);
-    add_enemies(&mut dungeon, &vec![ENEMY_LEFT, ENEMY_RIGHT, ENEMY_ABOVE, ENEMY_BELOW]);
-    assert_eq!(Some((ENEMY_LEFT, Enemy)), dungeon.move_player(Left));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-    assert_eq!(Some((ENEMY_RIGHT, Enemy)), dungeon.move_player(Right));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-    assert_eq!(Some((ENEMY_ABOVE, Enemy)), dungeon.move_player(Up));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-    assert_eq!(Some((ENEMY_BELOW, Enemy)), dungeon.move_player(Down));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-}
-
-#[test]
-fn move_player_surrounded_by_walls() {
-    let mut dungeon = Dungeon::new();
-    const PLAYER: DungeonCoords = (1, 1);
-    const WALL_LEFT: DungeonCoords = (0, 1);
-    const WALL_RIGHT: DungeonCoords = (2, 1);
-    const WALL_ABOVE: DungeonCoords = (1, 0);
-    const WALL_BELOW: DungeonCoords = (1, 2);
-
-    dungeon.add_walls(&vec![WALL_LEFT, WALL_RIGHT, WALL_ABOVE, WALL_BELOW]);
-    dungeon.set_player_position(PLAYER.0, PLAYER.1);
-    assert_eq!(Some((WALL_LEFT, Wall)), dungeon.move_player(Left));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-    assert_eq!(Some((WALL_RIGHT, Wall)), dungeon.move_player(Right));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-    assert_eq!(Some((WALL_ABOVE, Wall)), dungeon.move_player(Up));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
-    assert_eq!(Some((WALL_BELOW, Wall)), dungeon.move_player(Down));
-    assert_eq!(dungeon.get_player_position(), PLAYER);
 }
 
 #[test]
