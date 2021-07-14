@@ -44,68 +44,25 @@ fn can_set_player_position() {
     assert_eq!((1, 2), dungeon.get_player_position());
 }
 
-
 #[test]
-fn move_player_without_obstacles() {
-    let mut dungeon = Dungeon::new();
-    dungeon.move_player(Right);
-    assert_eq!((1, 0), dungeon.get_player_position());
-    dungeon.move_player(Down);
-    assert_eq!((1, 1), dungeon.get_player_position());
-    dungeon.move_player(Left);
-    assert_eq!((0, 1), dungeon.get_player_position());
-    dungeon.move_player(Up);
-    assert_eq!((0, 0), dungeon.get_player_position());
-}
-
-#[test]
-fn move_player_right_stopped_by_obstacle() {
-    let mut dungeon = Dungeon::new();
-    dungeon.add_walls(&vec![(1, 0)]);
-    add_enemies(&mut dungeon, &vec![(1, 1)]);
-    dungeon.move_player(Right);
-    assert_eq!((0, 0), dungeon.get_player_position());
-    dungeon.move_player(Down);
-    dungeon.move_player(Right);
-    assert_eq!((0, 1), dungeon.get_player_position());
-}
-
-#[test]
-fn move_player_left_stopped_by_obstacle() {
-    let mut dungeon = Dungeon::new();
-    dungeon.set_player_position(1, 0);
-    dungeon.add_walls(&vec![(0, 0)]);
-    dungeon.move_player(Left);
-    assert_eq!((1, 0), dungeon.get_player_position());
-}
-
-#[test]
-fn move_player_up_down_stopped_by_obstacle() {
-    let mut dungeon = Dungeon::new();
-    dungeon.set_player_position(0, 2);
-    dungeon.add_walls(&vec![(0, 1)]);
-    add_enemies(&mut dungeon, &vec![(0, 3)]);
-    dungeon.move_player(Up);
-    assert_eq!((0, 2), dungeon.get_player_position());
-    dungeon.move_player(Down);
-    assert_eq!((0, 2), dungeon.get_player_position());
-}
-
-#[test]
-fn move_player_returns_no_collision_if_no_collision() {
+fn move_player_with_nothing_in_the_way() {
     let mut dungeon = Dungeon::new();
     dungeon.set_player_position(2, 2);
     assert_eq!(None, dungeon.move_player(Left));
+    assert_eq!(dungeon.get_player_position(), (1, 2));
     assert_eq!(None, dungeon.move_player(Right));
+    assert_eq!(dungeon.get_player_position(), (2, 2));
     assert_eq!(None, dungeon.move_player(Up));
+    assert_eq!(dungeon.get_player_position(), (2, 1));
     assert_eq!(None, dungeon.move_player(Down));
+    assert_eq!(dungeon.get_player_position(), (2, 2));
+
 }
 
 
 #[test]
-fn move_player_returns_collisions_with_enemy() {
+fn move_player_surrounded_by_enemies() {
     let mut dungeon = Dungeon::new();
-
 
     const PLAYER: DungeonCoords = (1, 1);
     const ENEMY_LEFT: DungeonCoords = (0, 1);
@@ -126,7 +83,7 @@ fn move_player_returns_collisions_with_enemy() {
 }
 
 #[test]
-fn move_player_returns_collisions_with_wall() {
+fn move_player_surrounded_by_walls() {
     let mut dungeon = Dungeon::new();
     const PLAYER: DungeonCoords = (1, 1);
     const WALL_LEFT: DungeonCoords = (0, 1);
