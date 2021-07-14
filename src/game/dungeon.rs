@@ -108,7 +108,7 @@ impl Dungeon {
         }
     }
 
-    fn object_type_at(&self, coords: DungeonCoords) -> Option<&ObjectType> {
+    pub(crate) fn object_type_at(&self, coords: DungeonCoords) -> Option<&ObjectType> {
         self.object_types.get(&coords)
     }
 }

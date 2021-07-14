@@ -6,6 +6,7 @@ use crate::combat::combat_resolver::CombatResolver;
 use crate::game::dungeon::DungeonRef;
 use crate::game::game::GameState::*;
 use crate::game::object_type::ObjectType::{Enemy, Player};
+use crate::game::player_controller::PlayerController;
 use crate::gen::dungeon_generator::DungeonGenerator;
 use crate::gfx::renderer::Renderer;
 use crate::input::Input;
@@ -23,6 +24,7 @@ pub struct Game {
     game_state: GameState,
     dungeon_ref: DungeonRef,
     combat_resolver: CombatResolver,
+    player_controller: PlayerController
 }
 
 impl Game {
@@ -32,6 +34,8 @@ impl Game {
             game_state: Running,
             dungeon_ref: dungeon_ref.clone(),
             combat_resolver: CombatResolver::new(dungeon_ref.clone()),
+            player_controller: PlayerController::new(dungeon_ref.clone())
+
         }
     }
 
@@ -74,7 +78,7 @@ impl Game {
     }
 
     fn resolve_possible_combat(&mut self, direction: &MoveDirection) {
-        let result = self.dungeon_ref.borrow_mut().move_player(*direction);
+        let result = self.player_controller.move_player(*direction);
         if let Some((coords, Enemy)) = result {
             self.combat_resolver.handle_combat_with(coords);
             if self.dungeon_ref.borrow().get_player_hp() <= 0 {

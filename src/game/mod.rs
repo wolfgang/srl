@@ -5,3 +5,4 @@ pub mod game;
 pub mod object_type;
 pub mod dungeon;
 pub mod creature;
+pub mod player_controller;
