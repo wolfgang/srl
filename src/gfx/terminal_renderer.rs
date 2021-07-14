@@ -40,11 +40,9 @@ impl TerminalRenderer {
             result.push(format!("HP: {}", self.current_player_hp));
         }
         for (index, tiles_line) in tile_lines.iter().enumerate() {
-            let mut tiles_line = tiles_line.clone();
-            if self.colors_enabled {
-                tiles_line = Self::color_tiles(&tiles_line);
-            }
-            result.push(format!("{}{}", tiles_line, Self::combat_log_line_at(index, &combat_log)));
+            result.push(format!("{}{}",
+                                self.color_tiles(tiles_line.clone()),
+                                Self::combat_log_line_at(index, &combat_log)));
         }
 
         return (result.len(), result.join("\n"));
@@ -58,8 +56,9 @@ impl TerminalRenderer {
         }
     }
 
-    fn color_tiles(tiles_line: &String) -> String {
-        let mut result = String::with_capacity(tiles_line.len());
+    fn color_tiles(&self, tiles_line: String) -> String {
+        if !self.colors_enabled { return tiles_line }
+        let mut result = String::with_capacity(tiles_line.len()*3);
         for ch in tiles_line.chars() {
             match ch {
                 '@' => { result.push_str(style(ch).red().to_string().as_str()) }
