@@ -13,8 +13,9 @@ fn initially_has_no_objects() {
 #[test]
 fn add_enemy_adds_given_creature_as_enemy() {
     let mut dungeon = Dungeon::new();
-    dungeon.add_enemy((1, 2), Creature { hp: 15 });
-    assert_eq!(dungeon.damage_enemy((1, 2), 7), 8);
+    const ENEMY_COORDS: DungeonCoords = (1, 2);
+    dungeon.add_enemy(ENEMY_COORDS, Creature { hp: 15 });
+    assert_eq!(dungeon.damage_enemy(ENEMY_COORDS, 7), 8);
 }
 
 #[test]
@@ -104,23 +105,45 @@ fn move_player_returns_no_collision_if_no_collision() {
 #[test]
 fn move_player_returns_collisions_with_enemy() {
     let mut dungeon = Dungeon::new();
-    dungeon.set_player_position(1, 1);
-    add_enemies(&mut dungeon, &vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
-    assert_eq!(Some(((0, 1), Enemy)), dungeon.move_player(Left));
-    assert_eq!(Some(((2, 1), Enemy)), dungeon.move_player(Right));
-    assert_eq!(Some(((1, 0), Enemy)), dungeon.move_player(Up));
-    assert_eq!(Some(((1, 2), Enemy)), dungeon.move_player(Down));
+
+
+    const PLAYER: DungeonCoords = (1, 1);
+    const ENEMY_LEFT: DungeonCoords = (0, 1);
+    const ENEMY_RIGHT: DungeonCoords = (2, 1);
+    const ENEMY_ABOVE: DungeonCoords = (1, 0);
+    const ENEMY_BELOW: DungeonCoords = (1, 2);
+
+    dungeon.set_player_position(PLAYER.0, PLAYER.1);
+    add_enemies(&mut dungeon, &vec![ENEMY_LEFT, ENEMY_RIGHT, ENEMY_ABOVE, ENEMY_BELOW]);
+    assert_eq!(Some((ENEMY_LEFT, Enemy)), dungeon.move_player(Left));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
+    assert_eq!(Some((ENEMY_RIGHT, Enemy)), dungeon.move_player(Right));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
+    assert_eq!(Some((ENEMY_ABOVE, Enemy)), dungeon.move_player(Up));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
+    assert_eq!(Some((ENEMY_BELOW, Enemy)), dungeon.move_player(Down));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
 }
 
 #[test]
 fn move_player_returns_collisions_with_wall() {
     let mut dungeon = Dungeon::new();
-    dungeon.set_player_position(1, 1);
-    dungeon.add_walls(&vec![(1, 0), (2, 1), (1, 2), (0, 1)]);
-    assert_eq!(Some(((0, 1), Wall)), dungeon.move_player(Left));
-    assert_eq!(Some(((2, 1), Wall)), dungeon.move_player(Right));
-    assert_eq!(Some(((1, 0), Wall)), dungeon.move_player(Up));
-    assert_eq!(Some(((1, 2), Wall)), dungeon.move_player(Down));
+    const PLAYER: DungeonCoords = (1, 1);
+    const WALL_LEFT: DungeonCoords = (0, 1);
+    const WALL_RIGHT: DungeonCoords = (2, 1);
+    const WALL_ABOVE: DungeonCoords = (1, 0);
+    const WALL_BELOW: DungeonCoords = (1, 2);
+
+    dungeon.add_walls(&vec![WALL_LEFT, WALL_RIGHT, WALL_ABOVE, WALL_BELOW]);
+    dungeon.set_player_position(PLAYER.0, PLAYER.1);
+    assert_eq!(Some((WALL_LEFT, Wall)), dungeon.move_player(Left));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
+    assert_eq!(Some((WALL_RIGHT, Wall)), dungeon.move_player(Right));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
+    assert_eq!(Some((WALL_ABOVE, Wall)), dungeon.move_player(Up));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
+    assert_eq!(Some((WALL_BELOW, Wall)), dungeon.move_player(Down));
+    assert_eq!(dungeon.get_player_position(), PLAYER);
 }
 
 #[test]
